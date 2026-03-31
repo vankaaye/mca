@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCA — Melbourne Cricket Association | Winter 2026</title>
+  <meta name="description" content="Melbourne Cricket Association — Premier community cricket competition. 50+ teams, 1200+ players, every Saturday. Register for Winter 2026 season." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress" class="scroll-progress"></div>
+
+  <!-- Header -->
+  <header id="header" class="header">
+    <div class="header-inner container">
+      <a href="#" class="logo">
+        <img src="logo.png" alt="MCA — Melbourne Cricket Association" />
+      </a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#competitions" class="nav-link">Competitions</a></li>
+          <li><a href="#calendar" class="nav-link">Calendar</a></li>
+          <li><a href="#fees" class="nav-link">Fees</a></li>
+          <li><a href="#rules" class="nav-link">Rules</a></li>
+          <li><a href="#register" class="nav-link">Register</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="#register" class="btn btn-gold nav-cta">Register Now</a>
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <!-- Animated orbs -->
+    <div class="orb orb-gold"></div>
+    <div class="orb orb-green"></div>
+    <div class="orb orb-blue"></div>
+
+    <!-- Cricket oval outline -->
+    <div class="cricket-oval"></div>
+
+    <!-- Floating cricket balls -->
+    <div class="cricket-ball ball-1"></div>
+    <div class="cricket-ball ball-2"></div>
+    <div class="cricket-ball ball-3"></div>
+
+    <div class="hero-content container">
+      <p class="hero-season">Winter 2026 Season</p>
+      <h1 class="hero-title">Melbourne<br />Cricket<br />Association</h1>
+      <p class="hero-date">Season starts <strong>APRIL 11, 2026</strong></p>
+      <div class="hero-ctas">
+        <a href="#register" class="btn btn-gold">Register Your Team</a>
+        <a href="#competitions" class="btn btn-outline">View Competitions</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="hs-num" data-count="50">0</span><span class="stat-plus">+</span>
+          <span class="stat-label">Teams</span>
+        </div>
+        <div class="stat">
+          <span class="hs-num" data-count="1200">0</span><span class="stat-plus">+</span>
+          <span class="stat-label">Players</span>
+        </div>
+        <div class="stat">
+          <span class="stat-dollar">$</span><span class="hs-num" data-count="1500">0</span>
+          <span class="stat-label">Prize</span>
+        </div>
+        <div class="stat">
+          <span class="hs-num" data-count="6">0</span>
+          <span class="stat-label">Seasons</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint">
+      <div class="mouse">
+        <div class="mouse-wheel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gold Ticker Strip -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">&#9733; 50+ Teams Competing</span>
+      <span class="ticker-item">&#9733; Season Starts April 11</span>
+      <span class="ticker-item">&#9733; $1500 Prize Pool</span>
+      <span class="ticker-item">&#9733; Professional Umpires Every Game</span>
+      <span class="ticker-item">&#9733; PlayHQ Live Scoring</span>
+      <span class="ticker-item">&#9733; Live Streamed on YouTube via Frogbox</span>
+      <span class="ticker-item">&#9733; Player of Match Every Game</span>
+      <span class="ticker-item">&#9733; 1200+ Participants</span>
+      <span class="ticker-item">&#9733; 50+ Teams Competing</span>
+      <span class="ticker-item">&#9733; Season Starts April 11</span>
+      <span class="ticker-item">&#9733; $1500 Prize Pool</span>
+      <span class="ticker-item">&#9733; Professional Umpires Every Game</span>
+      <span class="ticker-item">&#9733; PlayHQ Live Scoring</span>
+      <span class="ticker-item">&#9733; Live Streamed on YouTube via Frogbox</span>
+      <span class="ticker-item">&#9733; Player of Match Every Game</span>
+      <span class="ticker-item">&#9733; 1200+ Participants</span>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about" class="section about">
+    <div class="container">
+      <h2 class="section-title reveal">The MCA Difference</h2>
+      <p class="section-subtitle reveal">Melbourne's premier community cricket competition — every Saturday, all winter long.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="20" fill="none" stroke="#f59e0b" stroke-width="2"/><path d="M24 12v12l8 8" stroke="#f59e0b" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Every Saturday</h3>
+          <p>Consistent weekend cricket — T20 mornings, T35 afternoons. Plan your season with certainty.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48"><path d="M24 4L30 16H42L32 24l4 14-12-8-12 8 4-14L6 16h12z" fill="none" stroke="#16a34a" stroke-width="2"/></svg>
+          </div>
+          <h3>Professional Umpires</h3>
+          <p>Every game features professional umpires, some from Premier Cricket — no compromises on fairness.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48"><rect x="8" y="14" width="32" height="22" rx="3" fill="none" stroke="#ea580c" stroke-width="2"/><circle cx="24" cy="25" r="6" fill="none" stroke="#ea580c" stroke-width="2"/><path d="M16 14V10a8 8 0 0116 0v4" fill="none" stroke="#ea580c" stroke-width="2"/></svg>
+          </div>
+          <h3>Live Streamed</h3>
+          <p>Watch via Frogbox on YouTube and PlayCricket app. PlayHQ live scoring keeps everyone connected.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="18" fill="none" stroke="#f59e0b" stroke-width="2"/><path d="M16 24h16M24 16v16" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>1st & 2nd XI Divisions</h3>
+          <p>Structured divisions so every team plays competitive, meaningful cricket at their level.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48"><path d="M24 4v10l8-4zM24 4v10l-8-4z" fill="none" stroke="#16a34a" stroke-width="2"/><rect x="14" y="14" width="20" height="28" rx="2" fill="none" stroke="#16a34a" stroke-width="2"/></svg>
+          </div>
+          <h3>Awards & Trophies</h3>
+          <p>Player of Match every game plus trophies, medals and awards — best batsman, bowler, fielder, most sixes and more.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="14" r="8" fill="none" stroke="#ea580c" stroke-width="2"/><path d="M10 40c0-8 6-14 14-14s14 6 14 14" fill="none" stroke="#ea580c" stroke-width="2"/></svg>
+          </div>
+          <h3>1200+ Players</h3>
+          <p>Melbourne's largest community cricket network — 50+ teams and growing every season.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitions -->
+  <section id="competitions" class="section competitions">
+    <div class="container">
+      <h2 class="section-title reveal">Competitions</h2>
+      <p class="section-subtitle reveal">Three formats to suit every team. All competitions run on Saturdays.</p>
+      <div class="comp-grid">
+        <!-- T20 -->
+        <div class="comp-card comp-t20 reveal">
+          <div class="comp-header comp-header-orange">
+            <h3>Saturday T20</h3>
+            <span class="comp-badge">Most Popular</span>
+          </div>
+          <div class="comp-body">
+            <ul class="comp-details">
+              <li><strong>Time:</strong> 8:00 AM – 11:30 AM</li>
+              <li><strong>Season:</strong> 12 Apr – 15 Aug 2026</li>
+              <li><strong>Format:</strong> 16 rounds + Pre SF + SF + Final</li>
+              <li><strong>Prize:</strong> $1,500 <span class="prize-up">&#9650; from $1,000</span></li>
+              <li><strong>Registration Fee:</strong> $675 total</li>
+              <li><strong>Umpire Fee:</strong> $65 / game</li>
+            </ul>
+            <a href="#register" class="btn btn-gold comp-btn">Register for T20</a>
+          </div>
+        </div>
+        <!-- T35 Non-MYCA -->
+        <div class="comp-card comp-t35nm reveal">
+          <div class="comp-header comp-header-blue">
+            <h3>Saturday T35 Non MYCA</h3>
+            <span class="comp-badge">New Format</span>
+          </div>
+          <div class="comp-body">
+            <ul class="comp-details">
+              <li><strong>Time:</strong> 12:00 PM – 5:00 PM</li>
+              <li><strong>Season:</strong> 11 Apr – 12 Sep 2026</li>
+              <li><strong>Format:</strong> 10 rounds + Pre SF + SF + Final</li>
+              <li><strong>Prize:</strong> $1,000</li>
+              <li><strong>Registration Fee:</strong> $675 total</li>
+              <li><strong>Umpire Fee:</strong> $85 / game</li>
+              <li><strong>Schedule:</strong> On Saturdays with no MYCA comp</li>
+            </ul>
+            <a href="#register" class="btn btn-gold comp-btn">Register for T35 Non MYCA</a>
+          </div>
+        </div>
+        <!-- T35 -->
+        <div class="comp-card comp-t35 reveal">
+          <div class="comp-header comp-header-maroon">
+            <h3>Saturday T35</h3>
+            <span class="comp-badge">Best Value</span>
+          </div>
+          <div class="comp-body">
+            <ul class="comp-details">
+              <li><strong>Time:</strong> 12:00 PM – 5:00 PM</li>
+              <li><strong>Season:</strong> 11 Apr – 22 Aug 2026</li>
+              <li><strong>Format:</strong> 16 rounds + Pre SF + SF + Final</li>
+              <li><strong>Prize:</strong> $1,500 <span class="prize-up">&#9650; from $1,000</span></li>
+              <li><strong>Registration Fee:</strong> $425 total</li>
+              <li><strong>Umpire Fee:</strong> $85 / game</li>
+            </ul>
+            <a href="#register" class="btn btn-gold comp-btn">Register for T35</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Season Calendar -->
+  <section id="calendar" class="section calendar">
+    <div class="container">
+      <h2 class="section-title reveal">Season Calendar</h2>
+      <p class="section-subtitle reveal">Key dates for the Winter 2026 season</p>
+      <div class="timeline reveal">
+        <div class="timeline-line"></div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-green"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">11 Apr</span>
+            <span class="timeline-label">T35 & T35 NM Season Start</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-orange"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">12 Apr</span>
+            <span class="timeline-label">T20 Season Start</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-gold"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">Jun–Jul</span>
+            <span class="timeline-label">Mid-Season Rounds</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-blue"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">Aug</span>
+            <span class="timeline-label">T20 & T35 Finals</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-maroon"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">12 Sep</span>
+            <span class="timeline-label">T35 Non MYCA Grand Final</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fees & Costs -->
+  <section id="fees" class="section fees">
+    <div class="container">
+      <h2 class="section-title reveal">Fees & Costs</h2>
+      <p class="section-subtitle reveal">Transparent pricing — no hidden costs. Balls: $30 each (MCA Stamped Kooka Crown 2-piece white).</p>
+      <div class="fees-grid">
+        <!-- T20 Fees -->
+        <div class="fee-card reveal">
+          <div class="fee-header fee-header-orange">
+            <h3>Saturday T20</h3>
+            <div class="fee-total">$675 <span>total</span></div>
+          </div>
+          <ul class="fee-list">
+            <li><span>Registration</span><span>$175</span></li>
+            <li><span>MoM Awards</span><span>$125</span></li>
+            <li><span>Ground Fee</span><span>$250</span></li>
+            <li><span>Finals Awards</span><span>$125</span></li>
+          </ul>
+          <div class="fee-extra">Umpire: $65 / game</div>
+        </div>
+        <!-- T35 Non-MYCA Fees -->
+        <div class="fee-card reveal">
+          <div class="fee-header fee-header-blue">
+            <h3>Saturday T35 Non MYCA</h3>
+            <div class="fee-total">$675 <span>total</span></div>
+          </div>
+          <ul class="fee-list">
+            <li><span>Registration</span><span>$175</span></li>
+            <li><span>MoM Awards</span><span>$125</span></li>
+            <li><span>Ground Fee</span><span>$250</span></li>
+            <li><span>Finals Awards</span><span>$125</span></li>
+          </ul>
+          <div class="fee-extra">Umpire: $85 / game</div>
+        </div>
+        <!-- T35 Fees -->
+        <div class="fee-card reveal">
+          <div class="fee-header fee-header-maroon">
+            <h3>Saturday T35</h3>
+            <div class="fee-total">$425 <span>total</span></div>
+          </div>
+          <ul class="fee-list">
+            <li><span>Registration</span><span>$175</span></li>
+            <li><span>MoM Awards</span><span>$125</span></li>
+            <li><span>Finals Awards</span><span>$125</span></li>
+          </ul>
+          <div class="fee-extra">Umpire: $85 / game</div>
+        </div>
+      </div>
+      <p class="fees-note reveal">Grounds: Clubs organise via local councils/schools. MCA provides where possible. Professional umpires (some from Premier Cricket) every game.</p>
+    </div>
+  </section>
+
+  <!-- Rules -->
+  <section id="rules" class="section rules">
+    <div class="container">
+      <div class="rules-card reveal">
+        <div class="rules-icon">
+          <svg viewBox="0 0 64 80" width="64" height="80">
+            <rect x="4" y="4" width="48" height="64" rx="4" fill="none" stroke="#ea580c" stroke-width="2.5"/>
+            <path d="M52 20h8v56a4 4 0 01-4 4H16" fill="none" stroke="#ea580c" stroke-width="2.5"/>
+            <path d="M16 18h24M16 26h20M16 34h24M16 42h16" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+            <text x="28" y="58" text-anchor="middle" fill="#ea580c" font-family="Bebas Neue, sans-serif" font-size="14">PDF</text>
+          </svg>
+        </div>
+        <div class="rules-text">
+          <h3>MCA Rules & Regulations</h3>
+          <p>Download the official MCA Winter 2025 T35 and T20 rules document. All captains and players should familiarise themselves before the season begins.</p>
+        </div>
+        <a href="rules/MCA%20-%20Winter%202025%20-%20T35%20and%20T20%20Rules%20-%20v2.pdf" class="btn btn-gold rules-btn" download>Download Rules PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Register -->
+  <section id="register" class="section register">
+    <div class="container">
+      <h2 class="section-title reveal">Register Your Team</h2>
+      <p class="section-subtitle reveal">Get your team ready for Winter 2026 — scan the QR code or contact us directly.</p>
+      <div class="register-grid">
+        <div class="register-checklist reveal">
+          <h3>Registration Checklist</h3>
+          <ul>
+            <li>
+              <svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="9" fill="none" stroke="#16a34a" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Choose your competition format (T20, T35, or T35 Non MYCA)
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="9" fill="none" stroke="#16a34a" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Confirm your squad (minimum 11 players)
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="9" fill="none" stroke="#16a34a" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Organise your ground via local council or school
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="9" fill="none" stroke="#16a34a" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Pay registration fees before season start
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="9" fill="none" stroke="#16a34a" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download and read the official MCA rules
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="9" fill="none" stroke="#16a34a" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Contact Gopi or Mahi for final confirmation
+            </li>
+          </ul>
+        </div>
+        <div class="register-qr reveal">
+          <div class="qr-card">
+            <h3>Scan to Register</h3>
+            <img src="qrcode.png" alt="QR Code — Scan to register" class="qr-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="qr-placeholder" style="display:none;">
+              <div class="qr-box"></div>
+              <p>Add <code>qrcode.png</code> to repo root</p>
+            </div>
+            <p class="qr-sub">Point your phone camera at the code to open the registration form.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <h2 class="section-title reveal">Get in Touch</h2>
+      <p class="section-subtitle reveal">Have questions? Reach out to us directly.</p>
+      <div class="contact-grid">
+        <a href="tel:0430667896" class="contact-card reveal">
+          <div class="contact-icon contact-icon-gold">
+            <svg viewBox="0 0 24 24" width="32" height="32"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <h3>Gopi</h3>
+          <p class="contact-role">President</p>
+          <p class="contact-detail">0430 667 896</p>
+        </a>
+        <a href="tel:0433960586" class="contact-card reveal">
+          <div class="contact-icon contact-icon-green">
+            <svg viewBox="0 0 24 24" width="32" height="32"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <h3>Mahi</h3>
+          <p class="contact-role">Secretary</p>
+          <p class="contact-detail">0433 960 586</p>
+        </a>
+        <a href="https://www.facebook.com/melbournecricketassociation" target="_blank" rel="noopener" class="contact-card reveal">
+          <div class="contact-icon contact-icon-blue">
+            <svg viewBox="0 0 24 24" width="32" height="32"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Facebook</h3>
+          <p class="contact-role">Community Page</p>
+          <p class="contact-detail">Follow MCA on Facebook</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="logo.png" alt="MCA" class="footer-logo" />
+        <p>Melbourne Cricket Association — Melbourne's premier community cricket competition since 2020. Every Saturday, all winter long.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#competitions">Competitions</a></li>
+          <li><a href="#calendar">Calendar</a></li>
+          <li><a href="#fees">Fees</a></li>
+          <li><a href="#rules">Rules</a></li>
+          <li><a href="#register">Register</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>Gopi (President): <a href="tel:0430667896">0430 667 896</a></p>
+        <p>Mahi (Secretary): <a href="tel:0433960586">0433 960 586</a></p>
+        <p><a href="https://www.facebook.com/melbournecricketassociation" target="_blank" rel="noopener">Facebook Page</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>&copy; 2026 Melbourne Cricket Association. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
