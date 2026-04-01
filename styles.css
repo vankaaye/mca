@@ -76,8 +76,8 @@ img { max-width: 100%; display: block; }
   justify-content: space-between;
 }
 
-.logo img { height: 48px; width: auto; }
-.header.scrolled .logo img { height: 36px; }
+.logo img { height: 64px; width: auto; }
+.header.scrolled .logo img { height: 44px; }
 
 .nav-list {
   display: flex;
@@ -408,6 +408,100 @@ img { max-width: 100%; display: block; }
 .feature-card p { font-size: 0.9rem; color: var(--text-dim); }
 
 /* ============================================================
+   Gallery
+   ============================================================ */
+.gallery { background: var(--surface); }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 240px;
+  gap: 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.gallery-item:hover img { transform: scale(1.08); }
+
+.gallery-item-wide { grid-column: span 2; }
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(3,7,18,0.85) 0%, transparent 50%);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25rem;
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay span {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.25rem;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+/* Placeholder state when image fails to load */
+.gallery-ph-content {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1rem;
+}
+.gallery-ph-content p {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.gallery-ph-content code {
+  background: rgba(255,255,255,0.06);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.gallery-placeholder img { display: none; }
+.gallery-placeholder .gallery-overlay { display: none; }
+.gallery-placeholder .gallery-ph-content {
+  display: flex;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 180px;
+  }
+}
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 200px;
+  }
+  .gallery-item-wide { grid-column: span 1; }
+}
+
+/* ============================================================
    Competitions
    ============================================================ */
 .competitions { background: var(--surface); }
@@ -718,7 +812,7 @@ img { max-width: 100%; display: block; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
 }
 
-.footer-logo { height: 40px; margin-bottom: 1rem; }
+.footer-logo { height: 56px; margin-bottom: 1rem; }
 .footer-brand p { font-size: 0.875rem; color: var(--text-dim); max-width: 320px; }
 
 .footer-links h4, .footer-contact h4 {
