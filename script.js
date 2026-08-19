@@ -167,6 +167,9 @@
   var chatSend = document.getElementById('chatbot-send');
   var chatMic = document.getElementById('chatbot-mic');
   var chatChips = document.getElementById('chatbot-chips');
+  // Focusing an input on a touch device raises the on-screen keyboard, so the
+  // widget never takes focus by itself there — the user taps the field first.
+  var coarsePointer = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
   var chatOpened = false;
   var chatBusy = false;
 
@@ -536,8 +539,11 @@
       // Land on the first line of the answer, not the last.
       scrollToStartOf(bubble);
       setBusy(false);
-      // preventScroll keeps focus from yanking the view back down.
-      try { chatInput.focus({ preventScroll: true }); } catch (err) { chatInput.focus(); }
+      // Return focus on desktop only; on touch this would re-open the keyboard
+      // over the answer the user just asked for.
+      if (!coarsePointer) {
+        try { chatInput.focus({ preventScroll: true }); } catch (err) { chatInput.focus(); }
+      }
     }
 
     var url = endpoint();
@@ -652,7 +658,8 @@
       document.body.classList.toggle('chat-open', isOpen);
       if (isOpen) {
         greet();
-        chatInput.focus();
+        // No focus() here — it would pop the keyboard the moment the sheet
+        // opens and bury the conversation behind it.
       }
     });
   }
