@@ -195,29 +195,51 @@
       return /^\s*\|?[\s:|-]+\|[\s:|-]*$/.test(line) && line.indexOf('-') !== -1;
     }
 
+    // A pipe-delimited row: starts and ends with "|" and has at least two cells
+    function isTableRow(line) {
+      var t = (line || '').trim();
+      return t.charAt(0) === '|' && t.charAt(t.length - 1) === '|' && t.length > 2 &&
+             t.split('|').length >= 4;
+    }
+
     while (i < lines.length) {
       var line = lines[i];
 
-      // Table: header row, separator row, then body rows
-      if (/\|/.test(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
-        var headers = splitRow(line);
-        i += 2;
-        var body = '';
-        while (i < lines.length && /\|/.test(lines[i]) && lines[i].trim()) {
-          var cells = splitRow(lines[i]);
-          body += '<tr>';
-          for (var c = 0; c < headers.length; c++) {
-            body += '<td>' + renderInline(cells[c] || '') + '</td>';
+      // Table: two or more consecutive pipe-delimited rows. The separator row
+      // is optional — models often omit it, and without this the whole table
+      // used to collapse into one run-on paragraph of pipes.
+      if (isTableRow(line)) {
+        var rows = [];
+        var j = i;
+        while (j < lines.length && isTableRow(lines[j])) {
+          rows.push(lines[j]);
+          j++;
+        }
+
+        if (rows.length >= 2) {
+          var headers = splitRow(rows[0]);
+          var bodyRows = rows.slice(1);
+          if (bodyRows.length && isTableSeparator(bodyRows[0])) bodyRows = bodyRows.slice(1);
+
+          var body = '';
+          for (var r = 0; r < bodyRows.length; r++) {
+            var cells = splitRow(bodyRows[r]);
+            body += '<tr>';
+            for (var c = 0; c < headers.length; c++) {
+              body += '<td>' + renderInline(cells[c] || '') + '</td>';
+            }
+            body += '</tr>';
           }
-          body += '</tr>';
-          i++;
+
+          html += '<div class="chat-table-wrap"><table><thead><tr>';
+          for (var h = 0; h < headers.length; h++) {
+            html += '<th>' + renderInline(headers[h]) + '</th>';
+          }
+          html += '</tr></thead><tbody>' + body + '</tbody></table></div>';
+          i = j;
+          continue;
         }
-        html += '<div class="chat-table-wrap"><table><thead><tr>';
-        for (var h = 0; h < headers.length; h++) {
-          html += '<th>' + renderInline(headers[h]) + '</th>';
-        }
-        html += '</tr></thead><tbody>' + body + '</tbody></table></div>';
-        continue;
+        // A lone pipe line is just text — fall through to the paragraph case.
       }
 
       // Bullet list
@@ -280,11 +302,23 @@
     div.className = 'chat-msg chat-msg-bot';
     div.innerHTML = renderMarkdown(markdown);
     chatMessages.appendChild(div);
-    scrollChatToBottom();
+    return div;
   }
 
   function scrollChatToBottom() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Answers can run long, so land the reader at the first line rather than
+  // dumping them at the end of it. Anything below is reached by scrolling.
+  function scrollToStartOf(el) {
+    if (!el) return;
+    var offset =
+      el.getBoundingClientRect().top -
+      chatMessages.getBoundingClientRect().top +
+      chatMessages.scrollTop;
+    // A little breathing room above the message.
+    chatMessages.scrollTop = Math.max(0, offset - 12);
   }
 
   function clearChips() {
@@ -319,8 +353,9 @@
       wrap.appendChild(chip);
     });
 
+    // Deliberately no scroll here — the caller decides where the view lands,
+    // so a long answer isn't scrolled past by its own follow-up chips.
     chatMessages.appendChild(wrap);
-    scrollChatToBottom();
   }
 
   function setBusy(state) {
@@ -349,11 +384,14 @@
 
     function finish(markdown, suggestions) {
       if (typing.parentNode) typing.remove();
-      addBotMessage(markdown);
+      var bubble = addBotMessage(markdown);
       history.push({ role: 'assistant', content: markdown });
       addChips(suggestions, suggestions && suggestions.length ? 'Related questions' : '');
+      // Land on the first line of the answer, not the last.
+      scrollToStartOf(bubble);
       setBusy(false);
-      chatInput.focus();
+      // preventScroll keeps focus from yanking the view back down.
+      try { chatInput.focus({ preventScroll: true }); } catch (err) { chatInput.focus(); }
     }
 
     var url = endpoint();
