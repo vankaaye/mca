@@ -287,6 +287,95 @@
     return html;
   }
 
+  // ---- Rule book citation ---------------------------------------------------
+  // The reply ends with a line naming the sections the answer came from. We
+  // pull that out of the markdown and rebuild it as a proper block with real
+  // links to the PDFs, rather than trusting the model to emit a working one.
+
+  var RULE_BOOKS = {
+    senior: {
+      label: 'Seniors — T35 &amp; T20 rules',
+      href: 'rules/MCA-Winter-2026-T35-and-T20-Rules-v1.0.pdf'
+    },
+    junior: {
+      label: 'Juniors — U11, U13 &amp; U15 rules',
+      href: 'rules/MCA-Juniors-Winter-2026-Rules-v0.4.pdf'
+    }
+  };
+
+  function extractCitation(markdown) {
+    var match = String(markdown).match(/^[^\S\n]*📖[^\n]*?Rule book:?\*{0,2}[^\S\n]*([^\n]*)$/m);
+    if (!match) return { body: markdown, cited: '' };
+
+    var cited = match[1]
+      // Drop any trailing link the model tacked on — we supply our own.
+      .replace(/\s*[—–-]\s*\[[^\]]*\]\([^)]*\)\s*$/, '')
+      .replace(/\*\*/g, '')
+      .trim();
+
+    return { body: String(markdown).replace(match[0], '').trim(), cited: cited };
+  }
+
+  function appendCitation(bubble, cited) {
+    if (!cited) return;
+
+    var box = document.createElement('div');
+    box.className = 'chat-cite';
+
+    var head = document.createElement('div');
+    head.className = 'chat-cite-head';
+    head.textContent = '📖 Where this comes from';
+    box.appendChild(head);
+
+    // Anything the rule books don't cover says so plainly instead of linking.
+    if (/not covered|general cricket|web search/i.test(cited)) {
+      var note = document.createElement('p');
+      note.className = 'chat-cite-note';
+      note.textContent = 'Not covered by the MCA rule books — ' + cited.replace(/^not covered\s*[—–-]?\s*/i, '') + '.';
+      box.appendChild(note);
+      bubble.appendChild(box);
+      return;
+    }
+
+    var seniors = [];
+    var juniors = [];
+    cited.split('·').forEach(function (raw) {
+      var name = raw.trim();
+      if (!name) return;
+      if (/^juniors\b/i.test(name)) juniors.push(name.replace(/^juniors\s*[—–-]?\s*/i, ''));
+      else seniors.push(name);
+    });
+
+    function addGroup(book, names) {
+      if (!names.length) return;
+      var row = document.createElement('div');
+      row.className = 'chat-cite-group';
+
+      var link = document.createElement('a');
+      link.className = 'chat-cite-book';
+      link.href = book.href;
+      link.setAttribute('download', '');
+      link.innerHTML = book.label;
+      row.appendChild(link);
+
+      var tags = document.createElement('div');
+      tags.className = 'chat-cite-tags';
+      names.forEach(function (n) {
+        var tag = document.createElement('span');
+        tag.className = 'chat-cite-tag';
+        tag.textContent = n;
+        tags.appendChild(tag);
+      });
+      row.appendChild(tags);
+      box.appendChild(row);
+    }
+
+    addGroup(RULE_BOOKS.senior, seniors);
+    addGroup(RULE_BOOKS.junior, juniors);
+
+    if (seniors.length || juniors.length) bubble.appendChild(box);
+  }
+
   // ---- Message rendering ----------------------------------------------------
 
   function addUserMessage(text) {
@@ -384,7 +473,10 @@
 
     function finish(markdown, suggestions) {
       if (typing.parentNode) typing.remove();
-      var bubble = addBotMessage(markdown);
+      var parsed = extractCitation(markdown);
+      var bubble = addBotMessage(parsed.body);
+      appendCitation(bubble, parsed.cited);
+      // Keep the original text in history so the model sees its own citation.
       history.push({ role: 'assistant', content: markdown });
       addChips(suggestions, suggestions && suggestions.length ? 'Related questions' : '');
       // Land on the first line of the answer, not the last.
@@ -762,9 +854,8 @@
       answer += '\n\n' + supporting.map(function (s) { return '- ' + s; }).join('\n');
     }
     if (sections.length) {
-      answer +=
-        '\n\n📖 **Rule book:** ' + sections.slice(0, 3).join(' · ') +
-        ' — [download the full rules](/#rules)';
+      // No download link here — appendCitation() builds it from these names.
+      answer += '\n\n📖 **Rule book:** ' + sections.slice(0, 3).join(' · ');
     }
 
     // Follow-up questions come from further down the ranking.
