@@ -116,7 +116,8 @@ Senior playing rules:
 - T20 innings 8:00–9:30 AM, 10-minute break, 9:40–11:10 AM, drinks after over 10.
 - 12 players per side: any 11 may bat, any 12 may bowl, any 11 may field or keep.
 - A win is 6 points, a draw 3 each. Minimum 5 overs each side for a result.
-- Rain of 60 minutes or more with no prospect of resuming — game called off, points shared. DLS applies via PlayHQ; if unavailable, revised target = revised overs × first-innings run rate.
+- Rain of 60 minutes or more with no prospect of resuming — game called off, points shared. DLS applies via PlayHQ.
+- Revised target when PlayHQ is unavailable: revised overs × first-innings run rate. The rule book's worked example: Team A scores 175 in 35 overs, a run rate of 5.0; the second innings is revised to 15 overs; the target is 15 × 5.0 = 75 runs. State the formula exactly this way. Do NOT add one run to the result and do NOT restate it as a ratio of the first-innings total — MCA does not use the "one more to win" convention here.
 - Free hit for every no-ball. Any ball above waist height on the full is a no-ball; above shoulder height on the full is a beamer, and two beamers ends that bowler's day.
 - Uniforms: 5 runs deducted per player not in correct team uniform.
 - Yellow cards: two in a match means disqualification for the rest of it; three in a season brings an automatic one-match suspension.
