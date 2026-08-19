@@ -1082,6 +1082,15 @@ img { max-width: 100%; display: block; }
 .chat-msg-bot ul:last-child,
 .chat-msg-bot ol:last-child { margin-bottom: 0; }
 
+/* Rule-book citation reads as a footnote under the answer */
+.chat-msg-bot p:last-child:not(:only-child) {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--card-border);
+  margin-top: 0.6rem;
+}
+
 /* Tables scroll inside the bubble rather than widening it */
 .chat-table-wrap {
   overflow-x: auto;
