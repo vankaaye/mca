@@ -95,8 +95,15 @@
     });
   });
 
+
   // ============================================================
-  //  Chatbot
+  //  MCA Assistant — chat widget
+  //
+  //  Talks to the Cloudflare Worker at window.MCA_CHAT_ENDPOINT, which
+  //  proxies the Anthropic API so the key never reaches the browser.
+  //  If that endpoint is unset or unreachable, the widget falls back to
+  //  the offline keyword lookup over rules-data.js further below, so the
+  //  site still answers questions either way.
   // ============================================================
 
   var chatToggle = document.getElementById('chatbot-toggle');
@@ -104,70 +111,184 @@
   var chatMessages = document.getElementById('chatbot-messages');
   var chatInput = document.getElementById('chatbot-input');
   var chatSend = document.getElementById('chatbot-send');
+  var chatMic = document.getElementById('chatbot-mic');
   var chatOpened = false;
+  var chatBusy = false;
 
-  // Toggle chat panel
-  chatToggle.addEventListener('click', function () {
-    var isOpen = chatPanel.classList.toggle('open');
-    chatToggle.classList.toggle('active', isOpen);
+  // Running conversation sent to the Worker (user/assistant text only).
+  var history = [];
 
-    if (isOpen && !chatOpened) {
-      chatOpened = true;
-      addBotMessage("Hi! I'm the MCA Assistant. Ask me anything about the association rules — seniors or juniors — and I'll answer instantly.");
-      addChips([
-        'How many overs in T20?',
-        'What is the umpire fee for T35?',
-        'When does the season start?',
-        'Is LBW allowed in U13?',
-        'What happens if it rains?'
-      ], 'Try asking');
-    }
+  var STARTER_QUESTIONS = [
+    'How many overs in T20?',
+    'What is the umpire fee for T35?',
+    'What age group is my child in?',
+    'What happens if it rains?'
+  ];
 
-    if (isOpen) {
-      chatInput.focus();
-    }
-  });
-
-  // Send message on button click
-  chatSend.addEventListener('click', function () {
-    sendUserMessage();
-  });
-
-  // Send message on Enter key
-  chatInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      sendUserMessage();
-    }
-  });
-
-  function sendUserMessage() {
-    var text = chatInput.value.trim();
-    if (!text) return;
-
-    addUserMessage(text);
-    chatInput.value = '';
-
-    // Show typing indicator
-    var typing = document.createElement('div');
-    typing.className = 'chat-typing';
-    typing.innerHTML = '<span></span><span></span><span></span>';
-    chatMessages.appendChild(typing);
-    scrollChatToBottom();
-
-    // Simulate short delay for response
-    setTimeout(function () {
-      chatMessages.removeChild(typing);
-      var result = findAnswer(text);
-      addBotMessage(result.answer);
-      if (result.related && result.related.length) {
-        addChips(result.related, 'Related questions');
-      }
-    }, 600);
+  function endpoint() {
+    var url = window.MCA_CHAT_ENDPOINT;
+    return typeof url === 'string' && url.trim() ? url.trim().replace(/\/+$/, '') : '';
   }
 
-  // Render clickable suggestion chips that ask the question when tapped
+  // ---- Minimal markdown renderer -------------------------------------------
+  // Everything is HTML-escaped first, then a small set of inline and block
+  // constructs is re-introduced. Nothing from the model is ever injected raw.
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function safeUrl(url) {
+    var u = String(url).trim();
+    // Only absolute http(s), in-page anchors and site-relative paths.
+    if (/^https?:\/\//i.test(u)) return u;
+    if (/^[/#]/.test(u)) return u;
+    return '';
+  }
+
+  function renderInline(text) {
+    var out = escapeHtml(text);
+
+    // Links: [label](target)
+    out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (match, label, target) {
+      var href = safeUrl(target.replace(/&amp;/g, '&'));
+      if (!href) return label;
+      var external = /^https?:\/\//i.test(href);
+      return (
+        '<a href="' + escapeHtml(href) + '"' +
+        (external ? ' target="_blank" rel="noopener noreferrer"' : '') +
+        '>' + label + '</a>'
+      );
+    });
+
+    out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return out;
+  }
+
+  function splitRow(line) {
+    return line
+      .trim()
+      .replace(/^\||\|$/g, '')
+      .split('|')
+      .map(function (cell) { return cell.trim(); });
+  }
+
+  function renderMarkdown(md) {
+    var lines = String(md).split('\n');
+    var html = '';
+    var i = 0;
+
+    function isTableSeparator(line) {
+      return /^\s*\|?[\s:|-]+\|[\s:|-]*$/.test(line) && line.indexOf('-') !== -1;
+    }
+
+    while (i < lines.length) {
+      var line = lines[i];
+
+      // Table: header row, separator row, then body rows
+      if (/\|/.test(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+        var headers = splitRow(line);
+        i += 2;
+        var body = '';
+        while (i < lines.length && /\|/.test(lines[i]) && lines[i].trim()) {
+          var cells = splitRow(lines[i]);
+          body += '<tr>';
+          for (var c = 0; c < headers.length; c++) {
+            body += '<td>' + renderInline(cells[c] || '') + '</td>';
+          }
+          body += '</tr>';
+          i++;
+        }
+        html += '<div class="chat-table-wrap"><table><thead><tr>';
+        for (var h = 0; h < headers.length; h++) {
+          html += '<th>' + renderInline(headers[h]) + '</th>';
+        }
+        html += '</tr></thead><tbody>' + body + '</tbody></table></div>';
+        continue;
+      }
+
+      // Bullet list
+      if (/^\s*[-*]\s+/.test(line)) {
+        html += '<ul>';
+        while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) {
+          html += '<li>' + renderInline(lines[i].replace(/^\s*[-*]\s+/, '')) + '</li>';
+          i++;
+        }
+        html += '</ul>';
+        continue;
+      }
+
+      // Numbered list
+      if (/^\s*\d+\.\s+/.test(line)) {
+        html += '<ol>';
+        while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) {
+          html += '<li>' + renderInline(lines[i].replace(/^\s*\d+\.\s+/, '')) + '</li>';
+          i++;
+        }
+        html += '</ol>';
+        continue;
+      }
+
+      // Paragraph — gather until a blank line or the start of another block
+      if (line.trim()) {
+        var para = [];
+        while (
+          i < lines.length &&
+          lines[i].trim() &&
+          !/^\s*[-*]\s+/.test(lines[i]) &&
+          !/^\s*\d+\.\s+/.test(lines[i]) &&
+          !(/\|/.test(lines[i]) && i + 1 < lines.length && isTableSeparator(lines[i + 1]))
+        ) {
+          para.push(lines[i]);
+          i++;
+        }
+        html += '<p>' + renderInline(para.join(' ')) + '</p>';
+        continue;
+      }
+
+      i++;
+    }
+
+    return html;
+  }
+
+  // ---- Message rendering ----------------------------------------------------
+
+  function addUserMessage(text) {
+    var div = document.createElement('div');
+    div.className = 'chat-msg chat-msg-user';
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    scrollChatToBottom();
+  }
+
+  function addBotMessage(markdown) {
+    var div = document.createElement('div');
+    div.className = 'chat-msg chat-msg-bot';
+    div.innerHTML = renderMarkdown(markdown);
+    chatMessages.appendChild(div);
+    scrollChatToBottom();
+  }
+
+  function scrollChatToBottom() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function clearChips() {
+    var stale = chatMessages.querySelectorAll('.chat-chips');
+    for (var i = 0; i < stale.length; i++) stale[i].remove();
+  }
+
+  // Clickable follow-ups so the user rarely has to type
   function addChips(questions, label) {
+    if (!questions || !questions.length) return;
+
     var wrap = document.createElement('div');
     wrap.className = 'chat-chips';
 
@@ -184,6 +305,7 @@
       chip.className = 'chat-chip';
       chip.textContent = q;
       chip.addEventListener('click', function () {
+        if (chatBusy) return;
         chatInput.value = q;
         sendUserMessage();
       });
@@ -194,26 +316,168 @@
     scrollChatToBottom();
   }
 
-  function addUserMessage(text) {
-    var div = document.createElement('div');
-    div.className = 'chat-msg chat-msg-user';
-    div.textContent = text;
-    chatMessages.appendChild(div);
+  function setBusy(state) {
+    chatBusy = state;
+    chatSend.disabled = state;
+    chatInput.disabled = state;
+  }
+
+  // ---- Sending --------------------------------------------------------------
+
+  function sendUserMessage() {
+    var text = chatInput.value.trim();
+    if (!text || chatBusy) return;
+
+    clearChips();
+    addUserMessage(text);
+    chatInput.value = '';
+    history.push({ role: 'user', content: text });
+    setBusy(true);
+
+    var typing = document.createElement('div');
+    typing.className = 'chat-typing';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    chatMessages.appendChild(typing);
     scrollChatToBottom();
+
+    function finish(markdown, suggestions) {
+      if (typing.parentNode) typing.remove();
+      addBotMessage(markdown);
+      history.push({ role: 'assistant', content: markdown });
+      addChips(suggestions, suggestions && suggestions.length ? 'Related questions' : '');
+      setBusy(false);
+      chatInput.focus();
+    }
+
+    var url = endpoint();
+
+    if (!url) {
+      // No Worker configured — answer from the offline knowledge base.
+      window.setTimeout(function () {
+        var local = findAnswer(text);
+        finish(local.answer, local.related);
+      }, 400);
+      return;
+    }
+
+    fetch(url + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history.slice(-12) })
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok || data.error) throw new Error(data.error || 'Request failed');
+          return data;
+        });
+      })
+      .then(function (data) {
+        finish(data.reply, data.suggestions || []);
+      })
+      .catch(function () {
+        // Network trouble or the Worker is down — degrade to the local engine.
+        var local = findAnswer(text);
+        finish(local.answer, local.related);
+      });
   }
 
-  function addBotMessage(text) {
-    var div = document.createElement('div');
-    div.className = 'chat-msg chat-msg-bot';
-    div.textContent = text;
-    chatMessages.appendChild(div);
-    scrollChatToBottom();
+  // ---- Voice input (optional, where the browser supports it) ----------------
+
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (chatMic) {
+    if (!SpeechRecognition) {
+      chatMic.style.display = 'none';
+    } else {
+      var recognition = new SpeechRecognition();
+      recognition.lang = 'en-AU';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      var listening = false;
+
+      chatMic.addEventListener('click', function () {
+        if (chatBusy) return;
+        if (listening) {
+          recognition.stop();
+          return;
+        }
+        try {
+          recognition.start();
+        } catch (err) {
+          /* start() throws if already running — safe to ignore */
+        }
+      });
+
+      recognition.addEventListener('start', function () {
+        listening = true;
+        chatMic.classList.add('listening');
+      });
+
+      recognition.addEventListener('end', function () {
+        listening = false;
+        chatMic.classList.remove('listening');
+      });
+
+      recognition.addEventListener('error', function () {
+        listening = false;
+        chatMic.classList.remove('listening');
+      });
+
+      recognition.addEventListener('result', function (event) {
+        var transcript = event.results[0] && event.results[0][0] && event.results[0][0].transcript;
+        if (!transcript) return;
+        chatInput.value = transcript;
+        sendUserMessage();
+      });
+    }
   }
 
-  function scrollChatToBottom() {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
+  // ---- Wiring ---------------------------------------------------------------
 
+  chatToggle.addEventListener('click', function () {
+    var isOpen = chatPanel.classList.toggle('open');
+    chatToggle.classList.toggle('active', isOpen);
+
+    if (isOpen && !chatOpened) {
+      chatOpened = true;
+      addBotMessage(
+        "Hi! I'm the **MCA Assistant**. Ask me anything about the association — " +
+        'competitions, rules, fees, registration or juniors — and I\'ll answer straight away.'
+      );
+      addChips(STARTER_QUESTIONS, 'Try asking');
+    }
+
+    if (isOpen) chatInput.focus();
+  });
+
+  chatSend.addEventListener('click', function () {
+    sendUserMessage();
+  });
+
+  chatInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendUserMessage();
+    }
+  });
+
+  // ---- Page-view beacon -----------------------------------------------------
+
+  (function pageBeacon() {
+    var url = endpoint();
+    if (!url) return;
+    try {
+      fetch(url + '/hit', { method: 'POST', keepalive: true }).catch(function () {});
+    } catch (err) {
+      /* a failed beacon must never affect the page */
+    }
+  })();
+
+  // ============================================================
+  //  Offline fallback engine — keyword lookup over rules-data.js.
+  //  Used when no Worker endpoint is configured, or when it can't
+  //  be reached, so the widget always has something useful to say.
+  // ============================================================
   // Words that carry no search signal
   var STOPWORDS = {
     'the':1,'is':1,'are':1,'was':1,'were':1,'a':1,'an':1,'and':1,'or':1,'of':1,
