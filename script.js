@@ -166,6 +166,7 @@
   var chatInput = document.getElementById('chatbot-input');
   var chatSend = document.getElementById('chatbot-send');
   var chatMic = document.getElementById('chatbot-mic');
+  var chatChips = document.getElementById('chatbot-chips');
   var chatOpened = false;
   var chatBusy = false;
 
@@ -458,6 +459,7 @@
   }
 
   function clearChips() {
+    if (chatChips) { chatChips.innerHTML = ''; return; }
     var stale = chatMessages.querySelectorAll('.chat-chips');
     for (var i = 0; i < stale.length; i++) stale[i].remove();
   }
@@ -489,9 +491,14 @@
       wrap.appendChild(chip);
     });
 
-    // Deliberately no scroll here — the caller decides where the view lands,
-    // so a long answer isn't scrolled past by its own follow-up chips.
-    chatMessages.appendChild(wrap);
+    // The dock sits between the conversation and the composer, so follow-ups
+    // stay reachable instead of scrolling away with the messages.
+    if (chatChips) {
+      chatChips.innerHTML = '';
+      chatChips.appendChild(wrap);
+    } else {
+      chatMessages.appendChild(wrap);
+    }
   }
 
   function setBusy(state) {
@@ -642,10 +649,22 @@
     chatToggle.addEventListener('click', function () {
       var isOpen = chatPanel.classList.toggle('open');
       chatToggle.classList.toggle('active', isOpen);
+      document.body.classList.toggle('chat-open', isOpen);
       if (isOpen) {
         greet();
         chatInput.focus();
       }
+    });
+  }
+
+  // Close control inside the panel header — the only way out when the panel
+  // is a full-screen sheet on a phone and the launcher is hidden behind it.
+  var chatClose = document.getElementById('chatbot-close');
+  if (chatClose) {
+    chatClose.addEventListener('click', function () {
+      chatPanel.classList.remove('open');
+      if (chatToggle) chatToggle.classList.remove('active');
+      document.body.classList.remove('chat-open');
     });
   }
 

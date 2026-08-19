@@ -692,8 +692,14 @@
             <span class="chatbot-status">Ask about rules &amp; competitions</span>
           </div>
         </div>
+        <button id="chatbot-close" class="chatbot-close" type="button" aria-label="Close chat">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
       </div>
       <div id="chatbot-messages" class="chatbot-messages"></div>
+      <div id="chatbot-chips" class="chat-chips-dock"></div>
       <div class="chatbot-input-area">
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask about MCA rules..." autocomplete="off" />
         <button id="chatbot-mic" class="chatbot-mic" aria-label="Ask by voice" title="Ask by voice">
