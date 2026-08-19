@@ -757,7 +757,7 @@
       return 'Registration fees: T20 is $675, T35 Non MYCA is $675, T35 is $425. Umpire fees are $65/game (T20) or $85/game (T35). Balls cost $30 each.';
     }
     if (q.indexOf('register') !== -1 || q.indexOf('sign up') !== -1 || q.indexOf('join') !== -1) {
-      return 'To register, scan the QR code on our website or contact Gopi (President) at 0430 667 896 or Mahi (Secretary) at 0433 960 586.';
+      return 'To register, scan the QR code on our website or contact Gopi Kakivai (President) at 0430 667 896 or Mahendra Annem (Secretary) at 0433 960 586.';
     }
     if (q.indexOf('umpire') !== -1) {
       return 'Every game features professional umpires, some from Premier Cricket. Umpire fees: $65/game for T20, $85/game for T35 and T35 Non MYCA, $65-$70/game for Juniors.';
@@ -769,7 +769,7 @@
       return 'Juniors competitions start 26 April 2026 on alternate Sundays at 12:30 PM. Categories: U11 (ages 8-11, 25 overs), U13 (ages 9-13, 25 overs), U15 (ages 12-15, 30 overs). Contact Deepak Kulkarni at 0404 073 222.';
     }
     if (q.indexOf('contact') !== -1 || q.indexOf('phone') !== -1 || q.indexOf('call') !== -1) {
-      return 'Contact: Gopi (President) 0430 667 896, Mahi (Secretary) 0433 960 586, Deepak Kulkarni (Juniors Coordinator) 0404 073 222. Also follow us on Facebook.';
+      return 'Contact: Gopi Kakivai (President) 0430 667 896, Mahendra Annem (Secretary) 0433 960 586, Sandeep Shamala (Treasurer) 0433 249 914, Srikanth Dendi (Umpires Coordinator) 0430 408 093, Deepak Kulkarni (Juniors Coordinator) 0404 073 222. Also follow us on Facebook.';
     }
     if (q.indexOf('season') !== -1 || q.indexOf('start') !== -1 || q.indexOf('date') !== -1) {
       return 'The Winter 2026 season starts 11 April (T35) and 12 April (T20). Juniors begin 26 April. The T35 Non MYCA season runs until 12 September 2026.';
@@ -790,7 +790,7 @@
       return 'Hello! I can help you with information about MCA competitions, fees, registration, rules, and more. What would you like to know?';
     }
 
-    return "I couldn't find a specific answer for that. Try asking about competitions, fees, registration, rules, umpires, juniors, or contact details. You can also call Gopi at 0430 667 896 for help.";
+    return "I couldn't find a specific answer for that. Try asking about competitions, fees, registration, rules, umpires, juniors, or contact details. You can also call Gopi Kakivai at 0430 667 896 for help.";
   }
 
 })();
