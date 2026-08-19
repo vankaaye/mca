@@ -96,7 +96,7 @@
   background: rgba(11,18,32,0.94);
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
-[data-theme="dark"] .header.nav-open .nav { background: rgba(11,18,32,0.98); }
+[data-theme="dark"] .header.nav-open .nav { background: var(--bg); }
 [data-theme="dark"] .chat-msg-bot code,
 [data-theme="dark"] .chat-cite-tag { background: rgba(255,255,255,0.08); }
 [data-theme="dark"] .chat-msg-bot th { background: rgba(255,255,255,0.05); }
@@ -294,35 +294,64 @@ img { max-width: 100%; display: block; }
 /* Mobile nav */
 @media (max-width: 1024px) {
   .nav, .nav-cta { display: none; }
-  /* With the nav hidden, keep the toggle next to the hamburger */
+  .hamburger { display: flex; }
+
   .header-inner { justify-content: flex-start; }
   .logo { margin-right: auto; }
   .theme-toggle { margin-left: 0; margin-right: 0.85rem; }
-  .hamburger { display: flex; }
+
+  /* backdrop-filter on .header makes it the containing block for fixed
+     children, which trapped this overlay inside the header strip and
+     spilled the links onto the page. Dropping the filter while the menu
+     is open lets inset:0 mean the viewport again. */
+  .header.nav-open {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: transparent;
+    box-shadow: none;
+  }
 
   .header.nav-open .nav {
     display: flex;
     position: fixed;
     inset: 0;
-    background: rgba(255,255,255,0.98);
-    backdrop-filter: blur(16px);
+    z-index: 1200;
+    background: var(--bg);
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    z-index: 999;
+    padding: 5.5rem 1.5rem 2rem;
+    overflow-y: auto;
   }
-  .header.nav-open .nav .nav-list {
+  .header.nav-open .nav-list {
     flex-direction: column;
-    gap: 2rem;
-    text-align: center;
+    gap: 0;
+    width: 100%;
+    max-width: 26rem;
+    margin: 0 auto;
   }
-  .header.nav-open .nav .nav-link {
-    font-size: 1.25rem;
+  .header.nav-open .nav-list li { border-bottom: 1px solid var(--card-border); }
+  .header.nav-open .nav-list li:last-child { border-bottom: none; }
+  .header.nav-open .nav-link {
+    display: block;
+    padding: 1.05rem 0.25rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
     color: var(--text);
   }
+  .header.nav-open .nav-link:hover,
+  .header.nav-open .nav-link:active { color: var(--gold-dark); }
+
+  /* Hamburger becomes the close control, above the overlay */
+  .header.nav-open .hamburger { z-index: 1300; }
+  .header.nav-open .hamburger span { background: var(--text); }
   .header.nav-open .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .header.nav-open .hamburger span:nth-child(2) { opacity: 0; }
   .header.nav-open .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Keep the logo and theme toggle usable while the menu is open */
+  .header.nav-open .logo,
+  .header.nav-open .theme-toggle { position: relative; z-index: 1300; }
 }
 
 /* ============================================================
@@ -1506,6 +1535,52 @@ img { max-width: 100%; display: block; }
 
 .chatbot-input:disabled,
 .chatbot-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Phones: the calendar becomes a proper vertical timeline ----------- */
+@media (max-width: 640px) {
+  .timeline {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.5rem 0 0.5rem 2rem;
+    overflow: visible;
+  }
+  /* Continuous rail behind the dots */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 1.1rem;
+    bottom: 1.1rem;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, var(--green), var(--orange), var(--gold), var(--blue), var(--maroon));
+  }
+  .timeline-line { display: none; }
+
+  .timeline-item {
+    position: relative;
+    flex-direction: row;
+    align-items: flex-start;
+    min-width: 0;
+    width: 100%;
+    padding-bottom: 1.5rem;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 0.15rem;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+  }
+  .timeline-content { text-align: left; }
+  .timeline-date { font-size: 1.15rem; }
+  .timeline-label { max-width: none; }
+}
 
 /* ---- Phones: the panel becomes a full-width sheet ---------------------- */
 @media (max-width: 640px) {
