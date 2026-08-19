@@ -85,6 +85,40 @@
     requestAnimationFrame(tick);
   }
 
+  // --- Hero pointer parallax ----------------------------------------------
+  // Each layer carries a data-depth; moving the pointer shifts them by
+  // different amounts, which is what actually reads as depth.
+  var heroEl = document.getElementById('hero');
+  var heroLayers = heroEl ? heroEl.querySelectorAll('.hero-layer') : [];
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (heroEl && heroLayers.length && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+    var pending = false;
+    var px = 0, py = 0;
+
+    heroEl.addEventListener('pointermove', function (e) {
+      var r = heroEl.getBoundingClientRect();
+      px = (e.clientX - r.left) / r.width - 0.5;
+      py = (e.clientY - r.top) / r.height - 0.5;
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () {
+        pending = false;
+        for (var i = 0; i < heroLayers.length; i++) {
+          var d = parseFloat(heroLayers[i].getAttribute('data-depth')) || 0;
+          heroLayers[i].style.transform =
+            'translate3d(' + (-px * d * 26).toFixed(2) + 'px,' +
+            (-py * d * 26).toFixed(2) + 'px, 0)';
+        }
+      });
+    });
+
+    heroEl.addEventListener('pointerleave', function () {
+      for (var i = 0; i < heroLayers.length; i++) heroLayers[i].style.transform = '';
+    });
+  }
+
   // --- Light / dark theme -------------------------------------------------
   // The initial theme is applied by an inline script in <head> so the page
   // never flashes the wrong one; this only handles switching afterwards.
