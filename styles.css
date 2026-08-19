@@ -765,6 +765,12 @@ img { max-width: 100%; display: block; }
   border-radius: var(--radius-lg);
   box-shadow: var(--card-shadow);
   flex-wrap: wrap;
+  transition: transform 0.35s, box-shadow 0.35s;
+}
+.rules-card + .rules-card { margin-top: 1.5rem; }
+.rules-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .rules-icon { flex-shrink: 0; }
