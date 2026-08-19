@@ -553,6 +553,19 @@
     return out;
   }
 
+  // Whole-word containment, so "rain" does not match inside "training"
+  function hasWord(haystack, word) {
+    if (!haystack || !word) return false;
+    var idx = haystack.indexOf(word);
+    while (idx !== -1) {
+      var before = idx === 0 ? '' : haystack.charAt(idx - 1);
+      var after = haystack.charAt(idx + word.length);
+      if (!/[a-z0-9]/.test(before) && !/[a-z0-9]/.test(after)) return true;
+      idx = haystack.indexOf(word, idx + 1);
+    }
+    return false;
+  }
+
   // Rank every rule against the query and return the best scoring matches
   function rankRules(query) {
     var rules = window.MCA_RULES;
@@ -580,11 +593,11 @@
         var t = tokens[j];
         // Strongest signal: token is a curated keyword for this rule
         if (keywords.indexOf(t) !== -1) score += 5;
-        else if (keywordText.indexOf(t) !== -1) score += 2.5;
+        else if (hasWord(keywordText, t)) score += 2.5;
 
-        if (question.indexOf(t) !== -1) score += 2;
-        if (category.indexOf(t) !== -1) score += 1.5;
-        if (answer.indexOf(t) !== -1) score += 0.5;
+        if (hasWord(question, t)) score += 2;
+        if (hasWord(category, t)) score += 1.5;
+        if (hasWord(answer, t)) score += 0.5;
       }
 
       // Big bonus when the user typed (almost) the stored question
@@ -593,7 +606,7 @@
       var hits = 0;
       for (var k = 0; k < tokens.length; k++) {
         var tk = tokens[k];
-        if (keywordText.indexOf(tk) !== -1 || question.indexOf(tk) !== -1) hits++;
+        if (hasWord(keywordText, tk) || hasWord(question, tk)) hits++;
       }
       if (hits === tokens.length && tokens.length > 1) score += 4;
 
@@ -604,6 +617,59 @@
     return scored;
   }
 
+  // Knowledge-base category -> the section it comes from in the MCA rule book,
+  // so offline answers can cite a source the same way the AI assistant does.
+  var SECTION_MAP = {
+    'format': 'Format',
+    'powerplay': 'Powerplay',
+    'fielding': 'Fielding Restrictions',
+    'competition': 'Competition Details',
+    'game-times': 'Game Times',
+    'umpires': 'Umpires',
+    'ground-setup': 'Ground Setup',
+    'team-sheets': 'Team Sheets',
+    'delays-rain': 'Delayed Starts / Rain Interruptions',
+    'bad-light': 'Bad Light',
+    'reduced-overs': 'Reduced overs for delayed starts and finishes',
+    'revised-target': 'Revised Target',
+    'free-hit': 'Free hit',
+    'square-leg': 'Square Leg Umpires (Players)',
+    'wides': 'Leg Side Wides',
+    'cards-discipline': 'Yellow/Red Card Offence',
+    'attire': 'Team Attire',
+    'reports': 'Umpire/Captains Reports',
+    'fees': 'Fees / Umpire Fee',
+    'balls': 'Balls',
+    'no-balls': 'No-balls',
+    'over-rate': 'Slow over rate',
+    'late-players': 'Players arriving late',
+    'abuse': 'Abuse',
+    'fielders-call': "Fielder's call",
+    'bowling-action': 'Bowling action objections',
+    'awards': 'Awards',
+    'streaming': 'FrogBox/YouTube Live Streaming',
+    'scoring': 'Online Scoring',
+    'lost-ball': 'Lost ball',
+    'forfeits': 'Game forfeits',
+    'covid': 'COVID Rules',
+    'playhq': 'PlayHQ Links',
+    'registration': 'Player Registration and Fill-ins',
+    'reserve-days': 'Reserve Days',
+    'general': 'Other Rules',
+    'juniors-u11': 'Juniors — Rules at a Glance (U11)',
+    'juniors-u13': 'Juniors — Rules at a Glance (U13)',
+    'juniors-u15': 'Juniors — Rules at a Glance (U15)',
+    'juniors-general': 'Juniors — Match-Day Operations',
+    'juniors-batting': 'Juniors — Batter Retirement / Wickets & Dismissals',
+    'juniors-bowling': 'Juniors — Bowling',
+    'juniors-safety': 'Juniors — Child Safety & Compliance',
+    'juniors-streaming': 'Juniors — Live Scoring & Live Streaming'
+  };
+
+  function sectionFor(rule) {
+    return (rule && SECTION_MAP[rule.category]) || '';
+  }
+
   function findAnswer(query) {
     var ranked = rankRules(query);
 
@@ -612,14 +678,44 @@
     }
 
     var best = ranked[0].rule;
-    var related = [];
-    for (var i = 1; i < ranked.length && related.length < 3; i++) {
-      var r = ranked[i].rule;
-      if (ranked[i].score < 3) break;
-      if (r.q && r.q !== best.q) related.push(r.q);
+    var topScore = ranked[0].score;
+
+    // Pull in closely-matching rules as supporting detail so the offline
+    // answer covers the edge cases too, not just the headline fact.
+    var supporting = [];
+    var sections = [];
+    var seenAnswers = [best.a];
+    if (sectionFor(best)) sections.push(sectionFor(best));
+
+    for (var i = 1; i < ranked.length && supporting.length < 3; i++) {
+      if (ranked[i].score < Math.max(3, topScore * 0.55)) break;
+      var rule = ranked[i].rule;
+      if (!rule.a || seenAnswers.indexOf(rule.a) !== -1) continue;
+      seenAnswers.push(rule.a);
+      supporting.push(rule.a);
+      var sec = sectionFor(rule);
+      if (sec && sections.indexOf(sec) === -1) sections.push(sec);
     }
 
-    return { answer: best.a, related: related };
+    var answer = best.a;
+    if (supporting.length) {
+      answer += '\n\n' + supporting.map(function (s) { return '- ' + s; }).join('\n');
+    }
+    if (sections.length) {
+      answer +=
+        '\n\n📖 **Rule book:** ' + sections.slice(0, 3).join(' · ') +
+        ' — [download the full rules](/#rules)';
+    }
+
+    // Follow-up questions come from further down the ranking.
+    var related = [];
+    for (var j = 1; j < ranked.length && related.length < 3; j++) {
+      var r = ranked[j].rule;
+      if (ranked[j].score < 3) break;
+      if (r.q && r.q !== best.q && related.indexOf(r.q) === -1) related.push(r.q);
+    }
+
+    return { answer: answer, related: related };
   }
 
   function getFallbackAnswer(query) {
