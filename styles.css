@@ -1058,6 +1058,85 @@ img { max-width: 100%; display: block; }
 }
 
 /* Typing indicator */
+/* Markdown rendered inside bot replies */
+.chat-msg-bot p { margin: 0 0 0.6rem; }
+.chat-msg-bot p:last-child { margin-bottom: 0; }
+.chat-msg-bot strong { font-weight: 700; color: var(--text); }
+.chat-msg-bot a { color: var(--gold-dark); text-decoration: underline; }
+.chat-msg-bot a:hover { color: var(--orange); }
+.chat-msg-bot code {
+  background: rgba(0,0,0,0.06);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+.chat-msg-bot ul,
+.chat-msg-bot ol {
+  margin: 0 0 0.6rem;
+  padding-left: 1.1rem;
+  list-style-position: outside;
+}
+.chat-msg-bot ul { list-style: none; padding-left: 0; }
+.chat-msg-bot ol { list-style: decimal; }
+.chat-msg-bot li { margin-bottom: 0.3rem; }
+.chat-msg-bot ul:last-child,
+.chat-msg-bot ol:last-child { margin-bottom: 0; }
+
+/* Tables scroll inside the bubble rather than widening it */
+.chat-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 0.6rem;
+  -webkit-overflow-scrolling: touch;
+}
+.chat-table-wrap:last-child { margin-bottom: 0; }
+.chat-msg-bot table {
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  min-width: 100%;
+}
+.chat-msg-bot th,
+.chat-msg-bot td {
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid var(--card-border);
+  text-align: left;
+  white-space: nowrap;
+}
+.chat-msg-bot th {
+  font-weight: 700;
+  background: rgba(0,0,0,0.03);
+}
+.chat-msg-bot tr:last-child td { border-bottom: none; }
+
+/* Voice input */
+.chatbot-mic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.chatbot-mic:hover { color: var(--gold-dark); border-color: var(--gold); }
+.chatbot-mic.listening {
+  color: #fff;
+  background: var(--orange);
+  border-color: var(--orange);
+  animation: micPulse 1.4s ease-in-out infinite;
+}
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234,88,12,0.45); }
+  50%      { box-shadow: 0 0 0 7px rgba(234,88,12,0); }
+}
+
+.chatbot-input:disabled,
+.chatbot-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* Suggested question chips */
 .chat-chips {
   display: flex;

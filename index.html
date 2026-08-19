@@ -623,6 +623,11 @@
       <div id="chatbot-messages" class="chatbot-messages"></div>
       <div class="chatbot-input-area">
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask about MCA rules..." autocomplete="off" />
+        <button id="chatbot-mic" class="chatbot-mic" aria-label="Ask by voice" title="Ask by voice">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0014 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </button>
         <button id="chatbot-send" class="chatbot-send" aria-label="Send message">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -632,6 +637,11 @@
     </div>
   </div>
 
+  <script>
+    // Deployed Cloudflare Worker URL — see worker/README.md.
+    // Leave empty and the assistant answers from the offline rules knowledge base.
+    window.MCA_CHAT_ENDPOINT = '';
+  </script>
   <script src="rules-data.js"></script>
   <script src="script.js"></script>
 </body>

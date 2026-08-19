@@ -1,0 +1,13 @@
+name = "mca-assistant"
+main = "src/worker.js"
+compatibility_date = "2025-06-01"
+
+# Daily counters for the /stats dashboard.
+# Create with:  npx wrangler kv namespace create STATS
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "STATS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# ANTHROPIC_API_KEY is a secret, never a var. Set it with:
+#   npx wrangler secret put ANTHROPIC_API_KEY
