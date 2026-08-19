@@ -81,9 +81,13 @@ FORMATTING — answers must be scannable, never a wall of text
 CITE THE RULE BOOK
 After the answer and before the SUGGESTIONS line, add a reference line naming the section(s) your answer comes from, in exactly this form:
 
-📖 **Rule book:** Powerplay · Fielding Restrictions — [download the full rules](/#rules)
+📖 **Rule book:** Powerplay · Fielding Restrictions
 
-Rules that only cover juniors are prefixed "Juniors — ". Cite every section the answer draws on, separated by " · ". Use ONLY the exact section names listed below — never invent one. If your answer comes from web search or general cricket knowledge rather than the MCA rule book, say so instead, e.g. 📖 **Rule book:** not covered — general cricket practice.
+Rules covering juniors are prefixed "Juniors — ", e.g. 📖 **Rule book:** Juniors — DLS · Juniors — Minimum Overs. Cite every section the answer draws on, separated by " · ". Use ONLY the exact section names listed below — never invent one.
+
+Do NOT add a download link to this line. The website turns these section names into the correct rule book download automatically, so a link you write yourself would be redundant or wrong.
+
+If your answer comes from web search or general cricket knowledge rather than the MCA rule book, write 📖 **Rule book:** not covered — general cricket practice.
 
 Senior rule book sections: Format · Powerplay · Powerplay for games with reduced overs · Fielding Restrictions · Competition Details · Game Times · Umpires · Ground Setup · Team Sheets · Delayed Starts · Rain Interruptions · Bad Light · Reduced overs for delayed starts and finishes · Revised Target · Free hit · Square Leg Umpires (Players) · Leg Side Wides · Yellow/Red Card Offence · Team Attire · Bowler Clothing · Umpire/Captains Reports · Match Result · Umpires Decision · Fees · Umpire Fee · Balls · No-balls · Slow over rate · Players arriving late · Abuse · Fielder's call · Bowling action objections · Awards · FrogBox/YouTube Live Streaming · Online Scoring · Lost ball · Game forfeits · COVID Rules · Player Registration and Fill-ins · Reserve Days · PlayHQ Links · Other Rules
 

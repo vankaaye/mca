@@ -1151,13 +1151,53 @@ img { max-width: 100%; display: block; }
 .chat-msg-bot ul:last-child,
 .chat-msg-bot ol:last-child { margin-bottom: 0; }
 
-/* Rule-book citation reads as a footnote under the answer */
-.chat-msg-bot p:last-child:not(:only-child) {
-  font-size: 0.78rem;
-  color: var(--text-dim);
-  padding-top: 0.5rem;
+/* Rule-book citation block, built by the widget with real PDF links */
+.chat-cite {
+  margin-top: 0.85rem;
+  padding-top: 0.7rem;
   border-top: 1px solid var(--card-border);
-  margin-top: 0.6rem;
+}
+.chat-cite-head {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+.chat-cite-group { margin-bottom: 0.55rem; }
+.chat-cite-group:last-child { margin-bottom: 0; }
+
+.chat-cite-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  text-decoration: underline;
+}
+.chat-cite-book::before { content: '\2193'; font-weight: 700; }
+.chat-cite-book:hover { color: var(--orange); }
+
+.chat-cite-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+.chat-cite-tag {
+  font-size: 0.72rem;
+  line-height: 1.3;
+  padding: 0.16rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.05);
+  color: var(--text-dim);
+}
+.chat-cite-note {
+  font-size: 0.75rem !important;
+  color: var(--text-dim);
+  margin: 0 !important;
 }
 
 /* Tables scroll inside the bubble rather than widening it */
