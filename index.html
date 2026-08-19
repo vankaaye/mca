@@ -11,7 +11,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MCA — Melbourne Cricket Association | Winter 2026</title>
-  <meta name="description" content="Melbourne Cricket Association — Melbourne's community cricket association. 50+ teams, 1200+ players. Competition formats, playing rules, fees, junior cricket and contacts." />
+  <meta name="description" content="Melbourne Cricket Association — Melbourne's community cricket association. 100 teams, 1600+ participants. Competition formats, playing rules, fees, junior cricket and contacts." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -52,23 +52,31 @@
 
   <!-- Hero -->
   <section class="hero" id="hero">
-    <!-- Optional hero photo (photos/hero.jpg) with a slow drift, plus the
-         gradient veil that keeps the headline readable over it -->
+    <!-- Depth stack: drifting colour mesh, optional photo, grain, then
+         parallax layers that respond to the pointer -->
+    <div class="hero-mesh"></div>
     <div class="hero-media"></div>
     <div class="hero-veil"></div>
 
-    <!-- Animated orbs -->
-    <div class="orb orb-gold"></div>
-    <div class="orb orb-green"></div>
-    <div class="orb orb-blue"></div>
+    <div class="hero-layer" data-depth="0.25">
+      <div class="orb orb-gold"></div>
+      <div class="orb orb-green"></div>
+      <div class="orb orb-blue"></div>
+    </div>
 
-    <!-- Cricket oval outline -->
-    <div class="cricket-oval"></div>
+    <div class="hero-layer" data-depth="0.55">
+      <div class="cricket-oval"></div>
+    </div>
 
-    <!-- Floating cricket balls -->
-    <div class="cricket-ball ball-1"></div>
-    <div class="cricket-ball ball-2"></div>
-    <div class="cricket-ball ball-3"></div>
+    <div class="hero-layer" data-depth="1.1">
+      <div class="cricket-ball ball-1"></div>
+      <div class="cricket-ball ball-3"></div>
+    </div>
+    <div class="hero-layer" data-depth="1.7">
+      <div class="cricket-ball ball-2"></div>
+    </div>
+
+    <div class="hero-grain"></div>
 
     <div class="hero-content container">
       <p class="hero-season hero-rise">Winter 2026 Season</p>
@@ -80,11 +88,11 @@
       </div>
       <div class="hero-stats hero-rise-4">
         <div class="stat">
-          <span class="hs-num" data-count="50">0</span><span class="stat-plus">+</span>
+          <span class="hs-num" data-count="100">0</span>
           <span class="stat-label">Teams</span>
         </div>
         <div class="stat">
-          <span class="hs-num" data-count="1200">0</span><span class="stat-plus">+</span>
+          <span class="hs-num" data-count="1600">0</span><span class="stat-plus">+</span>
           <span class="stat-label">Players</span>
         </div>
         <div class="stat">
@@ -109,22 +117,22 @@
   <!-- Gold Ticker Strip -->
   <div class="ticker">
     <div class="ticker-track">
-      <span class="ticker-item">&#9733; 50+ Teams Competing</span>
+      <span class="ticker-item">&#9733; 100 Teams Competing</span>
       <span class="ticker-item">&#9733; Winter 2026 Finals In Progress</span>
       <span class="ticker-item">&#9733; $1500 Prize Pool</span>
       <span class="ticker-item">&#9733; Professional Umpires Every Game</span>
       <span class="ticker-item">&#9733; PlayHQ Live Scoring</span>
       <span class="ticker-item">&#9733; Live Streamed on YouTube via Frogbox</span>
       <span class="ticker-item">&#9733; Player of Match Every Game</span>
-      <span class="ticker-item">&#9733; 1200+ Participants</span>
-      <span class="ticker-item">&#9733; 50+ Teams Competing</span>
+      <span class="ticker-item">&#9733; 1600+ Participants</span>
+      <span class="ticker-item">&#9733; 100 Teams Competing</span>
       <span class="ticker-item">&#9733; Winter 2026 Finals In Progress</span>
       <span class="ticker-item">&#9733; $1500 Prize Pool</span>
       <span class="ticker-item">&#9733; Professional Umpires Every Game</span>
       <span class="ticker-item">&#9733; PlayHQ Live Scoring</span>
       <span class="ticker-item">&#9733; Live Streamed on YouTube via Frogbox</span>
       <span class="ticker-item">&#9733; Player of Match Every Game</span>
-      <span class="ticker-item">&#9733; 1200+ Participants</span>
+      <span class="ticker-item">&#9733; 1600+ Participants</span>
     </div>
   </div>
 
@@ -173,8 +181,8 @@
           <div class="feature-icon">
             <svg viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="14" r="8" fill="none" stroke="#ea580c" stroke-width="2"/><path d="M10 40c0-8 6-14 14-14s14 6 14 14" fill="none" stroke="#ea580c" stroke-width="2"/></svg>
           </div>
-          <h3>1200+ Players</h3>
-          <p>Melbourne's largest community cricket network — 50+ teams and growing every season.</p>
+          <h3>1600+ Players</h3>
+          <p>Melbourne's largest community cricket network — 100 teams and growing every season.</p>
         </div>
       </div>
     </div>

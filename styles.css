@@ -34,10 +34,50 @@
   --maroon:   #9f1239;
   --radius:   0.75rem;
   --radius-lg: 1rem;
+
+  /* Hero + dark-surface tokens, so those sections follow the theme instead
+     of staying dark when the page is switched back to light. */
+  --hero-1:      #eef2ff;
+  --hero-2:      #f8fafc;
+  --hero-ink:    #0f172a;
+  --hero-dim:    rgba(15,23,42,0.62);
+  --hero-line:   rgba(15,23,42,0.10);
+  --hero-glass:  rgba(255,255,255,0.62);
+  --hero-glassb: rgba(15,23,42,0.10);
+  --mesh-a: rgba(245,158,11,0.20);
+  --mesh-b: rgba(22,163,74,0.13);
+  --mesh-c: rgba(37,99,235,0.16);
+  --mesh-d: rgba(234,88,12,0.11);
+  --title-1: #78350f;
+  --title-2: #0b1220;
+  --surface-deep: #eaeff6;
+  --surface-deep-ink: #0f172a;
+  --surface-deep-dim: rgba(15,23,42,0.62);
+  --surface-deep-line: rgba(15,23,42,0.10);
+  --surface-deep-card: rgba(255,255,255,0.7);
 }
 
 /* Dark theme — same tokens, re-pointed. Toggled via data-theme on <html>. */
 [data-theme="dark"] {
+  --hero-1:      #070c17;
+  --hero-2:      #0c1327;
+  --hero-ink:    #ffffff;
+  --hero-dim:    rgba(255,255,255,0.70);
+  --hero-line:   rgba(255,255,255,0.07);
+  --hero-glass:  rgba(255,255,255,0.05);
+  --hero-glassb: rgba(255,255,255,0.10);
+  --mesh-a: rgba(245,158,11,0.26);
+  --mesh-b: rgba(22,163,74,0.20);
+  --mesh-c: rgba(59,130,246,0.26);
+  --mesh-d: rgba(234,88,12,0.16);
+  --title-1: #fbbf24;
+  --title-2: #ffffff;
+  --surface-deep: #0b1220;
+  --surface-deep-ink: #e8edf6;
+  --surface-deep-dim: rgba(255,255,255,0.62);
+  --surface-deep-line: rgba(255,255,255,0.10);
+  --surface-deep-card: rgba(255,255,255,0.05);
+
   --bg:           #0b1220;
   --bg-light:     #111a2b;
   --surface:      #111a2b;
@@ -52,6 +92,10 @@
 
 /* Header glass has to follow the theme too */
 [data-theme="dark"] .header { background: rgba(11,18,32,0.75); }
+[data-theme="dark"] .hero-season { color: var(--gold); }
+[data-theme="dark"] .hero-title { filter: drop-shadow(0 6px 26px rgba(0,0,0,0.55)); }
+[data-theme="dark"] .hero-season,
+[data-theme="dark"] .hero-date { text-shadow: 0 2px 14px rgba(0,0,0,0.55); }
 [data-theme="dark"] .header.scrolled {
   background: rgba(11,18,32,0.94);
   box-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -237,8 +281,9 @@ img { max-width: 100%; display: block; }
 
 .btn-outline {
   background: transparent;
-  color: #fff;
-  border: 2px solid rgba(255,255,255,0.4);
+  color: var(--hero-ink);
+  border: 2px solid var(--hero-glassb);
+  backdrop-filter: blur(6px);
 }
 .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
@@ -298,101 +343,183 @@ img { max-width: 100%; display: block; }
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 6rem 0 4rem;
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #0f172a 100%);
-  color: #fff;
+  padding: 7rem 0 4rem;
+  background: var(--hero-2);
+  color: var(--hero-ink);
+  perspective: 1200px;
 }
 
-/* Glowing orbs */
+/* Drifting mesh of brand-coloured light — the main source of depth */
+.hero-mesh {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(38% 42% at 18% 24%, var(--mesh-a) 0%, transparent 62%),
+    radial-gradient(34% 38% at 82% 30%, var(--mesh-c) 0%, transparent 64%),
+    radial-gradient(42% 46% at 30% 82%, var(--mesh-b) 0%, transparent 66%),
+    radial-gradient(36% 40% at 76% 78%, var(--mesh-d) 0%, transparent 62%),
+    linear-gradient(160deg, var(--hero-1) 0%, var(--hero-2) 100%);
+  filter: blur(24px) saturate(120%);
+  animation: meshDrift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes meshDrift {
+  0%   { transform: scale(1.05) translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: scale(1.14) translate3d(-2.5%, 1.5%, 0) rotate(1.2deg); }
+  100% { transform: scale(1.08) translate3d(2%, -2%, 0) rotate(-1deg); }
+}
+
+/* Fine grain — the single biggest cure for a flat-looking gradient */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Optional hero photograph, drifting slowly behind everything */
+.hero-media {
+  position: absolute;
+  inset: -6%;
+  background: url('photos/hero.jpg') center/cover no-repeat;
+  opacity: 0.22;
+  animation: kenBurns 24s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(58% 46% at 50% 46%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 70%),
+    radial-gradient(120% 90% at 50% 45%, transparent 34%, rgba(15,23,42,0.08) 100%);
+  pointer-events: none;
+}
+[data-theme="dark"] .hero-veil {
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 25%, rgba(3,7,18,0.55) 100%),
+    linear-gradient(to top, rgba(3,7,18,0.75), transparent 55%);
+}
+
+/* Parallax layers — moved by the pointer, each at its own depth */
+.hero-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.45s cubic-bezier(.16,1,.3,1);
+}
+
+/* Soft glow blobs */
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.25;
-  animation: orbFloat 12s ease-in-out infinite alternate;
+  filter: blur(110px);
+  opacity: 0.4;
+  animation: orbFloat 14s ease-in-out infinite alternate;
 }
-.orb-gold  { width: 500px; height: 500px; background: var(--gold);  top: -10%; left: -10%; }
-.orb-green { width: 400px; height: 400px; background: var(--green); bottom: -10%; right: -5%; animation-delay: -4s; }
-.orb-blue  { width: 350px; height: 350px; background: var(--blue);  top: 30%; right: 20%; animation-delay: -8s; }
+.orb-gold  { width: 460px; height: 460px; background: var(--gold);  top: -12%; left: -8%; }
+.orb-green { width: 400px; height: 400px; background: var(--green); bottom: -14%; right: -6%; animation-delay: -5s; }
+.orb-blue  { width: 380px; height: 380px; background: var(--blue);  top: 26%; right: 18%; animation-delay: -9s; }
 
 @keyframes orbFloat {
-  0%   { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(60px, -40px) scale(1.15); }
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(60px, -40px, 0) scale(1.18); }
 }
 
-/* Cricket oval */
+/* The oval, tilted in 3D so it reads as a ground plane rather than a flat ring */
 .cricket-oval {
   position: absolute;
-  width: 60vw;
-  height: 35vw;
-  border: 1.5px solid rgba(255,255,255,0.04);
+  width: 66vw;
+  height: 40vw;
+  border: 1.5px solid var(--hero-line);
   border-radius: 50%;
-  top: 50%;
+  top: 52%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotateX(62deg);
+  box-shadow: 0 0 90px var(--hero-line) inset;
   pointer-events: none;
 }
+.cricket-oval::after {
+  content: '';
+  position: absolute;
+  inset: 18%;
+  border: 1px solid var(--hero-line);
+  border-radius: 50%;
+}
 
-/* Cricket balls */
+/* Cricket balls as actual spheres: key light, rim light, contact shadow */
 .cricket-ball {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ef4444 0%, #b91c1c 60%, #7f1d1d 100%);
-  box-shadow: inset -4px -4px 10px rgba(0,0,0,0.4), 0 0 20px rgba(239,68,68,0.15);
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.15) 14%, rgba(255,255,255,0) 30%),
+    radial-gradient(circle at 36% 32%, #f25555 0%, #cf2020 42%, #8c1616 78%, #5e0f0f 100%);
+  box-shadow:
+    inset -10px -12px 24px rgba(0,0,0,0.55),
+    inset 6px 6px 14px rgba(255,255,255,0.10),
+    0 16px 28px rgba(0,0,0,0.30),
+    0 0 34px rgba(239,68,68,0.18);
   pointer-events: none;
+  transform-style: preserve-3d;
 }
-.cricket-ball::after {
+/* Stitched seam */
+.cricket-ball::after,
+.cricket-ball::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 10%;
-  right: 10%;
-  height: 1.5px;
-  background: rgba(255,255,255,0.35);
+  inset: 12% 6%;
   border-radius: 50%;
-  transform: translateY(-50%) rotate(-15deg);
+  border-top: 1.5px dashed rgba(255,255,255,0.42);
+  border-bottom: 1.5px dashed rgba(255,255,255,0.16);
+  transform: rotate(-18deg);
 }
+.cricket-ball::before { transform: rotate(-18deg) scale(0.82); opacity: 0.55; }
 
-.ball-1 { width: 50px; height: 50px; top: 18%; left: 12%; animation: floatBall 6s ease-in-out infinite; }
-.ball-2 { width: 32px; height: 32px; bottom: 22%; right: 8%; animation: floatBall 8s ease-in-out infinite reverse; }
-.ball-3 { width: 22px; height: 22px; top: 60%; left: 70%; animation: floatBall 7s ease-in-out 1s infinite; }
+.ball-1 { width: 66px; height: 66px; top: 16%; left: 11%; animation: floatBall 9s ease-in-out infinite; }
+.ball-2 { width: 40px; height: 40px; bottom: 20%; right: 9%; animation: floatBall 11s ease-in-out infinite reverse; }
+.ball-3 { width: 26px; height: 26px; top: 62%; left: 72%; animation: floatBall 8s ease-in-out 1s infinite; }
 
 @keyframes floatBall {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-30px) rotate(15deg); }
+  0%, 100% { transform: translate3d(0,0,0) rotate(0deg); }
+  50%      { transform: translate3d(0,-34px,0) rotate(16deg); }
 }
 
 /* Hero content */
 .hero-content { position: relative; z-index: 2; text-align: center; }
+.hero-season, .hero-date { text-shadow: 0 1px 2px rgba(255,255,255,0.5); }
 
 .hero-season {
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--gold-dark);
   margin-bottom: 1rem;
   font-weight: 500;
 }
 
 .hero-title {
   font-size: clamp(3.5rem, 10vw, 8rem);
-  background: linear-gradient(180deg, var(--gold) 0%, #fff 100%);
+  background: linear-gradient(165deg, var(--title-2) 0%, var(--title-1) 78%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 1rem;
+  filter: drop-shadow(0 2px 10px rgba(255,255,255,0.45));
 }
 
 .hero-date {
   font-size: 1.125rem;
-  color: var(--text-light-dim);
+  color: var(--hero-dim);
   margin-bottom: 2.5rem;
 }
-.hero-date strong { color: #fff; }
+.hero-date strong { color: var(--hero-ink); }
 
 .hero-ctas {
   display: flex;
@@ -408,11 +535,13 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   gap: 2.5rem;
   flex-wrap: wrap;
-  padding: 1.5rem 2.5rem;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  padding: 1.6rem 2.5rem;
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(8px);
+  background: var(--hero-glass);
+  border: 1px solid var(--hero-glassb);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.35);
 }
 .stat { text-align: center; }
 .hs-num, .stat-plus, .stat-dollar {
@@ -425,7 +554,7 @@ img { max-width: 100%; display: block; }
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-light-dim);
+  color: var(--hero-dim);
 }
 
 /* Scroll hint */
@@ -439,7 +568,7 @@ img { max-width: 100%; display: block; }
 .mouse {
   width: 26px;
   height: 40px;
-  border: 2px solid rgba(255,255,255,0.4);
+  border: 2px solid var(--hero-line);
   border-radius: 13px;
   display: flex;
   justify-content: center;
@@ -493,11 +622,11 @@ img { max-width: 100%; display: block; }
 .section-light { background: var(--bg-light); }
 
 .section-dark {
-  background: var(--bg-dark);
-  color: var(--text-light);
+  background: var(--surface-deep);
+  color: var(--surface-deep-ink);
 }
-.section-dark .section-title { color: #fff; }
-.section-dark .section-subtitle { color: var(--text-light-dim); }
+.section-dark .section-title { color: var(--surface-deep-ink); }
+.section-dark .section-subtitle { color: var(--surface-deep-dim); }
 
 .section-title {
   font-size: clamp(2rem, 5vw, 3rem);
@@ -950,8 +1079,8 @@ img { max-width: 100%; display: block; }
   align-items: center;
   text-align: center;
   padding: 2.5rem 2rem;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--surface-deep-card);
+  border: 1px solid var(--surface-deep-line);
   border-radius: var(--radius-lg);
   transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s, background 0.35s;
 }
@@ -976,12 +1105,12 @@ img { max-width: 100%; display: block; }
 .contact-icon-blue   { background: rgba(37,99,235,0.15); color: var(--blue); }
 .contact-icon-orange { background: rgba(234,88,12,0.15); color: var(--orange); }
 
-.contact-card h3 { font-size: 1.5rem; color: #fff; }
+.contact-card h3 { font-size: 1.5rem; color: var(--surface-deep-ink); }
 .contact-role {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-light-dim);
+  color: var(--surface-deep-dim);
   margin-bottom: 0.5rem;
 }
 .contact-detail { font-size: 0.95rem; color: var(--gold); }
@@ -990,8 +1119,8 @@ img { max-width: 100%; display: block; }
    Footer — Dark
    ============================================================ */
 .footer {
-  background: var(--bg-dark);
-  color: var(--text-light);
+  background: var(--surface-deep);
+  color: var(--surface-deep-ink);
   padding: 0;
 }
 
@@ -1012,27 +1141,27 @@ img { max-width: 100%; display: block; }
 }
 
 .footer-logo { height: 56px; margin-bottom: 1rem; }
-.footer-brand p { font-size: 0.875rem; color: var(--text-light-dim); max-width: 320px; }
+.footer-brand p { font-size: 0.875rem; color: var(--surface-deep-dim); max-width: 320px; }
 
 .footer-links h4, .footer-contact h4 {
   font-size: 1.25rem;
   margin-bottom: 1rem;
-  color: #fff;
+  color: var(--surface-deep-ink);
 }
 .footer-links ul { display: flex; flex-direction: column; gap: 0.5rem; }
-.footer-links a { font-size: 0.875rem; color: var(--text-light-dim); transition: color 0.2s; }
+.footer-links a { font-size: 0.875rem; color: var(--surface-deep-dim); transition: color 0.2s; }
 .footer-links a:hover { color: var(--gold); }
 
-.footer-contact p { font-size: 0.875rem; color: var(--text-light-dim); margin-bottom: 0.4rem; }
+.footer-contact p { font-size: 0.875rem; color: var(--surface-deep-dim); margin-bottom: 0.4rem; }
 .footer-contact a { color: var(--gold); transition: color 0.2s; }
 .footer-contact a:hover { color: #fff; }
 
 .footer-bottom {
   padding: 1.5rem 0;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid var(--surface-deep-line);
   text-align: center;
   font-size: 0.8rem;
-  color: var(--text-light-dim);
+  color: var(--surface-deep-dim);
 }
 
 /* ============================================================
@@ -1220,6 +1349,7 @@ img { max-width: 100%; display: block; }
   max-width: calc(100vw - 2rem);
   height: 500px;
   max-height: calc(100vh - 8rem);
+  max-height: calc(100dvh - 8rem);
   background: var(--card-bg);
   border-radius: var(--radius-lg);
   box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
@@ -1272,7 +1402,10 @@ img { max-width: 100%; display: block; }
 
 .chatbot-messages {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 1rem 1.25rem;
   display: flex;
   flex-direction: column;
@@ -1429,6 +1562,45 @@ img { max-width: 100%; display: block; }
 .chatbot-input:disabled,
 .chatbot-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* ---- Phones: the panel becomes a full-width sheet ---------------------- */
+@media (max-width: 640px) {
+  .chatbot-panel {
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 5.2rem;
+    width: auto;
+    max-width: none;
+    height: auto;
+    /* dvh tracks the iOS keyboard and toolbars; vh is the fallback */
+    max-height: calc(100vh - 7.5rem);
+    max-height: calc(100dvh - 7.5rem);
+  }
+  /* Give the conversation room to breathe on a small screen */
+  .chatbot-panel .chatbot-messages { min-height: 40vh; min-height: 40dvh; }
+  .chatbot-messages { padding: 0.85rem 0.9rem; }
+  .chat-msg { max-width: 92%; }
+
+  .chatbot-input-area { padding: 0.6rem; gap: 0.4rem; }
+  /* 16px stops iOS zooming the page when the field is focused */
+  .chatbot-input { font-size: 16px; padding: 0.55rem 0.7rem; }
+  .chatbot-mic, .chatbot-send { width: 38px; height: 38px; }
+
+  .chatbot-toggle { bottom: 1rem; right: 1rem; height: 48px; padding: 0 1.1rem; font-size: 0.9rem; }
+  .chatbot-toggle.active { width: 48px; padding: 0; }
+}
+
+/* The standalone chat page manages its own height, so keep it out of the
+   floating-panel overrides above. */
+@media (max-width: 640px) {
+  .chatbot-panel.chatbot-panel-page {
+    position: static;
+    left: auto; right: auto; bottom: auto;
+    height: min(72vh, 560px);
+    height: min(72dvh, 560px);
+    max-height: none;
+  }
+}
+
 /* Suggested question chips */
 .chat-chips {
   display: flex;
@@ -1496,7 +1668,8 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 .chatbot-input {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   border: 1px solid var(--card-border);
   border-radius: 0.5rem;
   padding: 0.6rem 0.85rem;
@@ -1515,6 +1688,7 @@ img { max-width: 100%; display: block; }
 .chatbot-send {
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   border: none;
   border-radius: 0.5rem;
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
@@ -1546,4 +1720,37 @@ img { max-width: 100%; display: block; }
   .timeline-line { display: none; }
   .chatbot-panel { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
   .chatbot-toggle { width: 52px; height: 52px; bottom: 1rem; right: 1rem; }
+}
+
+
+/* ============================================================
+   Depth: 3D tilt on hover
+   ============================================================ */
+.features-grid, .comp-grid, .fees-grid, .season-grid, .contact-grid { perspective: 1000px; }
+
+.feature-card, .comp-card, .fee-card, .contact-card, .season-card {
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(.16,1,.3,1), box-shadow 0.45s, border-color 0.3s;
+}
+.feature-card:hover, .fee-card:hover, .season-card:hover {
+  transform: translateY(-8px) rotateX(3deg) rotateY(-3deg) scale(1.015);
+  box-shadow: 0 28px 60px rgba(0,0,0,0.16);
+}
+.comp-card:hover, .contact-card:hover {
+  transform: translateY(-8px) rotateX(2.5deg) scale(1.012);
+  box-shadow: 0 28px 60px rgba(0,0,0,0.18);
+}
+[data-theme="dark"] .feature-card:hover,
+[data-theme="dark"] .comp-card:hover,
+[data-theme="dark"] .fee-card:hover,
+[data-theme="dark"] .season-card:hover,
+[data-theme="dark"] .contact-card:hover {
+  box-shadow: 0 28px 60px rgba(0,0,0,0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mesh, .hero-media, .orb, .cricket-ball { animation: none; }
+  .hero-layer { transition: none; }
+  .feature-card:hover, .comp-card:hover, .fee-card:hover,
+  .contact-card:hover, .season-card:hover { transform: translateY(-4px); }
 }
