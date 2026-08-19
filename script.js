@@ -113,7 +113,14 @@
 
     if (isOpen && !chatOpened) {
       chatOpened = true;
-      addBotMessage('Welcome to the MCA Assistant! Ask me anything about MCA rules, competitions, fees, or registration.');
+      addBotMessage("Hi! I'm the MCA Assistant. Ask me anything about the association rules — seniors or juniors — and I'll answer instantly.");
+      addChips([
+        'How many overs in T20?',
+        'What is the umpire fee for T35?',
+        'When does the season start?',
+        'Is LBW allowed in U13?',
+        'What happens if it rains?'
+      ], 'Try asking');
     }
 
     if (isOpen) {
@@ -151,9 +158,40 @@
     // Simulate short delay for response
     setTimeout(function () {
       chatMessages.removeChild(typing);
-      var answer = findAnswer(text);
-      addBotMessage(answer);
+      var result = findAnswer(text);
+      addBotMessage(result.answer);
+      if (result.related && result.related.length) {
+        addChips(result.related, 'Related questions');
+      }
     }, 600);
+  }
+
+  // Render clickable suggestion chips that ask the question when tapped
+  function addChips(questions, label) {
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-chips';
+
+    if (label) {
+      var caption = document.createElement('div');
+      caption.className = 'chat-chips-label';
+      caption.textContent = label;
+      wrap.appendChild(caption);
+    }
+
+    questions.forEach(function (q) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chat-chip';
+      chip.textContent = q;
+      chip.addEventListener('click', function () {
+        chatInput.value = q;
+        sendUserMessage();
+      });
+      wrap.appendChild(chip);
+    });
+
+    chatMessages.appendChild(wrap);
+    scrollChatToBottom();
   }
 
   function addUserMessage(text) {
@@ -176,58 +214,148 @@
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  function findAnswer(query) {
-    // Check if MCA_RULES data is available
-    var rules = window.MCA_RULES;
-    if (!rules || !Array.isArray(rules) || rules.length === 0) {
-      return getFallbackAnswer(query);
+  // Words that carry no search signal
+  var STOPWORDS = {
+    'the':1,'is':1,'are':1,'was':1,'were':1,'a':1,'an':1,'and':1,'or':1,'of':1,
+    'to':1,'in':1,'on':1,'for':1,'at':1,'by':1,'with':1,'from':1,'as':1,'it':1,
+    'what':1,'whats':1,'when':1,'where':1,'which':1,'who':1,'how':1,'why':1,
+    'do':1,'does':1,'did':1,'can':1,'could':1,'should':1,'would':1,'will':1,
+    'i':1,'my':1,'me':1,'we':1,'our':1,'you':1,'your':1,'there':1,'this':1,
+    'that':1,'if':1,'be':1,'been':1,'have':1,'has':1,'had':1,'get':1,'any':1,
+    'about':1,'much':1,'many':1,'please':1,'tell':1,'know':1
+  };
+
+  // Query terms that should be expanded to catch phrasing variations
+  var SYNONYMS = {
+    'cost':['fee','fees','price'],
+    'costs':['fee','fees','price'],
+    'price':['fee','fees','cost'],
+    'prices':['fee','fees','cost'],
+    'pay':['fee','fees','payment'],
+    'kids':['junior','juniors'],
+    'kid':['junior','juniors'],
+    'child':['junior','juniors'],
+    'children':['junior','juniors'],
+    'youth':['junior','juniors'],
+    'begin':['start','commence'],
+    'begins':['start','commence'],
+    'starts':['start'],
+    'signup':['register','registration'],
+    'join':['register','registration'],
+    'ump':['umpire','umpires'],
+    'umpires':['umpire'],
+    'bowl':['bowler','bowling'],
+    'bat':['batter','batsman','batting'],
+    'rain':['weather','washout','wet'],
+    'watch':['stream','streaming','live'],
+    'ground':['grounds','venue'],
+    'over':['overs'],
+    'wicket':['wickets']
+  };
+
+  // Crude singular/base form so "rains" matches "rain", "bowling" matches "bowl"
+  function stem(word) {
+    if (word.length > 4 && word.slice(-3) === 'ies') return word.slice(0, -3) + 'y';
+    if (word.length > 4 && word.slice(-3) === 'ing') return word.slice(0, -3);
+    if (word.length > 3 && word.slice(-2) === 'es') return word.slice(0, -2);
+    if (word.length > 3 && word.slice(-1) === 's' && word.slice(-2) !== 'ss') return word.slice(0, -1);
+    return word;
+  }
+
+  function tokenize(text) {
+    var raw = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/);
+    var out = [];
+
+    function push(w) {
+      if (w && w.length >= 2 && out.indexOf(w) === -1) out.push(w);
     }
 
-    var queryLower = query.toLowerCase();
-    var words = queryLower.split(/\s+/).filter(function (w) { return w.length > 2; });
+    for (var i = 0; i < raw.length; i++) {
+      var w = raw[i];
+      if (!w || STOPWORDS[w] || w.length < 2) continue;
+      push(w);
 
-    var bestMatch = null;
-    var bestScore = 0;
+      var base = stem(w);
+      if (base !== w && !STOPWORDS[base]) push(base);
+
+      // Expand synonyms so "cost" also matches "fee" — check both forms
+      var forms = base !== w ? [w, base] : [w];
+      for (var f = 0; f < forms.length; f++) {
+        var syn = SYNONYMS[forms[f]];
+        if (!syn) continue;
+        for (var s = 0; s < syn.length; s++) push(syn[s]);
+      }
+    }
+    return out;
+  }
+
+  // Rank every rule against the query and return the best scoring matches
+  function rankRules(query) {
+    var rules = window.MCA_RULES;
+    if (!rules || !Array.isArray(rules) || rules.length === 0) return [];
+
+    var queryLower = query.toLowerCase().trim();
+    var tokens = tokenize(query);
+    if (tokens.length === 0) return [];
+
+    var scored = [];
 
     for (var i = 0; i < rules.length; i++) {
       var rule = rules[i];
-      var searchText = '';
-
-      // Build searchable text from rule entry
-      if (rule.question) searchText += ' ' + rule.question.toLowerCase();
-      if (rule.keywords) {
-        if (Array.isArray(rule.keywords)) {
-          searchText += ' ' + rule.keywords.join(' ').toLowerCase();
-        } else {
-          searchText += ' ' + rule.keywords.toLowerCase();
-        }
-      }
-      if (rule.category) searchText += ' ' + rule.category.toLowerCase();
-      if (rule.topic) searchText += ' ' + rule.topic.toLowerCase();
+      var question = (rule.q || '').toLowerCase();
+      var answer = (rule.a || '').toLowerCase();
+      var category = (rule.category || '').toLowerCase();
+      var keywords = Array.isArray(rule.keywords)
+        ? rule.keywords.map(function (k) { return String(k).toLowerCase(); })
+        : [];
+      var keywordText = keywords.join(' ');
 
       var score = 0;
-      for (var j = 0; j < words.length; j++) {
-        if (searchText.indexOf(words[j]) !== -1) {
-          score += 1;
-        }
+
+      for (var j = 0; j < tokens.length; j++) {
+        var t = tokens[j];
+        // Strongest signal: token is a curated keyword for this rule
+        if (keywords.indexOf(t) !== -1) score += 5;
+        else if (keywordText.indexOf(t) !== -1) score += 2.5;
+
+        if (question.indexOf(t) !== -1) score += 2;
+        if (category.indexOf(t) !== -1) score += 1.5;
+        if (answer.indexOf(t) !== -1) score += 0.5;
       }
 
-      // Bonus for exact phrase match
-      if (searchText.indexOf(queryLower) !== -1) {
-        score += 3;
+      // Big bonus when the user typed (almost) the stored question
+      if (question && question.indexOf(queryLower) !== -1) score += 8;
+      // Reward rules that matched a high proportion of the query
+      var hits = 0;
+      for (var k = 0; k < tokens.length; k++) {
+        var tk = tokens[k];
+        if (keywordText.indexOf(tk) !== -1 || question.indexOf(tk) !== -1) hits++;
       }
+      if (hits === tokens.length && tokens.length > 1) score += 4;
 
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = rule;
-      }
+      if (score > 0) scored.push({ rule: rule, score: score });
     }
 
-    if (bestMatch && bestScore > 0) {
-      return bestMatch.answer || bestMatch.response || bestMatch.text || 'I found a match but the answer is not available.';
+    scored.sort(function (a, b) { return b.score - a.score; });
+    return scored;
+  }
+
+  function findAnswer(query) {
+    var ranked = rankRules(query);
+
+    if (ranked.length === 0 || ranked[0].score < 3) {
+      return { answer: getFallbackAnswer(query), related: [] };
     }
 
-    return getFallbackAnswer(query);
+    var best = ranked[0].rule;
+    var related = [];
+    for (var i = 1; i < ranked.length && related.length < 3; i++) {
+      var r = ranked[i].rule;
+      if (ranked[i].score < 3) break;
+      if (r.q && r.q !== best.q) related.push(r.q);
+    }
+
+    return { answer: best.a, related: related };
   }
 
   function getFallbackAnswer(query) {
