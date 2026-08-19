@@ -52,66 +52,55 @@
 
   <!-- Hero -->
   <section class="hero" id="hero">
-    <!-- Depth stack: drifting colour mesh, optional photo, grain, then
-         parallax layers that respond to the pointer -->
-    <div class="hero-mesh"></div>
-    <div class="hero-media"></div>
-    <div class="hero-veil"></div>
-
-    <div class="hero-layer" data-depth="0.25">
-      <div class="orb orb-gold"></div>
-      <div class="orb orb-green"></div>
-      <div class="orb orb-blue"></div>
-    </div>
-
-    <div class="hero-layer" data-depth="0.55">
-      <div class="cricket-oval"></div>
-    </div>
-
-    <div class="hero-layer" data-depth="1.1">
-      <div class="cricket-ball ball-1"></div>
-      <div class="cricket-ball ball-3"></div>
-    </div>
-    <div class="hero-layer" data-depth="1.7">
-      <div class="cricket-ball ball-2"></div>
-    </div>
-
+    <div class="hero-photo"></div>
+    <div class="hero-scrim"></div>
     <div class="hero-grain"></div>
 
-    <div class="hero-content container">
-      <p class="hero-season hero-rise">Winter 2026 Season</p>
-      <h1 class="hero-title hero-rise">Melbourne<br />Cricket<br />Association</h1>
-      <p class="hero-date hero-rise-2">Winter 2026 &mdash; <strong>finals in progress</strong></p>
-      <div class="hero-ctas hero-rise-3">
-        <a href="#competitions" class="btn btn-gold">View Competitions</a>
-        <a href="#rules" class="btn btn-outline">Rules &amp; Downloads</a>
-      </div>
-      <div class="hero-stats hero-rise-4">
-        <div class="stat">
-          <span class="hs-num" data-count="100">0</span>
-          <span class="stat-label">Teams</span>
+    <div class="hero-inner container">
+      <div class="hero-copy">
+        <p class="hero-eyebrow hero-rise">
+          <span class="live-dot"></span> Winter 2026 &middot; Finals in progress
+        </p>
+
+        <h1 class="hero-title hero-rise">
+          Melbourne&rsquo;s largest<br />community cricket competition
+        </h1>
+
+        <p class="hero-lede hero-rise-2">
+          100 teams and more than 1,600 players across Saturday seniors and
+          Sunday juniors &mdash; professional umpires, live scoring on PlayHQ,
+          and finals played for real silverware.
+        </p>
+
+        <div class="hero-ctas hero-rise-3">
+          <a href="#competitions" class="btn btn-gold">View Competitions</a>
+          <a href="#rules" class="btn btn-glass">Rules &amp; Downloads</a>
         </div>
-        <div class="stat">
-          <span class="hs-num" data-count="1600">0</span><span class="stat-plus">+</span>
-          <span class="stat-label">Players</span>
-        </div>
-        <div class="stat">
-          <span class="stat-dollar">$</span><span class="hs-num" data-count="1500">0</span>
-          <span class="stat-label">Prize</span>
-        </div>
-        <div class="stat">
-          <span class="hs-num" data-count="6">0</span>
-          <span class="stat-label">Seasons</span>
-        </div>
+
+        <dl class="hero-stats hero-rise-4">
+          <div class="stat">
+            <dt class="stat-label">Teams</dt>
+            <dd><span class="hs-num" data-count="100">0</span></dd>
+          </div>
+          <div class="stat">
+            <dt class="stat-label">Players</dt>
+            <dd><span class="hs-num" data-count="1600">0</span><span class="stat-plus">+</span></dd>
+          </div>
+          <div class="stat">
+            <dt class="stat-label">Prize</dt>
+            <dd><span class="stat-dollar">$</span><span class="hs-num" data-count="1500">0</span></dd>
+          </div>
+          <div class="stat">
+            <dt class="stat-label">Seasons</dt>
+            <dd><span class="hs-num" data-count="6">0</span></dd>
+          </div>
+        </dl>
       </div>
     </div>
 
-    <!-- Scroll hint -->
-    <div class="scroll-hint">
-      <div class="mouse">
-        <div class="mouse-wheel"></div>
-      </div>
-    </div>
+    <a href="#about" class="scroll-hint" aria-label="Scroll to content">
+      <span class="mouse"><span class="mouse-wheel"></span></span>
+    </a>
   </section>
 
   <!-- Gold Ticker Strip -->

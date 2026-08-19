@@ -89,7 +89,7 @@
   // Each layer carries a data-depth; moving the pointer shifts them by
   // different amounts, which is what actually reads as depth.
   var heroEl = document.getElementById('hero');
-  var heroLayers = heroEl ? heroEl.querySelectorAll('.hero-layer') : [];
+  var heroLayers = heroEl ? heroEl.querySelectorAll('.hero-photo') : [];
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -106,7 +106,7 @@
       requestAnimationFrame(function () {
         pending = false;
         for (var i = 0; i < heroLayers.length; i++) {
-          var d = parseFloat(heroLayers[i].getAttribute('data-depth')) || 0;
+          var d = 0.6; // single photo layer, subtle drift only
           heroLayers[i].style.transform =
             'translate3d(' + (-px * d * 26).toFixed(2) + 'px,' +
             (-py * d * 26).toFixed(2) + 'px, 0)';
