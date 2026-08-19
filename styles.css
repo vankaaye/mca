@@ -1342,6 +1342,10 @@ img { max-width: 100%; display: block; }
 }
 
 .chatbot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   padding: 1rem 1.25rem;
   background: linear-gradient(135deg, var(--bg-dark), #1e1b4b);
   color: #fff;
@@ -1771,4 +1775,95 @@ img { max-width: 100%; display: block; }
   .hero-photo, .live-dot { animation: none; }
   .feature-card:hover, .comp-card:hover, .fee-card:hover,
   .contact-card:hover, .season-card:hover { transform: translateY(-4px); }
+}
+
+
+/* Close control in the chat header */
+.chatbot-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chatbot-close:hover { background: rgba(255,255,255,0.26); }
+
+/* ---- Phones: the chat becomes a full-screen sheet ---------------------- */
+@media (max-width: 640px) {
+  .chatbot-panel {
+    position: fixed;
+    inset: 0;
+    left: 0; right: 0; top: 0; bottom: 0;
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+    z-index: 2100;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(.16,1,.3,1), opacity 0.2s;
+  }
+  .chatbot-panel.open { transform: translateY(0); }
+
+  /* The standalone page keeps its inline panel */
+  .chatbot-panel.chatbot-panel-page {
+    position: static;
+    inset: auto;
+    height: min(72dvh, 560px);
+    border-radius: var(--radius-lg);
+    transform: none;
+    z-index: auto;
+  }
+
+  /* Stop the page scrolling behind the sheet */
+  body.chat-open { overflow: hidden; }
+
+  /* Launcher hides once the sheet is up */
+  body.chat-open .chatbot-toggle { opacity: 0; pointer-events: none; }
+
+  .chatbot-header { padding: 1rem 1rem; padding-top: max(1rem, env(safe-area-inset-top)); }
+  .chatbot-input-area { padding-bottom: max(0.6rem, env(safe-area-inset-bottom)); }
+}
+
+/* Suggestion chips dock above the composer instead of scrolling away with
+   the conversation — the pattern used on astrocare.com.au */
+.chat-chips-dock {
+  flex-shrink: 0;
+  background: var(--card-bg);
+}
+.chat-chips-dock:not(:empty) { border-top: 1px solid var(--card-border); }
+.chat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.7rem 1rem;
+}
+.chat-chips-label {
+  width: 100%;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.1rem;
+}
+@media (max-width: 640px) {
+  .chat-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .chat-chips::-webkit-scrollbar { display: none; }
+  .chat-chips-label { display: none; }
+  .chat-chip { flex: 0 0 auto; }
 }
