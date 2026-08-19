@@ -36,6 +36,93 @@
   --radius-lg: 1rem;
 }
 
+/* Dark theme — same tokens, re-pointed. Toggled via data-theme on <html>. */
+[data-theme="dark"] {
+  --bg:           #0b1220;
+  --bg-light:     #111a2b;
+  --surface:      #111a2b;
+  --card-bg:      #162033;
+  --card-border:  rgba(255,255,255,0.10);
+  --card-shadow:  0 1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.4);
+  --card-shadow-hover: 0 12px 40px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.4);
+  --text:         #e8edf6;
+  --text-dim:     #9aa8bd;
+  --border:       rgba(255,255,255,0.10);
+}
+
+/* Header glass has to follow the theme too */
+[data-theme="dark"] .header { background: rgba(11,18,32,0.75); }
+[data-theme="dark"] .header.scrolled {
+  background: rgba(11,18,32,0.94);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] .header.nav-open .nav { background: rgba(11,18,32,0.98); }
+[data-theme="dark"] .chat-msg-bot code,
+[data-theme="dark"] .chat-cite-tag { background: rgba(255,255,255,0.08); }
+[data-theme="dark"] .chat-msg-bot th { background: rgba(255,255,255,0.05); }
+[data-theme="dark"] .fee-extra { background: var(--bg-light); }
+
+/* Theme toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  margin-left: 1rem;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.theme-toggle:hover { color: var(--gold); border-color: var(--gold); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-icon-moon { display: none; }
+[data-theme="dark"] .theme-icon-sun  { display: none; }
+[data-theme="dark"] .theme-icon-moon { display: block; }
+
+/* ---- Hero entrance + drift ---------------------------------------------- */
+@keyframes heroRise {
+  0%   { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes kenBurns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.16) translate(-2%, 1.2%); }
+}
+
+.hero-rise   { animation: 1s cubic-bezier(.16,1,.3,1) both heroRise; }
+.hero-rise-2 { animation: 1s cubic-bezier(.16,1,.3,1) .15s both heroRise; }
+.hero-rise-3 { animation: 1s cubic-bezier(.16,1,.3,1) .3s both heroRise; }
+.hero-rise-4 { animation: 1s cubic-bezier(.16,1,.3,1) .45s both heroRise; }
+
+/* Optional hero photograph. Drop photos/hero.jpg in and it appears behind the
+   gradient with a slow drift; with no file the gradient simply shows through. */
+.hero-media {
+  position: absolute;
+  inset: -6%;
+  background: url('photos/hero.jpg') center/cover no-repeat;
+  opacity: 0.30;
+  animation: kenBurns 24s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(11,18,32,0.92) 0%, rgba(11,18,32,0.55) 45%, rgba(11,18,32,0.75) 100%),
+    linear-gradient(100deg, rgba(11,18,32,0.45), rgba(11,18,32,0.1));
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise, .hero-rise-2, .hero-rise-3, .hero-rise-4 { animation: none; }
+  .hero-media, .orb, .cricket-ball, .ticker-track { animation: none; }
+}
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -98,18 +185,21 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
+.logo { flex-shrink: 0; }
 
-.logo img { height: 60px; width: auto; transition: height 0.3s; }
-.header.scrolled .logo img { height: 44px; }
+.logo img { height: 72px; width: auto; transition: height 0.3s; }
+.header.scrolled .logo img { height: 52px; }
 
 .nav-list {
   display: flex;
-  gap: 1.75rem;
+  gap: 1.15rem;
 }
 
 .nav-link {
-  font-size: 0.8rem;
+  white-space: nowrap;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-dim);
   transition: color 0.2s;
@@ -118,7 +208,7 @@ img { max-width: 100%; display: block; }
 }
 .nav-link:hover { color: var(--gold); }
 
-.nav-cta { margin-left: 1.5rem; }
+.nav-cta { margin-left: 0.5rem; white-space: nowrap; }
 
 /* Buttons */
 .btn {
@@ -173,7 +263,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* Mobile nav */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .nav, .nav-cta { display: none; }
   .hamburger { display: flex; }
 
@@ -953,9 +1043,9 @@ img { max-width: 100%; display: block; }
   bottom: 1.5rem;
   right: 1.5rem;
   z-index: 2000;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  height: 54px;
+  padding: 0 1.35rem;
+  border-radius: 999px;
   border: none;
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
   color: #fff;
@@ -963,9 +1053,17 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 4px 20px rgba(245,158,11,0.35);
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.55rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
   transition: transform 0.3s, box-shadow 0.3s;
 }
+.chatbot-toggle svg { flex-shrink: 0; }
+.chatbot-toggle-label { white-space: nowrap; }
+/* Collapses to a circle once the panel is open */
+.chatbot-toggle.active { padding: 0; width: 54px; justify-content: center; }
+.chatbot-toggle.active .chatbot-toggle-label { display: none; }
 .chatbot-toggle:hover {
   transform: scale(1.08);
   box-shadow: 0 6px 30px rgba(245,158,11,0.5);
@@ -1122,7 +1220,7 @@ img { max-width: 100%; display: block; }
   max-width: calc(100vw - 2rem);
   height: 500px;
   max-height: calc(100vh - 8rem);
-  background: #fff;
+  background: var(--card-bg);
   border-radius: var(--radius-lg);
   box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
   display: flex;
@@ -1311,7 +1409,7 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
   border: 1px solid var(--card-border);
   border-radius: 50%;
-  background: #fff;
+  background: var(--card-bg);
   color: var(--text-dim);
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -1394,7 +1492,7 @@ img { max-width: 100%; display: block; }
   padding: 0.75rem;
   border-top: 1px solid var(--card-border);
   gap: 0.5rem;
-  background: #fff;
+  background: var(--card-bg);
   flex-shrink: 0;
 }
 .chatbot-input {
