@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function () {
+      var t = 'light';
+      try { var s = localStorage.getItem('mca-theme'); if (s === 'dark' || s === 'light') t = s; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MCA — Melbourne Cricket Association | Winter 2026</title>
@@ -33,6 +40,10 @@
         </ul>
       </nav>
       <a href="chat.html" class="btn btn-gold nav-cta">Ask the Assistant</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch between light and dark mode">
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        </button>
       <button id="hamburger" class="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -41,6 +52,11 @@
 
   <!-- Hero -->
   <section class="hero" id="hero">
+    <!-- Optional hero photo (photos/hero.jpg) with a slow drift, plus the
+         gradient veil that keeps the headline readable over it -->
+    <div class="hero-media"></div>
+    <div class="hero-veil"></div>
+
     <!-- Animated orbs -->
     <div class="orb orb-gold"></div>
     <div class="orb orb-green"></div>
@@ -55,14 +71,14 @@
     <div class="cricket-ball ball-3"></div>
 
     <div class="hero-content container">
-      <p class="hero-season">Winter 2026 Season</p>
-      <h1 class="hero-title">Melbourne<br />Cricket<br />Association</h1>
-      <p class="hero-date">Winter 2026 &mdash; <strong>finals in progress</strong></p>
-      <div class="hero-ctas">
+      <p class="hero-season hero-rise">Winter 2026 Season</p>
+      <h1 class="hero-title hero-rise">Melbourne<br />Cricket<br />Association</h1>
+      <p class="hero-date hero-rise-2">Winter 2026 &mdash; <strong>finals in progress</strong></p>
+      <div class="hero-ctas hero-rise-3">
         <a href="#competitions" class="btn btn-gold">View Competitions</a>
         <a href="#rules" class="btn btn-outline">Rules &amp; Downloads</a>
       </div>
-      <div class="hero-stats">
+      <div class="hero-stats hero-rise-4">
         <div class="stat">
           <span class="hs-num" data-count="50">0</span><span class="stat-plus">+</span>
           <span class="stat-label">Teams</span>
@@ -666,6 +682,7 @@
       <svg class="chatbot-icon-close" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
+      <span class="chatbot-toggle-label">Chat with us</span>
     </button>
     <div id="chatbot-panel" class="chatbot-panel">
       <div class="chatbot-header">

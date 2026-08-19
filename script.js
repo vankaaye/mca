@@ -85,6 +85,19 @@
     requestAnimationFrame(tick);
   }
 
+  // --- Light / dark theme -------------------------------------------------
+  // The initial theme is applied by an inline script in <head> so the page
+  // never flashes the wrong one; this only handles switching afterwards.
+  var themeToggle = document.getElementById('theme-toggle');
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('mca-theme', next); } catch (err) { /* private mode */ }
+    });
+  }
+
   // --- Hamburger Menu ---
   var hamburger = document.getElementById('hamburger');
 
