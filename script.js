@@ -5,6 +5,7 @@
   var progressBar = document.getElementById('scroll-progress');
 
   function updateProgress() {
+    if (!progressBar) return;
     var scrollTop = window.scrollY;
     var docHeight = document.documentElement.scrollHeight - window.innerHeight;
     var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
@@ -14,7 +15,11 @@
   // --- Header Shrink on Scroll ---
   var header = document.getElementById('header');
 
+  // The standalone chat page keeps the header compact at all times.
+  var lockHeader = document.body.hasAttribute('data-chat-page');
+
   function updateHeader() {
+    if (!header || lockHeader) return;
     if (window.scrollY > 50) {
       header.classList.add('scrolled');
     } else {
@@ -83,9 +88,11 @@
   // --- Hamburger Menu ---
   var hamburger = document.getElementById('hamburger');
 
-  hamburger.addEventListener('click', function () {
-    header.classList.toggle('nav-open');
-  });
+  if (hamburger && header) {
+    hamburger.addEventListener('click', function () {
+      header.classList.toggle('nav-open');
+    });
+  }
 
   // Close mobile nav when a nav link is clicked
   var navLinks = document.querySelectorAll('.nav-link');
@@ -434,21 +441,36 @@
 
   // ---- Wiring ---------------------------------------------------------------
 
-  chatToggle.addEventListener('click', function () {
-    var isOpen = chatPanel.classList.toggle('open');
-    chatToggle.classList.toggle('active', isOpen);
+  var WELCOME =
+    "Hi! I'm the **MCA Assistant**. Ask me anything about the association — " +
+    "competitions, rules, fees, registration or juniors — and I'll answer straight away.";
 
-    if (isOpen && !chatOpened) {
-      chatOpened = true;
-      addBotMessage(
-        "Hi! I'm the **MCA Assistant**. Ask me anything about the association — " +
-        'competitions, rules, fees, registration or juniors — and I\'ll answer straight away.'
-      );
-      addChips(STARTER_QUESTIONS, 'Try asking');
-    }
+  function greet() {
+    if (chatOpened) return;
+    chatOpened = true;
+    addBotMessage(WELCOME);
+    addChips(STARTER_QUESTIONS, 'Try asking');
+  }
 
-    if (isOpen) chatInput.focus();
-  });
+  // The standalone /chat page reuses this same engine, with the panel always
+  // open instead of hidden behind a bubble.
+  var isFullPage = document.body.hasAttribute('data-chat-page');
+
+  if (isFullPage) {
+    chatPanel.classList.add('open');
+    greet();
+    // No autofocus here: it would scroll the heading out of view on load and
+    // pop the keyboard open on mobile before the reader has seen the page.
+  } else if (chatToggle) {
+    chatToggle.addEventListener('click', function () {
+      var isOpen = chatPanel.classList.toggle('open');
+      chatToggle.classList.toggle('active', isOpen);
+      if (isOpen) {
+        greet();
+        chatInput.focus();
+      }
+    });
+  }
 
   chatSend.addEventListener('click', function () {
     sendUserMessage();

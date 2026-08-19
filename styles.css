@@ -974,6 +974,69 @@ img { max-width: 100%; display: block; }
 .chatbot-toggle.active .chatbot-icon-open { display: none; }
 .chatbot-toggle.active .chatbot-icon-close { display: block; }
 
+.rules-ask {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+.rules-ask a { color: var(--gold-dark); font-weight: 600; text-decoration: underline; }
+
+/* ============================================================
+   Standalone chat page (chat.html)
+   ============================================================ */
+.chat-page {
+  padding: 7rem 0 3rem;
+  background: var(--bg-light);
+  min-height: 100vh;
+}
+.chat-page-inner { max-width: 780px; }
+
+.chat-page-intro { margin-bottom: 1.5rem; }
+.chat-page-intro h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
+  margin-bottom: 0.6rem;
+}
+.chat-page-intro p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+}
+.chat-page-intro a { color: var(--gold-dark); text-decoration: underline; }
+.chat-page-note { font-size: 0.85rem !important; }
+
+.chat-page-foot {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+.chat-page-foot a {
+  color: var(--gold-dark);
+  text-decoration: underline;
+  margin-left: 0.4rem;
+  white-space: nowrap;
+}
+
+/* The panel becomes the page's main content rather than a floating bubble */
+.chatbot-panel.chatbot-panel-page {
+  position: static;
+  width: 100%;
+  max-width: none;
+  height: min(68vh, 640px);
+  max-height: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+@media (max-width: 640px) {
+  .chat-page { padding-top: 5.5rem; }
+  .chatbot-panel.chatbot-panel-page { height: min(72vh, 560px); }
+}
+
 .chatbot-panel {
   position: fixed;
   bottom: 6rem;

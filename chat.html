@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask the MCA Assistant | Melbourne Cricket Association</title>
+  <meta name="description" content="Ask the Melbourne Cricket Association assistant anything about competitions, playing rules, fees, registration and junior cricket. Instant answers, with the rule book section referenced." />
+
+  <!-- Shared when the link is posted to WhatsApp, Facebook or a team group -->
+  <meta property="og:title" content="Ask the MCA Assistant" />
+  <meta property="og:description" content="Instant answers on MCA competitions, rules, fees and juniors — with the rule book section referenced." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mcacricket.netlify.app/chat.html" />
+  <meta property="og:image" content="https://mcacricket.netlify.app/logo.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-chat-page>
+
+  <header id="header" class="header scrolled">
+    <div class="header-inner container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="MCA — Melbourne Cricket Association" />
+      </a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="index.html#competitions" class="nav-link">Competitions</a></li>
+          <li><a href="index.html#juniors" class="nav-link">Juniors</a></li>
+          <li><a href="index.html#fees" class="nav-link">Fees</a></li>
+          <li><a href="index.html#rules" class="nav-link">Rules</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="index.html#register" class="btn btn-gold nav-cta">Register Now</a>
+      <button id="hamburger" class="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="chat-page">
+    <div class="container chat-page-inner">
+      <div class="chat-page-intro">
+        <h1>Ask the MCA Assistant</h1>
+        <p>
+          Answers on competitions, playing rules, fees, registration and junior cricket —
+          drawn from the official <a href="index.html#rules">Winter 2026 rule books</a>,
+          with the relevant section referenced on every answer.
+        </p>
+        <p class="chat-page-note">
+          For anything it can't answer, or a decision that needs a person, contact
+          <a href="tel:0430667896">Gopi on 0430&nbsp;667&nbsp;896</a> or
+          <a href="tel:0433960586">Mahi on 0433&nbsp;960&nbsp;586</a>.
+          On-field umpire decisions are final — send disputes to
+          <a href="mailto:melbournecricketassociation@gmail.com">melbournecricketassociation@gmail.com</a>
+          within 48 hours of the game.
+        </p>
+      </div>
+
+      <div id="chatbot-panel" class="chatbot-panel chatbot-panel-page">
+        <div class="chatbot-header">
+          <div class="chatbot-header-info">
+            <div class="chatbot-avatar">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h4>MCA Assistant</h4>
+              <span class="chatbot-status">Competitions · Rules · Fees · Juniors</span>
+            </div>
+          </div>
+        </div>
+        <div id="chatbot-messages" class="chatbot-messages"></div>
+        <div class="chatbot-input-area">
+          <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask about MCA rules..." autocomplete="off" />
+          <button id="chatbot-mic" class="chatbot-mic" aria-label="Ask by voice" title="Ask by voice">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0014 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
+          </button>
+          <button id="chatbot-send" class="chatbot-send" aria-label="Send message">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="chat-page-foot">
+        Answers are generated from the MCA rule books and may not cover every situation.
+        Where an answer and the rule book differ, the rule book stands.
+        <a href="index.html">← Back to the main site</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    window.MCA_CHAT_ENDPOINT = 'https://mca-assistant.astrocare.workers.dev';
+  </script>
+  <script src="rules-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
