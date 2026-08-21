@@ -2047,6 +2047,8 @@ body[data-chat-page] .chat-launch { display: none; }
   text-decoration: underline;
 }
 .chat-cite-book::before { content: '\2193'; font-weight: 700; }
+/* The Laws are a link out, not a download */
+.chat-cite-law::before { content: '\2197'; }
 .chat-cite-book:hover { color: var(--orange); }
 
 .chat-cite-tags {

@@ -496,6 +496,54 @@
       return;
     }
 
+    // Answered from the MCC Laws, because MCA's books do not specify it
+    if (/^\s*mcc\b/i.test(cited)) {
+      head.textContent = '📖 Where this comes from';
+      var lawNote = document.createElement('p');
+      lawNote.className = 'chat-cite-note';
+      lawNote.textContent = 'Not specified by MCA, so the Laws of Cricket apply — the MCA rule book says international rules cover anything it does not.';
+      box.appendChild(lawNote);
+
+      var lawRow = document.createElement('div');
+      lawRow.className = 'chat-cite-group';
+      var lawLink = document.createElement('a');
+      lawLink.className = 'chat-cite-book chat-cite-law';
+      lawLink.href = 'https://www.lords.org/mcc/the-laws';
+      lawLink.target = '_blank';
+      lawLink.rel = 'noopener';
+      lawLink.textContent = 'MCC — the Laws of Cricket';
+      lawRow.appendChild(lawLink);
+
+      var named = cited.replace(/^\s*mcc\s*(laws)?\s*[—–-]?\s*/i, '').trim();
+      if (named) {
+        var lawTags = document.createElement('div');
+        lawTags.className = 'chat-cite-tags';
+        named.split('·').forEach(function (n) {
+          if (!n.trim()) return;
+          var tag = document.createElement('span');
+          tag.className = 'chat-cite-tag';
+          tag.textContent = n.trim();
+          lawTags.appendChild(tag);
+        });
+        lawRow.appendChild(lawTags);
+      }
+      box.appendChild(lawRow);
+      bubble.appendChild(box);
+      return;
+    }
+
+    // A committee decision, not a printed rule — say which it is
+    if (/^\s*association note/i.test(cited)) {
+      head.textContent = '📖 Where this comes from';
+      var noteNote = document.createElement('p');
+      noteNote.className = 'chat-cite-note';
+      noteNote.textContent = 'An association note — a committee decision or clarification, not a printed rule book section.';
+      box.appendChild(noteNote);
+      addBookLinks(box);
+      bubble.appendChild(box);
+      return;
+    }
+
     // Anything the rule books don't cover says so plainly — and still links.
     if (/not covered|general cricket|web search/i.test(cited)) {
       var note = document.createElement('p');
