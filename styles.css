@@ -943,11 +943,13 @@ img { max-width: 100%; display: block; }
    ============================================================ */
 .comp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 1rem;
 }
 
 .comp-card {
+  display: flex;
+  flex-direction: column;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
@@ -961,14 +963,23 @@ img { max-width: 100%; display: block; }
 }
 
 .comp-header {
-  padding: 1.5rem 2rem;
+  padding: 0.8rem 1.1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.6rem;
 }
-.comp-header h3 { font-size: 1.75rem; color: #fff; }
+.comp-header h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
 .comp-badge {
-  font-size: 0.7rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 0.6rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -983,25 +994,35 @@ img { max-width: 100%; display: block; }
 .comp-header-maroon { background: linear-gradient(135deg, var(--maroon), #881337); }
 .comp-header-green  { background: linear-gradient(135deg, var(--green), #15803d); }
 
-.comp-body { padding: 1.5rem 2rem 2rem; }
+.comp-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0.9rem 1.1rem 1.1rem;
+}
 
 .comp-details {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  margin-bottom: 1.5rem;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
 }
 .comp-details li {
-  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
   color: var(--text-dim);
-  padding-bottom: 0.65rem;
-  border-bottom: 1px solid var(--bg-light);
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--card-border);
 }
+.comp-details li strong { flex-shrink: 0; }
 .comp-details li:last-child { border-bottom: none; padding-bottom: 0; }
 .comp-details li strong { color: var(--text); }
 .prize-up { color: var(--green); font-size: 0.8rem; font-weight: 600; }
 
-.comp-btn { width: 100%; justify-content: center; }
+.comp-btn { width: 100%; margin-top: auto; justify-content: center; padding: 0.6rem 1rem; font-size: 0.78rem; }
 
 /* ============================================================
    Calendar / Timeline
@@ -1083,12 +1104,14 @@ img { max-width: 100%; display: block; }
    ============================================================ */
 .fees-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .fee-card {
+  display: flex;
+  flex-direction: column;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
@@ -1102,38 +1125,49 @@ img { max-width: 100%; display: block; }
 }
 
 .fee-header {
-  padding: 1.5rem 2rem;
-  text-align: center;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.8rem 1.1rem;
 }
-.fee-header h3 { font-size: 1.5rem; color: #fff; }
+.fee-header h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+}
 .fee-total {
   font-family: 'Bebas Neue', cursive;
-  font-size: 2.5rem;
+  font-size: 1.55rem;
+  line-height: 1;
   color: #fff;
-  margin-top: 0.25rem;
+  white-space: nowrap;
 }
-.fee-total span { font-size: 1rem; opacity: 0.7; }
+.fee-total span { font-size: 0.62rem; opacity: 0.75; margin-left: 0.15rem; }
 
 .fee-header-orange { background: linear-gradient(135deg, var(--orange), #c2410c); }
 .fee-header-blue   { background: linear-gradient(135deg, var(--blue), #1d4ed8); }
 .fee-header-maroon { background: linear-gradient(135deg, var(--maroon), #881337); }
 
-.fee-list { padding: 1.5rem 2rem; }
+.fee-list { padding: 0.75rem 1.1rem; }
 .fee-list li {
   display: flex;
   justify-content: space-between;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--bg-light);
-  font-size: 0.9rem;
+  gap: 0.6rem;
+  padding: 0.32rem 0;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 0.8rem;
   color: var(--text-dim);
 }
 .fee-list li:last-child { border-bottom: none; }
 .fee-list li span:last-child { color: var(--text); font-weight: 600; }
 
 .fee-extra {
-  padding: 1rem 2rem;
+  margin-top: auto;
+  padding: 0.55rem 1.1rem;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.76rem;
   color: var(--text-dim);
   border-top: 1px solid var(--bg-light);
   background: var(--bg-light);
