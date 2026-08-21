@@ -444,9 +444,24 @@
     return { body: String(markdown).replace(match[0], '').trim(), cited: cited };
   }
 
-  function appendCitation(bubble, cited) {
-    if (!cited) return;
+  // Both books, with no particular section called out. Shown whenever the
+  // answer names no section — the rule book should always be one tap away,
+  // most of all when the assistant could not answer from it.
+  function addBookLinks(box) {
+    var row = document.createElement('div');
+    row.className = 'chat-cite-group chat-cite-books';
+    [RULE_BOOKS.senior, RULE_BOOKS.junior].forEach(function (book) {
+      var link = document.createElement('a');
+      link.className = 'chat-cite-book';
+      link.href = book.href;
+      link.setAttribute('download', '');
+      link.innerHTML = book.label;
+      row.appendChild(link);
+    });
+    box.appendChild(row);
+  }
 
+  function appendCitation(bubble, cited) {
     var box = document.createElement('div');
     box.className = 'chat-cite';
 
@@ -455,12 +470,25 @@
     head.textContent = '📖 Where this comes from';
     box.appendChild(head);
 
-    // Anything the rule books don't cover says so plainly instead of linking.
+    // No section named — still hand over the rule books so the reader can check
+    if (!cited) {
+      head.textContent = '📖 Read the rule books';
+      var plain = document.createElement('p');
+      plain.className = 'chat-cite-note';
+      plain.textContent = 'This answer did not name a rule book section. Both books are here:';
+      box.appendChild(plain);
+      addBookLinks(box);
+      bubble.appendChild(box);
+      return;
+    }
+
+    // Anything the rule books don't cover says so plainly — and still links.
     if (/not covered|general cricket|web search/i.test(cited)) {
       var note = document.createElement('p');
       note.className = 'chat-cite-note';
       note.textContent = 'Not covered by the MCA rule books — ' + cited.replace(/^not covered\s*[—–-]?\s*/i, '') + '.';
       box.appendChild(note);
+      addBookLinks(box);
       bubble.appendChild(box);
       return;
     }
