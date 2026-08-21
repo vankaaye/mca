@@ -151,7 +151,7 @@ html { scroll-behavior: smooth; }
 /* The bar is fixed, so an anchored section has to stop below it or its
    heading lands underneath the menu. */
 section[id] { scroll-margin-top: 6.5rem; }
-@media (max-width: 1024px) { section[id] { scroll-margin-top: 6.2rem; } }
+@media (max-width: 1180px) { section[id] { scroll-margin-top: 6.2rem; } }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -216,6 +216,11 @@ img { max-width: 100%; display: block; }
   gap: 1rem;
 }
 .logo { flex-shrink: 0; }
+/* Nothing on the bar may be pushed off the right-hand edge. The nav is the
+   only part allowed to give way, and the compact bar takes over before it has
+   to give up enough to truncate a label. */
+.nav { min-width: 0; }
+.theme-toggle, .ask-mca, .hamburger { flex-shrink: 0; }
 
 /* Circular, the same treatment as the avatar in the chat window. The artwork
    is square (743x748), so a round crop loses nothing off the shield. */
@@ -333,10 +338,21 @@ img { max-width: 100%; display: block; }
 }
 .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
+/* Laptops and half-screen windows: the full menu fits, but only just. Tighten
+   it rather than pushing the theme toggle off the right-hand edge. */
+@media (min-width: 1181px) and (max-width: 1560px) {
+  .nav-list { gap: 0.62rem; }
+  .nav-link { font-size: 0.66rem; letter-spacing: 0.03em; }
+  .ask-mca { padding: 0 0.62rem; font-size: 0.68rem; }
+  .logo img { height: 52px; width: 52px; }
+  .header.scrolled .logo img { height: 44px; width: 44px; }
+  .header-inner { gap: 0.6rem; }
+}
+
 /* Mobile nav — a handful of short links sit on the bar itself and share the
    width equally so nothing is ever clipped or half-hidden. The full menu is
    behind the burger. */
-@media (max-width: 1024px) {
+@media (max-width: 1180px) {
   .nav, .nav-cta { display: none; }
   .hamburger { display: flex; }
 
@@ -664,10 +680,50 @@ img { max-width: 100%; display: block; }
 /* ============================================================
    Sections (shared)
    ============================================================ */
-.section { padding: 5rem 0; }
+.section { padding: 5rem 0; position: relative; overflow: hidden; }
 
 .section-white { background: var(--bg); }
 .section-light { background: var(--bg-light); }
+
+/* Liquid backdrop — three soft colour fields in the competition colours,
+   drifting slowly behind the content. Pointer-events off and behind
+   everything, so it is decoration only. */
+.section-white::before,
+.section-light::before {
+  content: '';
+  position: absolute;
+  inset: -25% -12%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 44% at 16% 20%, rgba(234,179,8,0.13), transparent 64%),
+    radial-gradient(34% 40% at 84% 14%, rgba(22,163,74,0.11), transparent 62%),
+    radial-gradient(42% 46% at 72% 88%, rgba(194,65,12,0.09), transparent 64%);
+  animation: liquidDrift 34s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.section-light::before { animation-duration: 42s; animation-direction: alternate-reverse; }
+[data-theme="dark"] .section-white::before,
+[data-theme="dark"] .section-light::before {
+  background:
+    radial-gradient(38% 44% at 16% 20%, rgba(234,179,8,0.10), transparent 64%),
+    radial-gradient(34% 40% at 84% 14%, rgba(22,163,74,0.10), transparent 62%),
+    radial-gradient(42% 46% at 72% 88%, rgba(194,65,12,0.08), transparent 64%);
+}
+/* Content sits above the backdrop */
+.section > .container { position: relative; z-index: 1; }
+
+@keyframes liquidDrift {
+  from { transform: translate3d(-2.5%, -1.5%, 0) scale(1); }
+  to   { transform: translate3d(2.5%, 2%, 0) scale(1.08); }
+}
+
+/* Slow breathing for photographs — a few percent over twenty seconds, enough
+   to feel alive and not enough to distract from reading. */
+@keyframes breathe {
+  from { transform: scale(1); }
+  to   { transform: scale(1.05); }
+}
 
 .section-dark {
   background: var(--surface-deep);
@@ -723,7 +779,30 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--card-shadow-hover);
 }
 
-.feature-icon { margin-bottom: 1rem; }
+.feature-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(234,179,8,0.16), rgba(22,163,74,0.12) 55%, rgba(194,65,12,0.14));
+}
+.feature-icon::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(50% 50% at 28% 24%, rgba(255,255,255,0.5), transparent 70%);
+  animation: liquidDrift 20s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+[data-theme="dark"] .feature-icon::after {
+  background: radial-gradient(50% 50% at 28% 24%, rgba(255,255,255,0.14), transparent 70%);
+}
+.feature-icon svg { position: relative; z-index: 1; width: 34px; height: 34px; }
 .feature-card h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
@@ -759,8 +838,14 @@ img { max-width: 100%; display: block; }
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s;
+  animation: breathe 22s ease-in-out infinite alternate;
+  will-change: transform;
 }
-.gallery-item:hover img { transform: scale(1.08); }
+/* Stagger them so the grid does not pulse in unison */
+.gallery-item:nth-child(2n) img { animation-duration: 27s; animation-delay: -6s; }
+.gallery-item:nth-child(3n) img { animation-duration: 31s; animation-delay: -12s; }
+/* Hover takes over from the breathing */
+.gallery-item:hover img { animation: none; transform: scale(1.08); }
 
 .gallery-item-wide { grid-column: span 2; }
 
@@ -1155,6 +1240,7 @@ img { max-width: 100%; display: block; }
 }
 
 .contact-icon {
+  position: relative;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -1162,7 +1248,21 @@ img { max-width: 100%; display: block; }
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+  overflow: hidden;
 }
+/* A slow sheen inside the disc, so the icons are not flat colour */
+.contact-icon::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(50% 50% at 30% 25%, rgba(255,255,255,0.55), transparent 70%);
+  animation: liquidDrift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+[data-theme="dark"] .contact-icon::after {
+  background: radial-gradient(50% 50% at 30% 25%, rgba(255,255,255,0.16), transparent 70%);
+}
+.contact-icon svg { position: relative; z-index: 1; }
 .contact-icon-gold   { background: rgba(245,158,11,0.15); color: var(--gold); }
 .contact-icon-green  { background: rgba(22,163,74,0.15); color: var(--green); }
 .contact-icon-blue   { background: rgba(37,99,235,0.15); color: var(--blue); }
@@ -2002,6 +2102,10 @@ body[data-chat-page] .chat-launch { display: none; }
   .hero-photo, .live-dot { animation: none; }
   .feature-card:hover, .comp-card:hover, .fee-card:hover,
   .contact-card:hover, .season-card:hover { transform: translateY(-4px); }
+  /* The liquid backdrops and the breathing photos are decoration only */
+  .section-white::before, .section-light::before,
+  .gallery-item img, .hero-photo,
+  .feature-icon::after, .contact-icon::after { animation: none; }
 }
 
 /* Close control in the chat header */
