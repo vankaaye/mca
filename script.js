@@ -1268,7 +1268,9 @@
       'photos/umpire-presentation.jpg',
       'photos/laverton-champions.jpg'
     ];
-    var INTERVAL = 10000;
+    // Long enough that a photograph finishes its slow push before the next one
+    // arrives. At ten seconds the movement never had time to read as movement.
+    var INTERVAL = 12000;
 
     // Someone who has asked their device to reduce motion gets the first
     // photograph and nothing else moving.
@@ -1298,6 +1300,11 @@
       preload(PHOTOS[next]).then(function (src) {
         var back = 1 - front;
         layers[back].style.backgroundImage = "url('" + src + "')";
+        // Restart the push from the beginning, so every photograph gets the
+        // whole movement rather than joining one already half over.
+        layers[back].style.animation = 'none';
+        void layers[back].offsetWidth;          // forces the restart
+        layers[back].style.animation = '';
         layers[back].classList.add('is-active');
         layers[front].classList.remove('is-active');
         front = back;
