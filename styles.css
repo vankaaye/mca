@@ -130,8 +130,8 @@
   100% { opacity: 1; transform: none; }
 }
 @keyframes kenBurns {
-  0%   { transform: scale(1) translate(0, 0); }
-  100% { transform: scale(1.16) translate(-2%, 1.2%); }
+  0%   { transform: scale(1.02) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.6%, 1%); }
 }
 
 .hero-rise   { animation: 1s cubic-bezier(.16,1,.3,1) both heroRise; }
@@ -474,10 +474,17 @@ img { max-width: 100%; display: block; }
   position: absolute;
   inset: -4%;
   z-index: -2;
-  background: url('photos/hero.jpg') center 38% / cover no-repeat;
-  animation: kenBurns 30s ease-in-out infinite alternate;
-  will-change: transform;
+  background-position: center 38%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* Breathing: a visible but unhurried swell, roughly one breath every
+     fourteen seconds. The old 30s cycle was too slow to read as movement. */
+  animation: kenBurns 14s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+  opacity: 0;
+  transition: opacity 1.4s ease;
 }
+.hero-photo.is-active { opacity: 1; }
 
 /* Scrim: dark from the bottom-left so the copy always has a bed to sit on */
 .hero-scrim {
@@ -1425,6 +1432,141 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 640px) {
   .section-emoji { margin-right: 0.35rem; font-size: 0.8em; }
+}
+
+/* ============================================================
+   Photo viewer
+   ============================================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.lightbox[hidden] { display: none; }
+.lightbox.is-open { opacity: 1; }
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,10,16,0.93);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.lightbox-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 3.5rem 0.75rem 3rem;
+  padding-bottom: max(3rem, env(safe-area-inset-bottom));
+}
+
+.lightbox-figure {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  /* Drag-to-dismiss moves this, so it must not animate its own transform */
+  will-change: transform;
+}
+.lightbox-figure img {
+  max-width: 100%;
+  max-height: calc(100vh - 9rem);
+  max-height: calc(100dvh - 9rem);
+  width: auto;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+  /* The photo is the point — never crop it to fit */
+  object-fit: contain;
+}
+.lightbox-figure figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.9rem;
+  color: rgba(255,255,255,0.86);
+  font-size: 0.86rem;
+  text-align: center;
+  max-width: 44rem;
+}
+.lightbox-original {
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.lightbox-original:hover { text-decoration: underline; }
+
+.lightbox-btn,
+.lightbox-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.lightbox-btn:hover,
+.lightbox-close:hover { background: rgba(255,255,255,0.28); }
+
+.lightbox-close {
+  position: absolute;
+  top: 0.9rem;
+  top: max(0.9rem, env(safe-area-inset-top));
+  right: 0.9rem;
+  z-index: 2;
+}
+
+.lightbox-hint {
+  position: absolute;
+  bottom: 0.85rem;
+  bottom: max(0.85rem, env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.72rem;
+  pointer-events: none;
+}
+
+/* Photos advertise that they open */
+.gallery-item { cursor: zoom-in; }
+.gallery-item:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+body.lightbox-open { overflow: hidden; }
+
+@media (max-width: 720px) {
+  /* Arrows would crowd a phone; swipe left and right instead */
+  .lightbox-btn { display: none; }
+  .lightbox-stage { padding: 3.25rem 0.5rem 2.5rem; }
+  .lightbox-figure img { max-height: calc(100dvh - 8rem); }
+  .lightbox-figure figcaption { font-size: 0.78rem; padding: 0 0.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox, .lightbox-figure { transition: none; }
 }
 
 /* ============================================================
