@@ -20,6 +20,8 @@
 // Config
 // ----------------------------------------------------------------------------
 
+import ASSOCIATION_NOTES from '../knowledge.md';
+
 const ALLOWED_ORIGINS = [
   // Primary domain
   'https://mcacric.com',
@@ -1598,6 +1600,13 @@ People can attach a photo or a PDF — usually a scoresheet, a PlayHQ screen, or
 - A scoresheet or screenshot is not evidence of what the rules say. Where the image and the rule book disagree, the rule book stands, and say so.
 - Never claim to see something the image does not show, and never invent a name, score or date from a blurry picture.
 
+ASSOCIATION NOTES
+Below the rule books there is a section headed ASSOCIATION NOTES. It holds decisions, clarifications and changes the committee has made since the books were printed.
+
+- The rule books outrank it. Where a note and a rule book disagree, the rule book stands and you say which is which.
+- It outranks your own general knowledge. If something is in the notes and nowhere else, treat it as true.
+- Cite it as "Association note", never as a rule book section, so nobody mistakes a committee decision for a printed rule.
+
 USING THE RULE BOOKS
 The complete text of both rule books is appended below, under RULE BOOK — SENIORS and RULE BOOK — JUNIORS. It is the authority. Read it before answering anything about the rules.
 
@@ -1728,6 +1737,11 @@ ${RULE_BOOK_SENIORS}
 RULE BOOK — JUNIORS (MCA Winter 2026, U11/U13/U15, v0.4)
 ════════════════════════════════════════════════════════════
 ${RULE_BOOK_JUNIORS}
+
+════════════════════════════════════════════════════════════
+ASSOCIATION NOTES (below the rule books, above general knowledge)
+════════════════════════════════════════════════════════════
+${ASSOCIATION_NOTES}
 Three likely follow-ups, each under 40 characters, written in the user's own voice ("What's the umpire fee?" rather than "Umpire fees").`;
 
 // ----------------------------------------------------------------------------

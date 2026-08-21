@@ -1415,6 +1415,70 @@
     });
   })();
 
+  // ---- Contact form ---------------------------------------------------------
+  //
+  //  Posts to the Worker's /enquiry route, which relays it to the association
+  //  inbox. If the Worker is unreachable the form says so and points at the
+  //  phone numbers below it, rather than swallowing the message.
+
+  (function contactForm() {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    var statusEl = document.getElementById('contact-form-status');
+    var button = form.querySelector('button[type="submit"]');
+
+    function say(message, kind) {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.className = 'contact-form-status' + (kind ? ' is-' + kind : '');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var data = {
+        name: form.elements.name.value.trim(),
+        phone: form.elements.phone.value.trim(),
+        email: form.elements.email.value.trim(),
+        message: form.elements.message.value.trim(),
+        honey: form.elements.honey.value,
+      };
+
+      if (data.name.length < 2) { say('Please tell us your name.', 'error'); form.elements.name.focus(); return; }
+      if (data.phone.replace(/[^0-9]/g, '').length < 8) { say('Please give us a phone number we can reach you on.', 'error'); form.elements.phone.focus(); return; }
+      if (data.message.length < 5) { say('Please add a short message.', 'error'); form.elements.message.focus(); return; }
+
+      var url = endpoint();
+      if (!url) {
+        say('The message form is not available right now — please call or WhatsApp us instead.', 'error');
+        return;
+      }
+
+      button.disabled = true;
+      say('Sending…');
+
+      fetch(url + '/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            if (!res.ok || body.error) throw new Error(body.error || 'Request failed');
+            return body;
+          });
+        })
+        .then(function () {
+          form.reset();
+          say('Thanks — that has gone to the committee. We will get back to you.', 'ok');
+        })
+        .catch(function () {
+          say('That did not send. Please call or WhatsApp us instead — the numbers are just below.', 'error');
+        })
+        .then(function () { button.disabled = false; });
+    });
+  })();
+
   // ---- Page-view beacon -----------------------------------------------------
 
   (function pageBeacon() {
@@ -1718,14 +1782,19 @@
       var rule = ranked[i].rule;
       if (!rule.a || seenAnswers.indexOf(rule.a) !== -1) continue;
       seenAnswers.push(rule.a);
-      supporting.push(rule.a);
+      // Carry the question with the answer. Without it, four umpire fees came
+      // out as four bare amounts with nothing saying which was which.
+      supporting.push({ q: rule.q || '', a: rule.a });
       var sec = sectionFor(rule);
       if (sec && sections.indexOf(sec) === -1) sections.push(sec);
     }
 
-    var answer = emojiFor(best) + ' ' + best.a;
+    var answer = emojiFor(best) + ' **' + (best.q || 'Answer') + '**\n\n' + best.a;
     if (supporting.length) {
-      answer += '\n\n' + supporting.map(function (s) { return '- ' + s; }).join('\n');
+      answer += '\n\n**Also worth knowing**\n\n';
+      answer += supporting.map(function (s) {
+        return s.q ? '- **' + s.q.replace(/\?$/, '') + '** — ' + s.a : '- ' + s.a;
+      }).join('\n');
     }
     if (sections.length) {
       // No download link here — appendCitation() builds it from these names.
