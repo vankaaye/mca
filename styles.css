@@ -1606,7 +1606,7 @@ img { max-width: 100%; display: block; }
 
   .chatbot-input-area { padding: 0.6rem; gap: 0.4rem; }
   /* 16px stops iOS zooming the page when the field is focused */
-  .chatbot-input { font-size: 16px; padding: 0.55rem 0.7rem; }
+  .chatbot-input { padding: 0.55rem 0.7rem; }
   .chatbot-mic, .chatbot-send { width: 38px; height: 38px; }
 
   .chatbot-toggle { bottom: 1rem; right: 1rem; height: 48px; padding: 0 1.1rem; font-size: 0.9rem; }
@@ -1866,4 +1866,23 @@ img { max-width: 100%; display: block; }
   .chat-chips::-webkit-scrollbar { display: none; }
   .chat-chips-label { display: none; }
   .chat-chip { flex: 0 0 auto; }
+}
+
+
+/* ============================================================
+   iOS zoom guard — must stay last
+   Safari zooms the whole page when a focused field is under 16px, and the
+   page stays zoomed afterwards, which crops the right-hand side. This has
+   to sit after the base .chatbot-input rule or the 14px there wins.
+   ============================================================ */
+@media (max-width: 900px) {
+  .chatbot-input,
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
 }
