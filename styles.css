@@ -1329,10 +1329,16 @@ img { max-width: 100%; display: block; }
 /* The label is the point of the button — it never collapses to a bare icon */
 .chat-launch-label { display: inline; }
 .chat-launch:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,0,0,0.26), 0 4px 16px rgba(202,138,4,0.45); }
-/* The assistant page is the chat, so it needs neither the launcher nor a
-   button inviting you to the place you are already standing. */
-body[data-chat-page] .chat-launch,
-body[data-chat-page] .ask-mca { display: none; }
+/* The assistant page is the chat, so the floating launcher would open what is
+   already open. The header keeps its Ask MCA pill so both pages look the same;
+   there it reads as "you are here" and puts the cursor in the box. */
+body[data-chat-page] .chat-launch { display: none; }
+.ask-mca-here {
+  background: rgba(234,179,8,0.28);
+  border-color: var(--gold);
+  color: #fff;
+}
+.ask-mca-here:hover { background: rgba(234,179,8,0.4); }
 /* The header is its own stacking context at z-index 1000, so the menu overlay
    inside it can never paint above the launcher — hide the launcher instead. */
 .header.nav-open ~ #chatbot .chat-launch { opacity: 0; pointer-events: none; }
@@ -1780,6 +1786,7 @@ body[data-chat-page] .ask-mca { display: none; }
   width: 32px;
   height: 32px;
   margin-left: auto;
+  margin-right: 0.4rem;
   flex-shrink: 0;
   border: none;
   border-radius: 50%;
