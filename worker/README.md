@@ -15,6 +15,33 @@ Browser widget  →  POST /chat  →  this Worker  →  api.anthropic.com
 | `/hit` | POST | Fire-and-forget page-view beacon (returns 204) |
 | `/stats` | GET | Unlisted dashboard, last 14 days |
 
+## What the assistant knows
+
+The system prompt carries **the full text of both rule books**, pasted into
+`src/worker.js` as `RULE_BOOK_SENIORS` and `RULE_BOOK_JUNIORS`, plus a
+summary of the facts most often asked for.
+
+It used to carry only the summary. That meant any question about a section
+nobody had thought to summarise came back as "I don't have that detail" — or,
+worse, as a confident invention. Carrying the whole text removes that class of
+failure: if it is in the book, the assistant can read it.
+
+**When the rule books change**, re-extract and paste them in:
+
+```bash
+pdftotext ../rules/MCA-Winter-2026-T35-and-T20-Rules-v1.0.pdf -
+pdftotext ../rules/MCA-Juniors-Winter-2026-Rules-v0.4.pdf -
+```
+
+Replace the contents of the two template literals, keeping the backticks. Any
+literal backtick or `${` in the text must be backslash-escaped. Then redeploy.
+
+The prompt is about 16,000 tokens, so it is sent with `cache_control` and is
+served from cache after the first request in a five-minute window. Haiku will
+not cache a prefix under 4,096 tokens; this clears that comfortably. If you
+ever want to check it is still hitting, look at `cache_read_input_tokens` in
+the API response.
+
 ## Updating an already-deployed Worker
 
 The Worker is live. To push a change to the system prompt or the rules it
