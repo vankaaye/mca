@@ -1,0 +1,17 @@
+# Serves the MCA website as static assets from Cloudflare.
+#
+# The Cloudflare build for this project runs `npx wrangler deploy` from the
+# repo root, which reads this file. There is no `main` entry because nothing
+# needs to execute — it is a static site, so Cloudflare just serves the files.
+#
+# The chat assistant is a SEPARATE Worker (worker/wrangler.toml, named
+# "mca-assistant"). Deploying this one does not touch it.
+
+name = "mca"
+compatibility_date = "2026-08-01"
+
+[assets]
+directory = "."
+# Requests that match no file fall through to the 404 page rather than
+# silently returning index.html.
+not_found_handling = "none"
