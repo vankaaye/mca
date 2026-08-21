@@ -1167,6 +1167,7 @@ img { max-width: 100%; display: block; }
 .contact-icon-green  { background: rgba(22,163,74,0.15); color: var(--green); }
 .contact-icon-blue   { background: rgba(37,99,235,0.15); color: var(--blue); }
 .contact-icon-orange { background: rgba(234,88,12,0.15); color: var(--orange); }
+.contact-icon-red    { background: rgba(220,38,38,0.14); color: #dc2626; }
 
 .contact-card h3 { font-size: 1.5rem; color: var(--surface-deep-ink); }
 .contact-role {
@@ -1292,6 +1293,38 @@ img { max-width: 100%; display: block; }
 @media (max-width: 640px) {
   .fixtures-main { padding: 1.25rem; }
   .fixtures-cta { width: 100%; }
+}
+
+/* ============================================================
+   Emoji and brand marks
+   ============================================================ */
+/* Emoji sit beside a heading, never inside the letterforms — a fixed inline
+   box keeps the text baseline where it was. */
+.section-emoji {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 0.85em;
+  line-height: 1;
+  vertical-align: baseline;
+  /* Colour emoji ignore the heading's gradient/colour, which is what we want */
+  -webkit-text-fill-color: initial;
+}
+.card-emoji {
+  display: inline-block;
+  margin-right: 0.4rem;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.link-youtube {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.link-youtube svg { color: #ff0000; flex-shrink: 0; }
+
+@media (max-width: 640px) {
+  .section-emoji { margin-right: 0.35rem; font-size: 0.8em; }
 }
 
 /* ============================================================
