@@ -38,7 +38,8 @@ rule Q&As. Slower to write, but free and dependency-free.
 | File | What it is |
 |---|---|
 | `index.html` | The whole site — every section |
-| `chat.html` | Standalone chat page, shareable on its own |
+| `chat.html` | Standalone assistant page — shareable on its own at **https://mcacric.com/chat** |
+| `chat/index.html` | Makes the short `/chat` address work; it just forwards to `chat.html` |
 | `styles.css` | All styling, both light and dark themes |
 | `script.js` | Site behaviour and the chat widget |
 | `rules-data.js` | 211 rule Q&As, used when the Worker is unreachable |
