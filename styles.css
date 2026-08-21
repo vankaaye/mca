@@ -2027,7 +2027,7 @@ body[data-chat-page] .chat-launch { display: none; }
   .chatbot-input-area { padding: 0.6rem; gap: 0.4rem; }
   /* 16px stops iOS zooming the page when the field is focused */
   .chatbot-input { padding: 0.55rem 0.7rem; }
-  .chatbot-mic, .chatbot-send { width: 38px; height: 38px; }
+  .chatbot-mic, .chatbot-send, .chatbot-attach { width: 36px; height: 36px; }
 
   .chat-launch { height: 48px; padding: 0 1rem; font-size: 0.85rem; gap: 0.45rem; }
   /* Keep the last footer line clear of the floating launcher */
@@ -2100,6 +2100,119 @@ body[data-chat-page] .chat-launch { display: none; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
   vertical-align: 1px;
+}
+
+/* Attachments — a photo of a scoresheet, or a PDF */
+.chatbot-attach {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.chatbot-attach:hover:not(:disabled) { color: var(--gold-dark); border-color: var(--gold); }
+.chatbot-attach:disabled { opacity: 0.45; cursor: default; }
+
+.chat-attachment {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--card-border);
+  background: var(--card-bg);
+}
+.chat-attachment[hidden] { display: none; }
+
+.chat-attachment-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  background: rgba(234,179,8,0.07);
+}
+.chat-attachment-thumb {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 0.4rem;
+}
+.chat-attachment-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 0.4rem;
+  background: var(--orange);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.chat-attachment-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.chat-attachment-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-attachment-size { font-size: 0.7rem; color: var(--text-dim); }
+.chat-attachment-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.chat-attachment-remove:hover { background: var(--card-border); color: var(--text); }
+.chat-attachment-error {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--orange);
+}
+
+/* What was attached, shown in the asker's own bubble */
+.chat-msg-image {
+  display: block;
+  max-width: 100%;
+  max-height: 190px;
+  width: auto;
+  border-radius: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+.chat-msg-file {
+  display: block;
+  font-size: 0.78rem;
+  opacity: 0.9;
+  margin-bottom: 0.3rem;
+}
+
+@media (max-width: 640px) {
+  .chatbot-attach { width: 36px; height: 36px; }
+  .chat-attachment { padding: 0.4rem 0.75rem; }
+  .chat-msg-image { max-height: 150px; }
 }
 
 /* Suggested question chips */

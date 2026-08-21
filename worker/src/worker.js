@@ -46,6 +46,13 @@ const MAX_TURNS = 12;                   // trailing conversation turns kept
 const MAX_MSG_CHARS = 2000;             // per-message cap
 const MAX_PAUSE_ROUNDS = 2;             // extra calls allowed for the search loop
 
+// Attachments. Photos of a scoresheet or a PlayHQ screen are the point; the
+// caps keep one oversized upload from blowing the request limit or the bill.
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024;   // per file, decoded
+const MAX_ATTACHMENTS_KEPT = 3;                 // most recent user turns that keep theirs
+
+
 const ENQUIRY_EMAIL = 'melbournecricketassociation@gmail.com';
 const STATS_TTL_SECONDS = 60 * 60 * 24 * 40; // keep daily counters ~40 days
 
@@ -1584,6 +1591,13 @@ FORMATTING — answers must be scannable, never a wall of text
 - Use markdown links, including in-site links: [season info](/#register), [fees](/#fees), [rules](/#rules), [juniors](/#juniors), [competitions](/#competitions), [fixtures and ladders](/#fixtures), [photos](/#gallery), [contact](/#contact).
 - Separate distinct points with a blank line. No headings.
 
+ATTACHMENTS
+People can attach a photo or a PDF — usually a scoresheet, a PlayHQ screen, or a page of a rule book. When one is present:
+- Read it and answer the question about it. Say what you can actually see, and say when something is unreadable rather than guessing at it.
+- Check any arithmetic yourself — totals, run rates, revised targets — and show the working when a number is in question.
+- A scoresheet or screenshot is not evidence of what the rules say. Where the image and the rule book disagree, the rule book stands, and say so.
+- Never claim to see something the image does not show, and never invent a name, score or date from a blurry picture.
+
 USING THE RULE BOOKS
 The complete text of both rule books is appended below, under RULE BOOK — SENIORS and RULE BOOK — JUNIORS. It is the authority. Read it before answering anything about the rules.
 
@@ -1796,6 +1810,41 @@ async function bump(env, metric) {
 // Conversation trimming
 // ----------------------------------------------------------------------------
 
+/**
+ * Roughly how many bytes a base64 string decodes to, without decoding it.
+ */
+function base64Bytes(data) {
+  const len = String(data).length;
+  return Math.floor(len * 3 / 4);
+}
+
+/**
+ * Accepts one attachment block from the browser, or null if it is not something
+ * we are willing to forward. Only images and PDFs, only base64, size-capped.
+ * Anything else — a stray tool_use, a URL source, an unexpected media type — is
+ * dropped rather than passed through to the API.
+ */
+function cleanAttachment(block) {
+  if (!block || typeof block !== 'object') return null;
+  const src = block.source;
+  if (!src || src.type !== 'base64' || typeof src.data !== 'string') return null;
+  if (base64Bytes(src.data) > MAX_ATTACHMENT_BYTES) return null;
+
+  if (block.type === 'image' && ALLOWED_IMAGE_TYPES.indexOf(src.media_type) !== -1) {
+    return { type: 'image', source: { type: 'base64', media_type: src.media_type, data: src.data } };
+  }
+  if (block.type === 'document' && src.media_type === 'application/pdf') {
+    return { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: src.data } };
+  }
+  return null;
+}
+
+/**
+ * Normalises whatever the browser sent into the message shape the API expects.
+ * Content may be a plain string, or an array of blocks when the user attached
+ * something. Everything is rebuilt field by field — nothing from the request
+ * body is forwarded as-is.
+ */
 function trimConversation(raw) {
   if (!Array.isArray(raw)) return [];
 
@@ -1803,13 +1852,58 @@ function trimConversation(raw) {
   for (const msg of raw) {
     if (!msg || typeof msg !== 'object') continue;
     if (msg.role !== 'user' && msg.role !== 'assistant') continue;
-    if (typeof msg.content !== 'string') continue;
-    const text = msg.content.trim();
-    if (!text) continue;
-    clean.push({ role: msg.role, content: text.slice(0, MAX_MSG_CHARS) });
+
+    if (typeof msg.content === 'string') {
+      const text = msg.content.trim();
+      if (!text) continue;
+      clean.push({ role: msg.role, content: text.slice(0, MAX_MSG_CHARS) });
+      continue;
+    }
+
+    if (!Array.isArray(msg.content)) continue;
+
+    const blocks = [];
+    let hasAttachment = false;
+    for (const block of msg.content) {
+      if (!block || typeof block !== 'object') continue;
+      if (block.type === 'text' && typeof block.text === 'string') {
+        const text = block.text.trim();
+        if (text) blocks.push({ type: 'text', text: text.slice(0, MAX_MSG_CHARS) });
+        continue;
+      }
+      // Only the person asking may attach anything
+      if (msg.role !== 'user') continue;
+      const file = cleanAttachment(block);
+      if (file) { blocks.push(file); hasAttachment = true; }
+    }
+
+    if (!blocks.length) continue;
+    // The API wants the file before the question that is about it
+    blocks.sort(function (a, b) { return (a.type === 'text' ? 1 : 0) - (b.type === 'text' ? 1 : 0); });
+    clean.push({ role: msg.role, content: blocks, _hasAttachment: hasAttachment });
   }
 
-  return clean.slice(-MAX_TURNS);
+  const kept = clean.slice(-MAX_TURNS);
+
+  // Re-sending every image on every turn multiplies the bill for no benefit
+  // once the conversation has moved on. Keep the newest few, replace the rest
+  // with a note so the thread still reads sensibly.
+  let seen = 0;
+  for (let i = kept.length - 1; i >= 0; i--) {
+    const msg = kept[i];
+    if (!msg._hasAttachment) { delete msg._hasAttachment; continue; }
+    seen++;
+    if (seen > MAX_ATTACHMENTS_KEPT) {
+      const text = (msg.content || [])
+        .filter(function (b) { return b.type === 'text'; })
+        .map(function (b) { return b.text; })
+        .join('\n');
+      msg.content = [{ type: 'text', text: (text ? text + '\n\n' : '') + '[an earlier attachment, no longer shown]' }];
+    }
+    delete msg._hasAttachment;
+  }
+
+  return kept;
 }
 
 // ----------------------------------------------------------------------------

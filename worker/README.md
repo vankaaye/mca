@@ -63,8 +63,12 @@ Actions tab.
    | `CLOUDFLARE_API_TOKEN` | the token from step 1 |
    | `CLOUDFLARE_ACCOUNT_ID` | the id from step 2 |
 
-The Anthropic API key is **not** needed here. It lives on the Worker, and a
-deploy leaves existing secrets untouched, so it never goes near GitHub.
+The Anthropic API key is **not** needed here. It lives on the Worker and never
+goes near GitHub. `keep_vars = true` in `wrangler.toml` is what protects it: by
+default `wrangler deploy` replaces the Worker's whole set of variables and
+secrets with whatever the config file declares, and since the key is
+deliberately not in this repository, that removed it. It cost an outage the
+first time. Do not remove that line.
 
 ⚠️ Before the first automated deploy, check whether the Worker has a **STATS**
 KV binding (Cloudflare → the Worker → Settings → Bindings). If it does, put the

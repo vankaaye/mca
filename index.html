@@ -810,7 +810,14 @@
       </p>
       <div id="chatbot-messages" class="chatbot-messages"></div>
       <div id="chatbot-chips" class="chat-chips-dock"></div>
+      <div id="chatbot-attachment" class="chat-attachment" hidden></div>
       <div class="chatbot-input-area">
+        <input type="file" id="chatbot-file" class="chatbot-file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" hidden />
+        <button id="chatbot-attach" class="chatbot-attach" type="button" aria-label="Attach a photo or PDF" title="Attach a photo or PDF">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.4 11.05l-9.2 9.2a6 6 0 01-8.49-8.49l9.2-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+        </svg>
+        </button>
         <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask about MCA cricket..." autocomplete="off" />
         <button id="chatbot-mic" class="chatbot-mic" aria-label="Ask by voice" title="Ask by voice">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
