@@ -2,12 +2,20 @@ name = "mca-assistant"
 main = "src/worker.js"
 compatibility_date = "2025-06-01"
 
-# Daily counters for the /stats dashboard.
-# Create with:  npx wrangler kv namespace create STATS
-# then paste the returned id below.
-[[kv_namespaces]]
-binding = "STATS"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+# Daily counters for the /stats dashboard. Optional — every KV call in the
+# Worker is guarded, so it runs fine with no binding at all and /stats simply
+# reports zeros.
+#
+# ⚠️  This file is the whole truth about the Worker's bindings. Deploying with
+# the block below commented out REMOVES any STATS binding the Worker currently
+# has, wherever it was added. If the Worker already has one, uncomment this and
+# paste the real id before the first automated deploy.
+#
+# To create one:  npx wrangler kv namespace create STATS
+#
+# [[kv_namespaces]]
+# binding = "STATS"
+# id = "PASTE_THE_KV_NAMESPACE_ID_HERE"
 
 # ANTHROPIC_API_KEY is a secret, never a var. Set it with:
 #   npx wrangler secret put ANTHROPIC_API_KEY

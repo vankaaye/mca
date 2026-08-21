@@ -42,19 +42,48 @@ not cache a prefix under 4,096 tokens; this clears that comfortably. If you
 ever want to check it is still hitting, look at `cache_read_input_tokens` in
 the API response.
 
-## Updating an already-deployed Worker
+## Deploying
 
-The Worker is live. To push a change to the system prompt or the rules it
-knows, either:
+**Pushing a change to `worker/` on `main` deploys it.** A GitHub Action
+(`.github/workflows/deploy-worker.yml`) runs `wrangler deploy`, then asks the
+live assistant a rule-book question and fails the build if the answer shows an
+older prompt is still serving. You can also trigger it by hand from the repo's
+Actions tab.
 
-**From the dashboard** (no tools needed) — open the Worker in Cloudflare,
-click *Edit code*, paste the whole of `src/worker.js` over what is there, and
-*Deploy*. The API key and KV binding are account settings and survive this.
+### One-time setup
+
+1. **Cloudflare → My Profile → API Tokens → Create Token**, using the
+   *Edit Cloudflare Workers* template. Copy the token — it is shown once.
+2. **Cloudflare → Workers & Pages**, copy the **Account ID** from the sidebar.
+3. **GitHub → this repo → Settings → Secrets and variables → Actions →
+   New repository secret**, twice:
+
+   | Name | Value |
+   |---|---|
+   | `CLOUDFLARE_API_TOKEN` | the token from step 1 |
+   | `CLOUDFLARE_ACCOUNT_ID` | the id from step 2 |
+
+The Anthropic API key is **not** needed here. It lives on the Worker, and a
+deploy leaves existing secrets untouched, so it never goes near GitHub.
+
+⚠️ Before the first automated deploy, check whether the Worker has a **STATS**
+KV binding (Cloudflare → the Worker → Settings → Bindings). If it does, put the
+namespace id into `wrangler.toml` — that file is the whole truth about
+bindings, and deploying without it removes the binding. Analytics is the only
+thing affected; the chat is unaffected either way.
+
+## Updating it by hand
+
+Only needed if the Action is not set up, or you want to bypass it.
+
+**From the dashboard** — open the Worker in Cloudflare, click *Edit code*,
+paste the whole of `src/worker.js` over what is there, and *Deploy*. The API
+key and any bindings are account settings and survive this.
 
 **From a terminal** — `cd worker && wrangler deploy`.
 
-Nothing about the website needs redeploying; the site and the Worker are
-separate.
+Either way, nothing about the website needs redeploying; the site and the
+Worker are separate.
 
 ## First-time deploy
 

@@ -1,0 +1,92 @@
+# Deploys the chat assistant Worker whenever its source changes on main.
+#
+# Editing the Worker used to mean copying the file into the Cloudflare
+# dashboard by hand, which is easy to forget — the site and the assistant would
+# drift apart, and the assistant would answer from an older rule book.
+#
+# Setup, once (see worker/README.md for the click-by-click version):
+#   1. Cloudflare → My Profile → API Tokens → Create Token → "Edit Cloudflare
+#      Workers" template. Copy the token.
+#   2. GitHub → this repo → Settings → Secrets and variables → Actions:
+#        CLOUDFLARE_API_TOKEN   the token from step 1
+#        CLOUDFLARE_ACCOUNT_ID  Cloudflare → Workers & Pages → Account ID
+#
+# The Anthropic API key is NOT needed here. It is stored on the Worker itself
+# and a deploy leaves existing secrets alone, so it never touches GitHub.
+name: Deploy assistant Worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'worker/**'
+      - '.github/workflows/deploy-worker.yml'
+  workflow_dispatch:        # lets you deploy by hand from the Actions tab
+
+concurrency:
+  group: deploy-worker      # never let two deploys race
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Is Cloudflare set up yet?
+        id: creds
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ACCOUNT" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Skipping the deploy — add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets to turn it on. See worker/README.md."
+          fi
+
+      - name: Check it builds, before touching anything live
+        working-directory: worker
+        run: |
+          node --check src/worker.js
+          npx --yes wrangler@4 deploy --dry-run --outdir /tmp/worker-build
+
+      - name: Deploy
+        if: steps.creds.outputs.ready == 'true'
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@4 deploy
+
+      - name: Ask the live assistant a question only the new prompt can answer
+        if: steps.creds.outputs.ready == 'true'
+        env:
+          ENDPOINT: https://mca-assistant.astrocare.workers.dev
+        run: |
+          # Cloudflare takes a moment to roll the new version out worldwide.
+          sleep 15
+          reply=$(curl -sS --max-time 90 -X POST "$ENDPOINT/chat" \
+            -H 'Content-Type: application/json' \
+            -H 'Origin: https://www.mcacric.com' \
+            -d '{"messages":[{"role":"user","content":"Can a fill-in player play a second game?"}]}')
+
+          echo "$reply" | head -c 1200
+          echo
+
+          # The rule is: a PlayHQ fill-in covers the first game only, and from
+          # the second game the player must be fully registered. If the answer
+          # does not mention registering, the deployed prompt is not the one in
+          # this repository.
+          if echo "$reply" | grep -qi 'registered'; then
+            echo "::notice::Smoke test passed — the assistant answered from the rule book."
+          else
+            echo "::error::Smoke test failed — the deployed assistant did not answer the fill-in question from the rule book."
+            exit 1
+          fi
