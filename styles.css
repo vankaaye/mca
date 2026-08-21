@@ -2255,6 +2255,53 @@ body[data-chat-page] .chat-launch { display: none; }
   .feature-icon::after, .contact-icon::after { animation: none; }
 }
 
+/* Expand control — grows the floating panel to most of the screen. Hidden on
+   the standalone page (already full width) and on phones (the panel is already
+   a full-screen sheet, so there is nothing to grow into). */
+.chatbot-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  margin-right: 0.4rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chatbot-expand:hover { background: rgba(255,255,255,0.28); }
+.chatbot-expand .icon-shrink { display: none; }
+.chatbot-expand.is-expanded .icon-expand { display: none; }
+.chatbot-expand.is-expanded .icon-shrink { display: block; }
+
+.chatbot-panel.is-expanded {
+  width: min(1000px, 82vw);
+  height: min(860px, 80vh);
+  height: min(860px, 80dvh);
+  max-height: none;
+  right: 50%;
+  bottom: 50%;
+  transform: translate(50%, 50%);
+}
+.chatbot-panel.is-expanded.open { transform: translate(50%, 50%) scale(1); }
+/* Wider panel, roomier text */
+.chatbot-panel.is-expanded .chatbot-messages { padding: 1.25rem 1.5rem; }
+.chatbot-panel.is-expanded .chat-msg { max-width: 78%; }
+
+body[data-chat-page] .chatbot-expand { display: none; }
+@media (max-width: 900px) {
+  .chatbot-expand { display: none; }
+  /* Never let a remembered expanded state fight the phone sheet */
+  .chatbot-panel.is-expanded {
+    width: auto; height: auto; right: 0; bottom: 0; transform: translateY(100%);
+  }
+  .chatbot-panel.is-expanded.open { transform: translateY(0); }
+}
+
 /* Close control in the chat header */
 .chatbot-close {
   display: flex;
@@ -2315,31 +2362,59 @@ body[data-chat-page] .chat-launch { display: none; }
 .chat-chips-dock {
   flex-shrink: 0;
   background: var(--card-bg);
-  /* Chips wrap onto as many rows as they need; the dock scrolls rather than
-     letting them run off the right edge or shove the composer off-screen. */
-  max-height: 38%;
+  /* The answer is the point of the panel, so the follow-ups get a quarter of
+     it at most and scroll inside that. They can also be folded away entirely
+     with the label, which is a button. */
+  max-height: 26%;
   overflow-y: auto;
 }
 .chat-chips-dock:not(:empty) { border-top: 1px solid var(--card-border); }
 .chat-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  padding: 0.7rem 1rem;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem 0.6rem;
 }
 .chat-chips-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   width: 100%;
-  font-size: 0.66rem;
+  padding: 0.1rem 0;
+  border: none;
+  background: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--text-dim);
+  cursor: pointer;
   margin-bottom: 0.1rem;
 }
+.chat-chips-label:hover { color: var(--gold-dark); }
+.chat-chips-count {
+  display: inline-block;
+  margin-left: 0.15rem;
+  padding: 0 0.32rem;
+  border-radius: 999px;
+  background: var(--card-border);
+  font-size: 0.6rem;
+  letter-spacing: 0;
+}
+.chat-chips-caret { flex-shrink: 0; transition: transform 0.2s; }
+
+/* Folded away: the label stays as the way back */
+.chat-chips-dock.is-collapsed { max-height: none; }
+.chat-chips-dock.is-collapsed .chat-chip { display: none; }
+.chat-chips-dock.is-collapsed .chat-chips { padding-bottom: 0.5rem; }
+.chat-chips-dock.is-collapsed .chat-chips-caret { transform: rotate(-90deg); }
+
 @media (max-width: 640px) {
-  .chat-chips { padding: 0.6rem 0.75rem; gap: 0.35rem; }
-  .chat-chips-label { display: none; }
-  .chat-chip { font-size: 0.74rem; padding: 0.4rem 0.65rem; }
+  .chat-chips { padding: 0.45rem 0.75rem 0.55rem; gap: 0.3rem; }
+  .chat-chip { font-size: 0.72rem; padding: 0.34rem 0.6rem; }
+  .chat-chips-label { font-size: 0.58rem; }
 }
 
 /* On a phone the assistant page is an app screen, not a document. Everything
@@ -2384,7 +2459,7 @@ body[data-chat-page] .chat-launch { display: none; }
 
   /* The conversation keeps a floor; the chips give way instead */
   .chatbot-panel-page .chatbot-messages { min-height: 6rem; }
-  .chatbot-panel-page .chat-chips-dock { max-height: 30%; }
+  .chatbot-panel-page .chat-chips-dock { max-height: 26%; }
 
   /* Fade the last row so a capped list reads as scrollable rather than cut */
   .chat-chips-dock {
@@ -2403,7 +2478,7 @@ body[data-chat-page] .chat-launch { display: none; }
 @media (max-width: 900px) and (max-height: 700px) {
   .chat-page-intro { display: none; }
   .chat-page-inner { padding-top: 5.9rem; }
-  .chatbot-panel-page .chat-chips-dock { max-height: 26%; }
+  .chatbot-panel-page .chat-chips-dock { max-height: 22%; }
 }
 
 /* ============================================================

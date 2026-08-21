@@ -573,6 +573,18 @@
     for (var i = 0; i < stale.length; i++) stale[i].remove();
   }
 
+  // Whether the follow-up chips are folded away. Remembered per device.
+  var CHIPS_KEY = 'mca-chips-collapsed';
+  var chipsCollapsed = false;
+  try { chipsCollapsed = localStorage.getItem(CHIPS_KEY) === '1'; } catch (err) { /* private mode */ }
+
+  function applyChipsCollapsed() {
+    if (!chatChips) return;
+    chatChips.classList.toggle('is-collapsed', chipsCollapsed);
+    var label = chatChips.querySelector('.chat-chips-label');
+    if (label) label.setAttribute('aria-expanded', chipsCollapsed ? 'false' : 'true');
+  }
+
   // Clickable follow-ups so the user rarely has to type
   function addChips(questions, label) {
     if (!questions || !questions.length) return;
@@ -582,9 +594,23 @@
     wrap.className = 'chat-chips';
 
     if (label) {
-      var caption = document.createElement('div');
+      // The label doubles as a collapse control. Follow-up chips were taking
+      // a third of the panel on a phone, pushing the answer out of view; now
+      // they can be folded to a single line, and the choice sticks.
+      var caption = document.createElement('button');
+      caption.type = 'button';
       caption.className = 'chat-chips-label';
-      caption.textContent = label;
+      caption.setAttribute('aria-expanded', chipsCollapsed ? 'false' : 'true');
+      caption.innerHTML =
+        '<span>' + escapeHtml(label) + ' <span class="chat-chips-count">' + questions.length + '</span></span>' +
+        '<svg class="chat-chips-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" ' +
+        'stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polyline points="6 9 12 15 18 9"/></svg>';
+      caption.addEventListener('click', function () {
+        chipsCollapsed = !chipsCollapsed;
+        try { localStorage.setItem(CHIPS_KEY, chipsCollapsed ? '1' : '0'); } catch (err) { /* private mode */ }
+        applyChipsCollapsed();
+      });
       wrap.appendChild(caption);
     }
 
@@ -606,6 +632,7 @@
     if (chatChips) {
       chatChips.innerHTML = '';
       chatChips.appendChild(wrap);
+      applyChipsCollapsed();
     } else {
       chatMessages.appendChild(wrap);
     }
@@ -881,6 +908,30 @@
     chatToggle.setAttribute('aria-label', isOpen ? 'Close the MCA Assistant' : 'Open the MCA Assistant');
     var label = chatToggle.querySelector('.chat-launch-label');
     if (label) label.textContent = isOpen ? 'Close chat' : 'Chat with us';
+  }
+
+  // Expand the floating panel to most of the screen. Pointer-based rather than
+  // width-based: the full-screen sheet on a phone is already as big as it gets,
+  // so the control only appears where there is room to grow into.
+  var chatExpand = document.getElementById('chatbot-expand');
+  if (chatExpand && chatPanel) {
+    var EXPAND_KEY = 'mca-chat-expanded';
+    var expanded = false;
+    try { expanded = localStorage.getItem(EXPAND_KEY) === '1'; } catch (err) { /* private mode */ }
+
+    function applyExpanded() {
+      chatPanel.classList.toggle('is-expanded', expanded);
+      chatExpand.classList.toggle('is-expanded', expanded);
+      chatExpand.setAttribute('aria-label', expanded ? 'Shrink the chat window' : 'Expand the chat window');
+      chatExpand.setAttribute('title', expanded ? 'Shrink' : 'Expand');
+    }
+    applyExpanded();
+
+    chatExpand.addEventListener('click', function () {
+      expanded = !expanded;
+      try { localStorage.setItem(EXPAND_KEY, expanded ? '1' : '0'); } catch (err) { /* private mode */ }
+      applyExpanded();
+    });
   }
 
   // Close control inside the panel header — the only way out when the panel
