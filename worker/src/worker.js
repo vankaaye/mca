@@ -21,9 +21,12 @@
 // ----------------------------------------------------------------------------
 
 const ALLOWED_ORIGINS = [
-  // Cloudflare-hosted site (the "mca" Worker serving static assets)
+  // Primary domain
+  'https://mcacric.com',
+  'https://www.mcacric.com',
+  // Cloudflare workers.dev address the site is served from today
   'https://mca.astrocare.workers.dev',
-  // Netlify-hosted site, kept so both hosts work during the move
+  // Netlify, kept so the old address keeps working while DNS moves
   'https://mcacricket.netlify.app',
   'https://www.mcacricket.netlify.app',
   'http://localhost:8000',
