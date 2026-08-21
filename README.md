@@ -11,9 +11,10 @@ maintain it.
 | Part | Where | Why |
 |---|---|---|
 | The website | **GitHub Pages**, from `main` | Free, no billing to lapse, no account to expire |
-| The chat assistant | A small **Cloudflare Worker** | Explained below |
+| The chat assistant | A small **Cloudflare Worker**, deployed from `main` by GitHub Actions | Explained below |
 
-Pushing to `main` publishes the site. That is the whole deployment process.
+Pushing to `main` publishes the site, and publishes the assistant too if you
+touched `worker/`. That is the whole deployment process.
 
 ### Why the chat needs a Worker
 
@@ -26,8 +27,11 @@ middle and hold the key:
 browser  ->  POST /chat  ->  Cloudflare Worker  ->  api.anthropic.com
 ```
 
-That Worker is the only piece not on GitHub. Its source lives in `worker/` and
-it is deployed separately — see `worker/README.md`.
+That Worker runs on Cloudflare, but its source lives here in `worker/` and it
+deploys from here too: pushing a change to `worker/` on `main` triggers a
+GitHub Action that deploys it and then checks the live assistant answers a
+rule-book question correctly. Setup is two repository secrets, once — see
+`worker/README.md`.
 
 Each visitor's conversation is kept in their own browser (`localStorage`, key
 `mca-chat-v1`) so it survives a refresh and they can pick up where they left
@@ -50,6 +54,7 @@ rule Q&As. Slower to write, but free and dependency-free.
 | `rules-data.js` | Rule Q&As, used when the Worker is unreachable |
 | `photos/` | Gallery and hero images, resized for the web |
 | `rules/` | The Winter 2026 rule book PDFs |
+| `.github/workflows/` | Deploys the Worker when `worker/` changes |
 | `CNAME` | Tells GitHub Pages which domain to serve |
 | `.nojekyll` | Stops GitHub trying to process the site as a blog |
 
