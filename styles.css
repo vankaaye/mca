@@ -225,15 +225,15 @@ img { max-width: 100%; display: block; }
 /* Circular, the same treatment as the avatar in the chat window. The artwork
    is square (743x748), so a round crop loses nothing off the shield. */
 .logo img {
-  height: 64px;
-  width: 64px;
+  height: 88px;
+  width: 88px;
   border-radius: 50%;
   background: #fff;
   object-fit: contain;
   padding: 3px;
   transition: height 0.3s, width 0.3s;
 }
-.header.scrolled .logo img { height: 48px; width: 48px; }
+.header.scrolled .logo img { height: 68px; width: 68px; }
 
 .nav-list {
   display: flex;
@@ -344,8 +344,8 @@ img { max-width: 100%; display: block; }
   .nav-list { gap: 0.62rem; }
   .nav-link { font-size: 0.66rem; letter-spacing: 0.03em; }
   .ask-mca { padding: 0 0.62rem; font-size: 0.68rem; }
-  .logo img { height: 52px; width: 52px; }
-  .header.scrolled .logo img { height: 44px; width: 44px; }
+  .logo img { height: 72px; width: 72px; }
+  .header.scrolled .logo img { height: 58px; width: 58px; }
   .header-inner { gap: 0.6rem; }
 }
 
@@ -360,8 +360,8 @@ img { max-width: 100%; display: block; }
   .header.scrolled { padding: 0.35rem 0 0; }
   .header-inner { flex-wrap: wrap; row-gap: 0.4rem; column-gap: 0.5rem; }
   .logo { margin-right: auto; }
-  .logo img { height: 46px; width: 46px; padding: 2px; }
-  .header.scrolled .logo img { height: 40px; width: 40px; }
+  .logo img { height: 62px; width: 62px; padding: 2px; }
+  .header.scrolled .logo img { height: 52px; width: 52px; }
   .theme-toggle { margin-left: 0.25rem; width: 34px; height: 34px; }
   .ask-mca { height: 32px; padding: 0 0.65rem; font-size: 0.68rem; gap: 0.32rem; }
 
@@ -859,19 +859,40 @@ img { max-width: 100%; display: block; }
 .gallery-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(15,23,42,0.85) 0%, transparent 50%);
+  margin: 0;
+  background: linear-gradient(to top, rgba(10,16,24,0.92) 0%, rgba(10,16,24,0.35) 45%, transparent 72%);
   display: flex;
-  align-items: flex-end;
-  padding: 1.25rem;
-  opacity: 0;
-  transition: opacity 0.35s;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.1rem;
+  padding: 1rem 1.1rem;
+  /* Captions read on a touchscreen too, where there is no hover. They sit at
+     a low opacity and come up fully on hover or focus. */
+  opacity: 0.92;
+  transition: opacity 0.3s;
 }
-.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-item:hover .gallery-overlay,
+.gallery-item:focus-visible .gallery-overlay { opacity: 1; }
 .gallery-overlay span {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.gallery-overlay em {
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--gold);
-  letter-spacing: 0.04em;
+}
+@media (max-width: 640px) {
+  .gallery-overlay { padding: 0.75rem 0.8rem; }
+  .gallery-overlay span { font-size: 0.76rem; }
+  .gallery-overlay em { font-size: 0.62rem; }
 }
 
 /* Placeholder state */
@@ -1432,6 +1453,106 @@ img { max-width: 100%; display: block; }
 
 @media (max-width: 640px) {
   .section-emoji { margin-right: 0.35rem; font-size: 0.8em; }
+}
+
+/* Contact — the ways we would rather people reached us, first */
+.contact-lead {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.contact-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+.contact-primary:hover { transform: translateY(-3px); background: rgba(255,255,255,0.11); }
+.contact-primary-chat { border-color: rgba(234,179,8,0.5); }
+.contact-primary-chat:hover { border-color: var(--gold); }
+.contact-primary-wa { border-color: rgba(37,211,102,0.45); }
+.contact-primary-wa:hover { border-color: #25d366; }
+.contact-primary-wa .contact-primary-icon { color: #25d366; }
+.contact-primary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  font-size: 1.35rem;
+}
+.contact-primary-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.contact-primary-text strong { font-size: 1rem; font-weight: 700; }
+.contact-primary-text span { font-size: 0.84rem; opacity: 0.78; }
+.contact-primary-go { margin-left: auto; font-size: 1.2rem; opacity: 0.6; flex-shrink: 0; }
+
+/* Contact form */
+.contact-form {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+}
+.contact-form h3 { font-size: 1.15rem; margin-bottom: 1rem; }
+.contact-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+.field { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.field-wide { grid-column: 1 / -1; }
+.field span { font-size: 0.8rem; font-weight: 600; opacity: 0.85; }
+.field em { font-style: normal; font-weight: 400; opacity: 0.6; }
+.field input, .field textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.22);
+  color: inherit;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+.field input:focus, .field textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.field textarea { resize: vertical; }
+/* Off-screen rather than display:none, so bots still fill it in */
+.contact-honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.contact-form-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.1rem;
+}
+.contact-form-status { margin: 0; font-size: 0.85rem; }
+.contact-form-status.is-error { color: #fca5a5; }
+.contact-form-status.is-ok { color: #86efac; }
+
+.contact-people-head {
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+  opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+  .contact-primary { padding: 0.9rem 1rem; gap: 0.7rem; }
+  .contact-primary-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+  .contact-form { padding: 1.1rem; }
 }
 
 /* ============================================================

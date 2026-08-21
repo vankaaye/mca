@@ -12,6 +12,14 @@ compatibility_date = "2025-06-01"
 # about it.
 keep_vars = true
 
+# Lets the Worker import knowledge.md as plain text, so the association's own
+# notes live in a markdown file anyone on the committee can edit rather than
+# buried inside the JavaScript.
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
 # Daily counters for the /stats dashboard. Optional — every KV call in the
 # Worker is guarded, so it runs fine with no binding at all and /stats simply
 # reports zeros.
