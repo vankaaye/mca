@@ -21,6 +21,9 @@
 // ----------------------------------------------------------------------------
 
 const ALLOWED_ORIGINS = [
+  // Cloudflare-hosted site (the "mca" Worker serving static assets)
+  'https://mca.astrocare.workers.dev',
+  // Netlify-hosted site, kept so both hosts work during the move
   'https://mcacricket.netlify.app',
   'https://www.mcacricket.netlify.app',
   'http://localhost:8000',
