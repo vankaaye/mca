@@ -71,6 +71,10 @@
 
   <!-- Hero -->
   <section class="hero" id="hero">
+    <!-- Two layers so one photograph can fade into the next. The first
+         carries the image inline, so with JavaScript off the hero still
+         shows a photo, it simply does not rotate. -->
+    <div class="hero-photo is-active" style="background-image: url('photos/hero.jpg')"></div>
     <div class="hero-photo"></div>
     <div class="hero-scrim"></div>
     <div class="hero-grain"></div>
@@ -732,6 +736,30 @@
       <p>&copy; 2026 Melbourne Cricket Association. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Full-size photo viewer -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <div class="lightbox-backdrop" data-lightbox-close></div>
+    <div class="lightbox-stage">
+      <button class="lightbox-btn lightbox-prev" type="button" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <figure class="lightbox-figure">
+        <img id="lightbox-img" src="" alt="" />
+        <figcaption>
+          <span id="lightbox-caption"></span>
+          <a id="lightbox-original" class="lightbox-original" href="#" target="_blank" rel="noopener">Open the full-size file &#8599;</a>
+        </figcaption>
+      </figure>
+      <button class="lightbox-btn lightbox-next" type="button" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <button class="lightbox-close" type="button" data-lightbox-close aria-label="Close the photo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <p class="lightbox-hint" id="lightbox-hint">Press Esc to close</p>
+  </div>
 
   <!-- Chatbot Widget -->
   <div id="chatbot">

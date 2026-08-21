@@ -69,7 +69,14 @@ change the assistant's answers, and vice versa; they are separate.
 
 **Add gallery photos** — resize to about 1600px wide first. Full-resolution
 phone photos are roughly 9 MB each and make the site slow on mobile data at a
-ground.
+ground. Clicking a gallery photo opens it at that size in the viewer, and the
+"Open the full-size file" link points at the same file — so 1600px is as large
+as anyone can get. Store bigger originals elsewhere.
+
+**Change which photos the hero rotates through** — the `PHOTOS` list in the
+hero rotation block near the bottom of `script.js`. It cross-fades every ten
+seconds, and skips rotating entirely for anyone on Data Saver or with reduced
+motion turned on.
 
 **Change the season status** — the "Season Information" section in
 `index.html`, and the matching paragraph in the Worker's system prompt.

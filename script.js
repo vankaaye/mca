@@ -876,6 +876,215 @@
     }
   });
 
+  // ============================================================
+  //  Hero photographs — one fades into the next every ten seconds
+  // ============================================================
+
+  (function heroRotation() {
+    var layers = document.querySelectorAll('.hero-photo');
+    if (layers.length < 2) return;
+
+    var PHOTOS = [
+      'photos/hero.jpg',
+      'photos/tarneit-a-grade-champions.jpg',
+      'photos/umpire-presentation.jpg',
+      'photos/laverton-champions.jpg'
+    ];
+    var INTERVAL = 10000;
+
+    // Someone who has asked their device to reduce motion gets the first
+    // photograph and nothing else moving.
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Nor do we pull three more photographs down a metered connection.
+    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    var saveData = !!(conn && conn.saveData);
+    if (reduce || saveData || PHOTOS.length < 2) return;
+
+    var index = 0;
+    var front = 0;          // which layer is currently showing
+    var timer = null;
+
+    function preload(src) {
+      return new Promise(function (resolve, reject) {
+        var img = new Image();
+        img.onload = function () { resolve(src); };
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    function step() {
+      var next = (index + 1) % PHOTOS.length;
+      // Only swap once the next photograph is decoded, so the fade never
+      // lands on a blank layer.
+      preload(PHOTOS[next]).then(function (src) {
+        var back = 1 - front;
+        layers[back].style.backgroundImage = "url('" + src + "')";
+        layers[back].classList.add('is-active');
+        layers[front].classList.remove('is-active');
+        front = back;
+        index = next;
+      }).catch(function () {
+        // A missing file just means this one is skipped next time round
+        index = next;
+      });
+    }
+
+    function start() {
+      if (timer) return;
+      timer = window.setInterval(step, INTERVAL);
+    }
+    function stop() {
+      if (!timer) return;
+      window.clearInterval(timer);
+      timer = null;
+    }
+
+    // Nothing rotates while the tab is in the background
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+
+    // Wait for the page to settle before fetching the second photograph
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start);
+  })();
+
+  // ============================================================
+  //  Photo viewer — full size, with a swipe or a tap to close
+  // ============================================================
+
+  (function lightbox() {
+    var box = document.getElementById('lightbox');
+    if (!box) return;
+
+    var imgEl = document.getElementById('lightbox-img');
+    var capEl = document.getElementById('lightbox-caption');
+    var origEl = document.getElementById('lightbox-original');
+    var figure = box.querySelector('.lightbox-figure');
+    var items = [].slice.call(document.querySelectorAll('.gallery-item'));
+    if (!items.length) return;
+
+    var photos = items.map(function (item) {
+      var img = item.querySelector('img');
+      var label = item.querySelector('.gallery-overlay span');
+      return {
+        src: img ? img.getAttribute('src') : '',
+        alt: img ? (img.getAttribute('alt') || '') : '',
+        caption: label ? label.textContent.trim() : ''
+      };
+    }).filter(function (p) { return p.src; });
+
+    var current = 0;
+    var lastFocus = null;
+
+    // Only tell people to swipe if they have something to swipe with
+    var hint = document.getElementById('lightbox-hint');
+    if (hint && coarsePointer) hint.textContent = 'Swipe down to close, sideways to browse';
+
+    function show(i) {
+      current = (i + photos.length) % photos.length;
+      var p = photos[current];
+      imgEl.src = p.src;
+      imgEl.alt = p.alt;
+      capEl.textContent = p.caption;
+      // The file itself, so it can be pinched, zoomed or saved
+      if (origEl) origEl.href = p.src;
+      figure.style.transform = '';
+      figure.style.opacity = '';
+    }
+
+    function open(i, trigger) {
+      lastFocus = trigger || null;
+      show(i);
+      box.hidden = false;
+      document.body.classList.add('lightbox-open');
+      // A frame between unhiding and the class, so the fade actually runs
+      window.requestAnimationFrame(function () { box.classList.add('is-open'); });
+      var closeBtn = box.querySelector('.lightbox-close');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+      box.classList.remove('is-open');
+      document.body.classList.remove('lightbox-open');
+      window.setTimeout(function () {
+        box.hidden = true;
+        imgEl.src = '';
+        figure.style.transform = '';
+        figure.style.opacity = '';
+      }, 250);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    // Every photo in the gallery opens it, by click or by keyboard
+    items.forEach(function (item, i) {
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      var label = item.querySelector('.gallery-overlay span');
+      item.setAttribute('aria-label', 'Open photo' + (label ? ': ' + label.textContent.trim() : ''));
+      item.addEventListener('click', function () { open(i, item); });
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i, item); }
+      });
+    });
+
+    [].slice.call(box.querySelectorAll('[data-lightbox-close]')).forEach(function (el) {
+      el.addEventListener('click', close);
+    });
+    var prev = box.querySelector('.lightbox-prev');
+    var next = box.querySelector('.lightbox-next');
+    if (prev) prev.addEventListener('click', function () { show(current - 1); });
+    if (next) next.addEventListener('click', function () { show(current + 1); });
+
+    document.addEventListener('keydown', function (e) {
+      if (box.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowLeft') show(current - 1);
+      else if (e.key === 'ArrowRight') show(current + 1);
+    });
+
+    // ---- Touch: swipe down to dismiss, left and right to move along -------
+    var startX = 0, startY = 0, dx = 0, dy = 0, dragging = false;
+
+    box.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      dragging = true;
+      dx = dy = 0;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      figure.style.transition = 'none';
+    }, { passive: true });
+
+    box.addEventListener('touchmove', function (e) {
+      if (!dragging || e.touches.length !== 1) return;
+      dx = e.touches[0].clientX - startX;
+      dy = e.touches[0].clientY - startY;
+      if (dy > 0 && Math.abs(dy) > Math.abs(dx)) {
+        // Follow the finger down, fading as it goes
+        figure.style.transform = 'translateY(' + dy + 'px)';
+        figure.style.opacity = String(Math.max(0.2, 1 - dy / 400));
+      }
+    }, { passive: true });
+
+    box.addEventListener('touchend', function () {
+      if (!dragging) return;
+      dragging = false;
+      figure.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
+
+      if (dy > 110 && Math.abs(dy) > Math.abs(dx)) {
+        figure.style.transform = 'translateY(100vh)';
+        figure.style.opacity = '0';
+        close();
+      } else if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+        show(dx < 0 ? current + 1 : current - 1);
+      } else {
+        figure.style.transform = '';
+        figure.style.opacity = '';
+      }
+    });
+  })();
+
   // ---- Page-view beacon -----------------------------------------------------
 
   (function pageBeacon() {
