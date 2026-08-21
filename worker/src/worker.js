@@ -2137,6 +2137,10 @@ async function handleEnquiry(request, env, ctx, origin) {
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
         _subject: 'MCA website enquiry — ' + name,
+        // So hitting reply in Gmail goes back to the person who wrote in
+        _replyto: email || undefined,
+        _template: 'table',
+        _captcha: 'false',
         name: name,
         phone: phone,
         email: email || '(not supplied)',

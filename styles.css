@@ -1446,9 +1446,11 @@ img { max-width: 100%; display: block; }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  /* Two columns since the contact block moved out — the section above the
+     footer carries it now, and repeating it twice on one screen was noise. */
+  grid-template-columns: 2fr 1fr;
   gap: 3rem;
-  padding: 4rem 0 3rem;
+  padding: 3rem 0 2.5rem;
 }
 
 @media (max-width: 768px) {
@@ -2707,7 +2709,17 @@ body[data-chat-page] .chatbot-expand { display: none; }
   }
 
   /* Stop the page scrolling behind the sheet */
-  body.chat-open { overflow: hidden; }
+  /* `overflow: hidden` alone does not hold iOS still — the page keeps its own
+     scroll position and jumps back to the top on any viewport change, which is
+     what a screenshot triggers. Pinning body and restoring scrollY on close is
+     the only reliable version. */
+  body.chat-open {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    overflow: hidden;
+  }
 
   /* Launcher hides once the sheet is up */
   body.chat-open .chat-launch { opacity: 0; pointer-events: none; }
