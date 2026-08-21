@@ -29,8 +29,13 @@ browser  ->  POST /chat  ->  Cloudflare Worker  ->  api.anthropic.com
 That Worker is the only piece not on GitHub. Its source lives in `worker/` and
 it is deployed separately — see `worker/README.md`.
 
+Each visitor's conversation is kept in their own browser (`localStorage`, key
+`mca-chat-v1`) so it survives a refresh and they can pick up where they left
+off. It never leaves their device, no one else can read it, and the bin button
+in the chat header wipes it.
+
 If the Worker is ever switched off, the chat keeps working: it falls back to the
-offline keyword lookup in `rules-data.js`, which answers from 211 pre-written
+offline keyword lookup in `rules-data.js`, which answers from pre-written
 rule Q&As. Slower to write, but free and dependency-free.
 
 ## The files
@@ -42,7 +47,7 @@ rule Q&As. Slower to write, but free and dependency-free.
 | `chat/index.html` | Makes the short `/chat` address work; it just forwards to `chat.html` |
 | `styles.css` | All styling, both light and dark themes |
 | `script.js` | Site behaviour and the chat widget |
-| `rules-data.js` | 211 rule Q&As, used when the Worker is unreachable |
+| `rules-data.js` | Rule Q&As, used when the Worker is unreachable |
 | `photos/` | Gallery and hero images, resized for the web |
 | `rules/` | The Winter 2026 rule book PDFs |
 | `CNAME` | Tells GitHub Pages which domain to serve |
@@ -50,7 +55,13 @@ rule Q&As. Slower to write, but free and dependency-free.
 
 ## Common edits
 
-**Change a fee, date or rule shown on the page** — edit `index.html`.
+**Change a fee, date or rule shown on the page** — edit `index.html`. Sections
+appear on the page in the order they appear in that file: About, Competitions,
+Rules, Fixtures & Ladders, Juniors, Fees, Calendar, Photos, Season Information,
+Contact.
+
+**Change the PlayHQ link** — it appears in the Fixtures & Ladders section and on
+each competition card in `index.html`. One competition URL covers every grade.
 
 **Change what the assistant knows** — edit the system prompt in
 `worker/src/worker.js`, then redeploy the Worker. Editing the website does not

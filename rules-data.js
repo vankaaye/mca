@@ -218,6 +218,7 @@ window.MCA_RULES = [
 
 // ===================== JUNIORS - U11 =====================
 {category:"juniors-u11", keywords:["u11","overs","format","25 overs"], q:"How many overs per side in U11?", a:"25 overs per side."},
+{category:"juniors-general", keywords:["age group","which grade","what grade","my child","age","which age group","u11 u13 u15","dob"], q:"What age group is my child in?", a:"Age is taken as at 26 April 2026. U11: 8 to 11 years (born 27 April 2014 to 26 April 2018). U13: 9 to 13 years (born 27 April 2012 to 26 April 2017). U15: 12 to 15 years (born 27 April 2010 to 26 April 2014). The bands overlap, so some children are eligible for two grades — clubs place them by age and ability."},
 {category:"juniors-u11", keywords:["u11","age range","dob","8 to 11"], q:"What age group is U11 for?", a:"Ages 8 to 11 years on 26 April 2026. DOB window: 27 April 2014 to 26 April 2018."},
 {category:"juniors-u11", keywords:["u11","ball","pink","kooka soft"], q:"What ball is used in U11?", a:"Kooka Soft Pink ball, 130g."},
 {category:"juniors-u11", keywords:["u11","umpire fee","$65"], q:"What is the umpire fee for U11?", a:"$65 per team."},

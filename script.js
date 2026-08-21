@@ -132,22 +132,8 @@
     });
   }
 
-  // --- Hamburger Menu ---
-  var hamburger = document.getElementById('hamburger');
-
-  if (hamburger && header) {
-    hamburger.addEventListener('click', function () {
-      header.classList.toggle('nav-open');
-    });
-  }
-
-  // Close mobile nav when a nav link is clicked
-  var navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      header.classList.remove('nav-open');
-    });
-  });
+  // The mobile menu is a scrolling strip on the bar itself now, so there is no
+  // burger to wire up and nothing to close when a link is tapped.
 
 
   // ============================================================
@@ -175,6 +161,62 @@
 
   // Running conversation sent to the Worker (user/assistant text only).
   var history = [];
+
+  // ---- Saved conversation ---------------------------------------------------
+  // The chat survives a refresh, a tab close and coming back later on the same
+  // device. It is kept in this browser only — nothing is sent anywhere and no
+  // other visitor can see it. Cleared with the bin button in the panel header.
+  var STORE_KEY = 'mca-chat-v1';
+  var STORE_MAX_MESSAGES = 40;
+  var STORE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // a month
+  var lastChips = null;
+
+  function saveConversation() {
+    try {
+      if (!history.length) { localStorage.removeItem(STORE_KEY); return; }
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        v: 1,
+        at: Date.now(),
+        history: history.slice(-STORE_MAX_MESSAGES),
+        chips: lastChips
+      }));
+    } catch (err) {
+      /* private mode, or the quota is full — the chat still works, it just
+         will not be there next time. Never let this break a reply. */
+    }
+  }
+
+  function loadConversation() {
+    var raw;
+    try { raw = localStorage.getItem(STORE_KEY); } catch (err) { return null; }
+    if (!raw) return null;
+
+    var saved;
+    try { saved = JSON.parse(raw); } catch (err) { return null; }
+    if (!saved || saved.v !== 1 || !Array.isArray(saved.history) || !saved.history.length) return null;
+    if (typeof saved.at === 'number' && Date.now() - saved.at > STORE_MAX_AGE_MS) {
+      try { localStorage.removeItem(STORE_KEY); } catch (err) {}
+      return null;
+    }
+
+    // Only the shapes we wrote survive the trip back
+    var clean = [];
+    for (var i = 0; i < saved.history.length; i++) {
+      var m = saved.history[i];
+      if (!m || (m.role !== 'user' && m.role !== 'assistant')) continue;
+      if (typeof m.content !== 'string' || !m.content) continue;
+      clean.push({ role: m.role, content: m.content });
+    }
+    if (!clean.length) return null;
+    saved.history = clean;
+    return saved;
+  }
+
+  function forgetConversation() {
+    history = [];
+    lastChips = null;
+    try { localStorage.removeItem(STORE_KEY); } catch (err) {}
+  }
 
   var STARTER_QUESTIONS = [
     'How many overs in T20?',
@@ -462,6 +504,7 @@
   }
 
   function clearChips() {
+    lastChips = null;
     if (chatChips) { chatChips.innerHTML = ''; return; }
     var stale = chatMessages.querySelectorAll('.chat-chips');
     for (var i = 0; i < stale.length; i++) stale[i].remove();
@@ -470,6 +513,7 @@
   // Clickable follow-ups so the user rarely has to type
   function addChips(questions, label) {
     if (!questions || !questions.length) return;
+    lastChips = { questions: questions.slice(0), label: label || '' };
 
     var wrap = document.createElement('div');
     wrap.className = 'chat-chips';
@@ -520,6 +564,7 @@
     addUserMessage(text);
     chatInput.value = '';
     history.push({ role: 'user', content: text });
+    saveConversation();
     setBusy(true);
 
     var typing = document.createElement('div');
@@ -536,6 +581,7 @@
       // Keep the original text in history so the model sees its own citation.
       history.push({ role: 'assistant', content: markdown });
       addChips(suggestions, suggestions && suggestions.length ? 'Related questions' : '');
+      saveConversation();
       // Land on the first line of the answer, not the last.
       scrollToStartOf(bubble);
       setBusy(false);
@@ -635,11 +681,55 @@
     "Hi! I'm the **MCA Assistant**. Ask me anything about the association — " +
     "competitions, rules, fees, registration or juniors — and I'll answer straight away.";
 
+  var RESUMED_NOTE = 'Picking up where we left off.';
+
+  // Rebuild an earlier conversation into the panel, so a refresh does not
+  // throw away what was already asked and answered.
+  function restoreConversation(saved) {
+    for (var i = 0; i < saved.history.length; i++) {
+      var m = saved.history[i];
+      if (m.role === 'user') {
+        addUserMessage(m.content);
+      } else {
+        var parsed = extractCitation(m.content);
+        appendCitation(addBotMessage(parsed.body), parsed.cited);
+      }
+    }
+    history = saved.history.slice(0);
+
+    var note = document.createElement('div');
+    note.className = 'chat-resumed';
+    note.textContent = RESUMED_NOTE;
+    chatMessages.appendChild(note);
+
+    if (saved.chips && saved.chips.questions && saved.chips.questions.length) {
+      addChips(saved.chips.questions, saved.chips.label);
+    }
+    scrollChatToBottom();
+  }
+
   function greet() {
     if (chatOpened) return;
     chatOpened = true;
+
+    var saved = loadConversation();
+    if (saved) { restoreConversation(saved); return; }
+
     addBotMessage(WELCOME);
     addChips(STARTER_QUESTIONS, 'Try asking');
+  }
+
+  // Throw the saved conversation away and start clean
+  var chatClear = document.getElementById('chatbot-clear');
+  if (chatClear) {
+    chatClear.addEventListener('click', function () {
+      forgetConversation();
+      chatMessages.innerHTML = '';
+      clearChips();
+      addBotMessage(WELCOME);
+      addChips(STARTER_QUESTIONS, 'Try asking');
+      scrollChatToBottom();
+    });
   }
 
   // The standalone /chat page reuses this same engine, with the panel always
@@ -748,8 +838,39 @@
     'watch':['stream','streaming','live'],
     'ground':['grounds','venue'],
     'over':['overs'],
-    'wicket':['wickets']
+    'wicket':['wickets'],
+    'closure':['end','ends','innings','close','declare'],
+    'close':['end','ends','innings'],
+    'closed':['end','ends','innings'],
+    'declare':['end','innings'],
+    'declaration':['end','innings'],
+    'inning':['innings'],
+    'finish':['end','ends'],
+    'grade':['division','age group'],
+    'retire':['retirement','retired'],
+    'retired':['retirement','retire']
   };
+
+  // Grades people ask about by name. A question that names one must not be
+  // answered from another grade's rules — see the grade lock in rankRules().
+  var GRADES = ['u11', 'u13', 'u15', 't20', 't35'];
+
+  // "under 15", "under-15s", "u/15" and "under 15's" all mean u15
+  function normaliseGrades(text) {
+    return String(text)
+      .toLowerCase()
+      .replace(/\bunder[\s\-/]*(\d{1,2})\b/g, 'u$1')
+      .replace(/\bu[\s\-/](\d{1,2})\b/g, 'u$1')
+      .replace(/\b(u1[135]|t20|t35)['\u2019]?s\b/g, '$1');
+  }
+
+  function gradesIn(text) {
+    var found = [];
+    for (var i = 0; i < GRADES.length; i++) {
+      if (hasWord(text, GRADES[i])) found.push(GRADES[i]);
+    }
+    return found;
+  }
 
   // Crude singular/base form so "rains" matches "rain", "bowling" matches "bowl"
   function stem(word) {
@@ -761,7 +882,7 @@
   }
 
   function tokenize(text) {
-    var raw = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/);
+    var raw = normaliseGrades(text).replace(/[^a-z0-9\s]/g, ' ').split(/\s+/);
     var out = [];
 
     function push(w) {
@@ -805,9 +926,14 @@
     var rules = window.MCA_RULES;
     if (!rules || !Array.isArray(rules) || rules.length === 0) return [];
 
-    var queryLower = query.toLowerCase().trim();
+    var queryLower = normaliseGrades(query).trim();
     var tokens = tokenize(query);
     if (tokens.length === 0) return [];
+
+    // If the question names a grade, only rules about that grade may answer it.
+    // Without this, "U15 closure of innings" was being answered from the
+    // senior game-times rules, which is what made the juniors book look absent.
+    var wanted = gradesIn(queryLower);
 
     var scored = [];
 
@@ -821,7 +947,21 @@
         : [];
       var keywordText = keywords.join(' ');
 
+      if (wanted.length) {
+        var ruleGrades = gradesIn(category + ' ' + keywordText + ' ' + question + ' ' + answer);
+        if (ruleGrades.length) {
+          var shares = false;
+          for (var g = 0; g < wanted.length; g++) {
+            if (ruleGrades.indexOf(wanted[g]) !== -1) { shares = true; break; }
+          }
+          // A rule that is explicitly about a different grade cannot apply
+          if (!shares) continue;
+        }
+      }
+
       var score = 0;
+      // Rules that name the grade asked about beat generic ones
+      if (wanted.length && gradesIn(keywordText + ' ' + question).length) score += 6;
 
       for (var j = 0; j < tokens.length; j++) {
         var t = tokens[j];
