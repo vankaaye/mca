@@ -51,10 +51,26 @@
           <li><a href="chat.html" class="nav-link nav-link-assistant" aria-current="page">MCA AI Assistant</a></li>
         </ul>
       </nav>
-              <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch between light and dark mode">
+            <a href="chat.html" class="ask-mca" aria-label="Open the MCA Assistant">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <span>Ask MCA</span>
+      </a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch between light and dark mode">
           <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
           <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
         </button>
+      <button id="hamburger" class="hamburger" type="button" aria-label="Open the menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="quicknav" aria-label="Quick links">
+        <a href="index.html#about" class="quicknav-link">About</a>
+        <a href="index.html#competitions" class="quicknav-link quicknav-optional">Comps</a>
+        <a href="index.html#rules" class="quicknav-link">Rules</a>
+        <a href="index.html#fixtures" class="quicknav-link">Fixtures</a>
+        <a href="index.html#juniors" class="quicknav-link">Juniors</a>
+      </nav>
     </div>
   </header>
 
@@ -72,9 +88,7 @@
         <div class="chatbot-header">
           <div class="chatbot-header-info">
             <div class="chatbot-avatar">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-              </svg>
+              <img src="logo.png" alt="MCA" />
             </div>
             <div>
               <h4>MCA Assistant</h4>

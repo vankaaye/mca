@@ -132,8 +132,32 @@
     });
   }
 
-  // The mobile menu is a scrolling strip on the bar itself now, so there is no
-  // burger to wire up and nothing to close when a link is tapped.
+  // --- Menu ---
+  var hamburger = document.getElementById('hamburger');
+
+  function setNavOpen(open) {
+    if (!header) return;
+    header.classList.toggle('nav-open', open);
+    if (hamburger) {
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      hamburger.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
+    }
+  }
+
+  if (hamburger && header) {
+    hamburger.addEventListener('click', function () {
+      setNavOpen(!header.classList.contains('nav-open'));
+    });
+  }
+
+  // Tapping any link in the full menu closes it
+  document.querySelectorAll('.nav-link').forEach(function (link) {
+    link.addEventListener('click', function () { setNavOpen(false); });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setNavOpen(false);
+  });
 
 
   // ============================================================
@@ -785,15 +809,24 @@
     greet();
     // No autofocus here: it would scroll the heading out of view on load and
     // pop the keyboard open on mobile before the reader has seen the page.
-  } else if (chatToggle) {
-    chatToggle.addEventListener('click', function () {
-      var isOpen = chatPanel.classList.toggle('open');
-      setLauncherState(isOpen);
-      if (isOpen) {
+  } else {
+    // Anything marked data-chat-open opens the panel: the bottom-right
+    // launcher and the "Ask MCA" button on the header both use it.
+    var openers = document.querySelectorAll('[data-chat-open], #chatbot-toggle');
+    openers.forEach(function (el) {
+      el.addEventListener('click', function () {
+        var wantOpen = el === chatToggle
+          ? !chatPanel.classList.contains('open')
+          : true;
+        if (!wantOpen) { chatPanel.classList.remove('open'); setLauncherState(false); return; }
+
+        setNavOpen(false);
+        chatPanel.classList.add('open');
+        setLauncherState(true);
         greet();
         // No focus() here — it would pop the keyboard the moment the sheet
         // opens and bury the conversation behind it.
-      }
+      });
     });
   }
 
