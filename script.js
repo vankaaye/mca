@@ -1197,8 +1197,30 @@
 
   // The launcher keeps its label at all times; only the wording changes so an
   // open panel has an obvious way out on desktop, where it stays visible.
+  // Where the page was before the chat covered it. body becomes position:fixed
+  // while the sheet is up, which otherwise loses the scroll position — and iOS
+  // re-lays-out on things like taking a screenshot, so the page would jump.
+  var scrollBeforeChat = 0;
+
+  function lockPageScroll() {
+    scrollBeforeChat = window.pageYOffset || document.documentElement.scrollTop || 0;
+    document.body.style.top = -scrollBeforeChat + 'px';
+  }
+
+  function unlockPageScroll() {
+    document.body.style.top = '';
+    try {
+      window.scrollTo({ top: scrollBeforeChat, left: 0, behavior: 'instant' });
+    } catch (err) {
+      window.scrollTo(0, scrollBeforeChat);
+    }
+  }
+
   function setLauncherState(isOpen) {
+    var wasOpen = document.body.classList.contains('chat-open');
+    if (isOpen && !wasOpen) lockPageScroll();
     document.body.classList.toggle('chat-open', isOpen);
+    if (!isOpen && wasOpen) unlockPageScroll();
     if (!isOpen && chatPanel) {
       chatPanel.dispatchEvent(new Event('mca-chat-closed'));
     }
@@ -1230,6 +1252,42 @@
       expanded = !expanded;
       try { localStorage.setItem(EXPAND_KEY, expanded ? '1' : '0'); } catch (err) { /* private mode */ }
       applyExpanded();
+    });
+  }
+
+  // A link inside an answer used to navigate the page behind a full-screen
+  // sheet, so tapping "contact" looked like it did nothing. Close first, then
+  // let the link do its job.
+  if (chatMessages) {
+    chatMessages.addEventListener('click', function (e) {
+      var link = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!link) return;
+
+      var href = link.getAttribute('href') || '';
+      // Leave downloads, new tabs, mail and phone links alone — they do not
+      // navigate this page, so there is nothing to get in the way of.
+      if (link.hasAttribute('download') || link.target === '_blank') return;
+      if (/^(mailto:|tel:|sms:)/i.test(href)) return;
+
+      var hash = href.indexOf('#') !== -1 ? href.slice(href.indexOf('#')) : '';
+      var samePage = false;
+      if (hash.length > 1 && link.host === window.location.host) {
+        try { samePage = !!document.querySelector(hash); } catch (err) { samePage = false; }
+      }
+
+      if (chatPanel && chatPanel.classList.contains('open')) {
+        chatPanel.classList.remove('open');
+        setLauncherState(false);
+      }
+
+      if (samePage) {
+        // The page has just been unpinned; let it settle before jumping
+        e.preventDefault();
+        window.setTimeout(function () {
+          var el = document.querySelector(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      }
     });
   }
 
