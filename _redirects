@@ -1,0 +1,12 @@
+# Cloudflare Pages redirect rules.
+#
+# Pages publishes everything in the output directory and does not read
+# .assetsignore (that is a Workers-assets feature), so the assistant's source
+# would otherwise be downloadable at /worker/src/worker.js. It holds no
+# credentials — the Anthropic key is a Worker secret — but the system prompt
+# is not meant to be public, so serve a 404 for that whole path.
+/worker/*  /  404
+
+# Same for host and build config that happens to sit in the repo root.
+/wrangler.toml  /  404
+/netlify.toml   /  404
