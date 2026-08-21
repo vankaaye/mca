@@ -634,44 +634,88 @@
     } else {
       var recognition = new SpeechRecognition();
       recognition.lang = 'en-AU';
-      recognition.interimResults = false;
+      // Show the words in the box as they are heard, rather than leaving the
+      // field empty until the whole sentence has been worked out.
+      recognition.interimResults = true;
+      recognition.continuous = false;
       recognition.maxAlternatives = 1;
+
       var listening = false;
+      var finalText = '';
+      var placeholderWas = chatInput.getAttribute('placeholder') || '';
+
+      function stopListening(discard) {
+        if (!listening) return;
+        listening = false;
+        try {
+          // abort() drops the microphone straight away; stop() keeps it open
+          // until the engine has finished deciding what it heard, which is why
+          // the recording indicator used to stay on after leaving the tab.
+          if (discard) recognition.abort();
+          else recognition.stop();
+        } catch (err) { /* already stopped */ }
+      }
 
       chatMic.addEventListener('click', function () {
         if (chatBusy) return;
-        if (listening) {
-          recognition.stop();
-          return;
-        }
+        if (listening) { stopListening(false); return; }
+        finalText = '';
         try {
           recognition.start();
         } catch (err) {
-          /* start() throws if already running — safe to ignore */
+          /* start() throws if it is already running — safe to ignore */
         }
       });
 
       recognition.addEventListener('start', function () {
         listening = true;
         chatMic.classList.add('listening');
+        chatInput.setAttribute('placeholder', 'Listening…');
       });
 
-      recognition.addEventListener('end', function () {
+      function finished() {
         listening = false;
         chatMic.classList.remove('listening');
-      });
-
-      recognition.addEventListener('error', function () {
-        listening = false;
-        chatMic.classList.remove('listening');
-      });
+        chatInput.setAttribute('placeholder', placeholderWas);
+      }
+      recognition.addEventListener('end', finished);
+      recognition.addEventListener('error', finished);
 
       recognition.addEventListener('result', function (event) {
-        var transcript = event.results[0] && event.results[0][0] && event.results[0][0].transcript;
-        if (!transcript) return;
-        chatInput.value = transcript;
-        sendUserMessage();
+        var interim = '';
+        for (var i = event.resultIndex; i < event.results.length; i++) {
+          var result = event.results[i];
+          var text = result[0] && result[0].transcript ? result[0].transcript : '';
+          if (result.isFinal) finalText += text;
+          else interim += text;
+        }
+
+        // Live feedback: the box always shows what has been heard so far
+        chatInput.value = (finalText + interim).replace(/^\s+/, '');
+
+        if (finalText.trim()) {
+          stopListening(false);
+          sendUserMessage();
+          finalText = '';
+        }
       });
+
+      // Release the microphone the moment the page is no longer in front of
+      // the user. Without this, iOS keeps the recording dot on the tab after
+      // switching apps or closing Safari.
+      function releaseMic() { stopListening(true); finished(); }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) releaseMic();
+      });
+      window.addEventListener('pagehide', releaseMic);
+      window.addEventListener('beforeunload', releaseMic);
+
+      // Closing the chat should stop it listening too
+      var micPanel = document.getElementById('chatbot-panel');
+      if (micPanel) {
+        micPanel.addEventListener('mca-chat-closed', releaseMic);
+      }
     }
   }
 
@@ -757,6 +801,9 @@
   // open panel has an obvious way out on desktop, where it stays visible.
   function setLauncherState(isOpen) {
     document.body.classList.toggle('chat-open', isOpen);
+    if (!isOpen && chatPanel) {
+      chatPanel.dispatchEvent(new Event('mca-chat-closed'));
+    }
     if (!chatToggle) return;
     chatToggle.classList.toggle('active', isOpen);
     chatToggle.setAttribute('aria-label', isOpen ? 'Close the MCA Assistant' : 'Open the MCA Assistant');
