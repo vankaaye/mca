@@ -217,8 +217,18 @@ img { max-width: 100%; display: block; }
 }
 .logo { flex-shrink: 0; }
 
-.logo img { height: 64px; width: auto; transition: height 0.3s; }
-.header.scrolled .logo img { height: 48px; }
+/* Circular, the same treatment as the avatar in the chat window. The artwork
+   is square (743x748), so a round crop loses nothing off the shield. */
+.logo img {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: contain;
+  padding: 3px;
+  transition: height 0.3s, width 0.3s;
+}
+.header.scrolled .logo img { height: 48px; width: 48px; }
 
 .nav-list {
   display: flex;
@@ -334,8 +344,8 @@ img { max-width: 100%; display: block; }
   .header.scrolled { padding: 0.35rem 0 0; }
   .header-inner { flex-wrap: wrap; row-gap: 0.4rem; column-gap: 0.5rem; }
   .logo { margin-right: auto; }
-  .logo img { height: 46px; }
-  .header.scrolled .logo img { height: 40px; }
+  .logo img { height: 46px; width: 46px; padding: 2px; }
+  .header.scrolled .logo img { height: 40px; width: 40px; }
   .theme-toggle { margin-left: 0.25rem; width: 34px; height: 34px; }
   .ask-mca { height: 32px; padding: 0 0.65rem; font-size: 0.68rem; gap: 0.32rem; }
 
