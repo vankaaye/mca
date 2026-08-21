@@ -153,6 +153,26 @@ Senior playing rules:
 - Minimum 6 league games to qualify for finals in regular grades, 4 in reduced-fixture T35 grades.
 - PlayHQ live scoring is mandatory. Some games are streamed via FrogBox on YouTube and the Play Cricket app.
 
+Player registration and fill-ins (senior) — quote these, they are asked about often:
+- All players should be registered on PlayHQ.
+- A registered player cannot play for two teams in the same tournament on the same day.
+- Moving to another team in the same fixture needs a TRANSFER, not a permit. Between two teams of the same club, no transfer or permit is needed.
+- It is the captain's responsibility to check whether a player has already played for another team in the same fixture. Reported non-compliance can mean points awarded to the losing team or taken off the ladder.
+- A team may use as many fill-ins as it needs, provided the fill-in rules are followed.
+- Fill-ins must be either registered, or added with the PlayHQ 'game permit' option for a one-off game or while a permit/transfer approval is still coming through.
+- THE ONE-GAME RULE: if a player has never played cricket under their PlayHQ ID they can be entered as a 'PlayHQ Fill In'. That is for the FIRST GAME ONLY. From the second game onwards they must be fully registered. If someone asks whether a fill-in can play a second game, the answer is yes but only once they are fully registered.
+
+Other senior rules worth knowing:
+- Team sheets: all players must be in the PlayHQ team list before the game starts. Live scoring on PlayHQ is mandatory; no manual books unless PlayHQ is down. Matches lock on the Wednesday of the following week.
+- Ground setup: the home team (listed top on the PlayHQ fixture) sets up stumps and cones and supplies the scoreboard, spare used balls, white spray can, first aid kit, measuring tape, ball counter and the square-leg umpire vest, and leaves the ground clean.
+- Forfeits: if you cannot field a team, tell the opposition and the association by 8 PM the Thursday before.
+- Reserve days: league games washed out share the points, with no reserve day. Only Pre-Semis, Semi Finals and Grand Finals have reserve days. If a Pre-Semi or Semi is washed out on the reserve day, the higher-placed team goes through; if a Grand Final is, the team that finished top of the ladder takes the championship.
+- Lost ball: replace it with an old used ball from a previous game, with the umpire agreeing on its condition.
+- Fielder's call is accepted on boundaries unless the umpire can clearly see the fielder touch or cross a cone. Where no cone covers that area, fielder's call stands.
+- Bowling action: never stop a bowler mid-over over a suspected action. The objecting team's square-leg umpire may film the over and send it to the association for review, after telling the main umpire, who tells the bowler. No filming without telling the umpire.
+- Abuse: no personal or racist comments, and no abuse of any kind. Physical abuse or fighting brings strict action.
+- Awards: best batsman, bowler, fielder and keeper of the tournament, most sixes in T20, Man of the Match in every game including finals, medals and trophies for the winning team, medals for the runners-up, championship and runner-up trophies, and a Finals Umpire trophy.
+
 Junior competitions (alternate Sundays from 26 April 2026, all start 12:30 PM):
 | Grade | Overs | Ages | Team size | Ball | Umpire | Pitch | Boundary |
 | --- | --- | --- | --- | --- | --- | --- | --- |

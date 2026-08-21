@@ -1911,6 +1911,11 @@ body[data-chat-page] .chat-launch { display: none; }
 .chat-cite-group { margin-bottom: 0.55rem; }
 .chat-cite-group:last-child { margin-bottom: 0; }
 
+.chat-cite-books {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+}
 .chat-cite-book {
   display: inline-flex;
   align-items: center;
