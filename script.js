@@ -159,6 +159,17 @@
     if (e.key === 'Escape') setNavOpen(false);
   });
 
+  // On the assistant page the header's Ask MCA pill is a "you are here" marker.
+  // Put the cursor in the box rather than leaving a stray #hash in the address.
+  var askHere = document.querySelector('.ask-mca-here');
+  if (askHere) {
+    askHere.addEventListener('click', function (e) {
+      e.preventDefault();
+      var box = document.getElementById('chatbot-input');
+      if (box) box.focus();
+    });
+  }
+
 
   // ============================================================
   //  MCA Assistant — chat widget
