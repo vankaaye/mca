@@ -56,8 +56,8 @@ rule Q&As. Slower to write, but free and dependency-free.
 ## Common edits
 
 **Change a fee, date or rule shown on the page** — edit `index.html`. Sections
-appear on the page in the order they appear in that file: About, Competitions,
-Rules, Fixtures & Ladders, Juniors, Fees, Calendar, Photos, Season Information,
+appear on the page in the order they appear in that file: About, Photos, Rules,
+Competitions, Fixtures & Ladders, Juniors, Fees, Calendar, Season Information,
 Contact.
 
 **Change the PlayHQ link** — it appears in the Fixtures & Ladders section and on

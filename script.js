@@ -1135,6 +1135,28 @@
     return (rule && SECTION_MAP[rule.category]) || '';
   }
 
+  // A small icon in front of an offline answer, chosen by what the rule covers.
+  // The AI answers already come back with emoji; this keeps the two consistent
+  // when the Worker is unreachable and the offline lookup is doing the talking.
+  var CATEGORY_EMOJI = {
+    'format': '🏏', 'powerplay': '🎯', 'fielding': '🧤', 'competition': '🏆',
+    'game-times': '⏰', 'umpires': '🧑‍⚖️', 'ground-setup': '🏟️', 'team-sheets': '📝',
+    'delays-rain': '🌧️', 'bad-light': '🌥️', 'reduced-overs': '⏱️',
+    'revised-target': '🧮', 'free-hit': '💥', 'square-leg': '🚩', 'wides': '↔️',
+    'cards-discipline': '🟨', 'attire': '👕', 'reports': '📝', 'fees': '💵',
+    'balls': '🔴', 'no-balls': '🚫', 'over-rate': '⏱️', 'late-players': '🕐',
+    'abuse': '⚠️', 'awards': '🥇', 'streaming': '📺', 'scoring': '📱',
+    'forfeits': '❌', 'registration': '✍️', 'reserve-days': '🗓️',
+    'juniors-general': '🧒', 'juniors-u11': '🧒', 'juniors-u13': '🧒',
+    'juniors-u15': '🧒', 'juniors-safety': '🛡️', 'juniors-batting': '🏏',
+    'juniors-bowling': '🎳', 'general': 'ℹ️'
+  };
+
+  function emojiFor(rule) {
+    if (!rule || !rule.category) return 'ℹ️';
+    return CATEGORY_EMOJI[rule.category] || 'ℹ️';
+  }
+
   function findAnswer(query) {
     var ranked = rankRules(query);
 
@@ -1162,7 +1184,7 @@
       if (sec && sections.indexOf(sec) === -1) sections.push(sec);
     }
 
-    var answer = best.a;
+    var answer = emojiFor(best) + ' ' + best.a;
     if (supporting.length) {
       answer += '\n\n' + supporting.map(function (s) { return '- ' + s; }).join('\n');
     }
