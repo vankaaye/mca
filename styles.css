@@ -143,11 +143,9 @@
 /* Optional hero photograph. Drop photos/hero.jpg in and it appears behind the
    gradient with a slow drift; with no file the gradient simply shows through. */
 
-
-
 @media (prefers-reduced-motion: reduce) {
   .hero-rise, .hero-rise-2, .hero-rise-3, .hero-rise-4 { animation: none; }
-  .hero-photo, .ticker-track, .live-dot { animation: none; }
+  .hero-photo, .live-dot { animation: none; }
 }
 
 html { scroll-behavior: smooth; }
@@ -522,7 +520,6 @@ img { max-width: 100%; display: block; }
 
 /* Hero content */
 
-
 .hero-ctas {
   display: flex;
   gap: 1rem;
@@ -579,29 +576,6 @@ img { max-width: 100%; display: block; }
 /* ============================================================
    Ticker
    ============================================================ */
-.ticker {
-  background: linear-gradient(90deg, var(--gold), var(--gold-dark));
-  padding: 0.75rem 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-.ticker-track {
-  display: inline-flex;
-  gap: 3rem;
-  animation: tickerScroll 30s linear infinite;
-}
-.ticker-item {
-  font-family: 'Bebas Neue', cursive;
-  font-size: 1rem;
-  color: #fff;
-  letter-spacing: 0.08em;
-  flex-shrink: 0;
-}
-
-@keyframes tickerScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 
 /* ============================================================
    Sections (shared)
@@ -1752,7 +1726,6 @@ img { max-width: 100%; display: block; }
   .chatbot-panel { width: calc(100vw - 2rem); right: 1rem; bottom: 5.5rem; }
 }
 
-
 /* ============================================================
    Depth: 3D tilt on hover
    ============================================================ */
@@ -1783,7 +1756,6 @@ img { max-width: 100%; display: block; }
   .feature-card:hover, .comp-card:hover, .fee-card:hover,
   .contact-card:hover, .season-card:hover { transform: translateY(-4px); }
 }
-
 
 /* Close control in the chat header */
 .chatbot-close {
@@ -1874,7 +1846,6 @@ img { max-width: 100%; display: block; }
   .chat-chips-label { display: none; }
   .chat-chip { flex: 0 0 auto; }
 }
-
 
 /* ============================================================
    iOS zoom guard — must stay last
