@@ -15,7 +15,21 @@ Browser widget  →  POST /chat  →  this Worker  →  api.anthropic.com
 | `/hit` | POST | Fire-and-forget page-view beacon (returns 204) |
 | `/stats` | GET | Unlisted dashboard, last 14 days |
 
-## Deploy
+## Updating an already-deployed Worker
+
+The Worker is live. To push a change to the system prompt or the rules it
+knows, either:
+
+**From the dashboard** (no tools needed) — open the Worker in Cloudflare,
+click *Edit code*, paste the whole of `src/worker.js` over what is there, and
+*Deploy*. The API key and KV binding are account settings and survive this.
+
+**From a terminal** — `cd worker && wrangler deploy`.
+
+Nothing about the website needs redeploying; the site and the Worker are
+separate.
+
+## First-time deploy
 
 You need a Cloudflare account and an Anthropic API key from
 [console.anthropic.com](https://console.anthropic.com/).
@@ -57,7 +71,7 @@ Wrangler prints the Worker URL, e.g.
 <script>window.MCA_CHAT_ENDPOINT = 'https://mca-assistant.your-subdomain.workers.dev';</script>
 ```
 
-Commit and push — Netlify redeploys and the widget starts using the live
+Commit and push — GitHub Pages redeploys and the widget starts using the live
 assistant. Leave it as an empty string and the widget quietly falls back to the
 offline keyword lookup in `rules-data.js`, so the site is never broken.
 
@@ -66,11 +80,11 @@ offline keyword lookup in `rules-data.js`, so the site is never broken.
 `ALLOWED_ORIGINS` in `src/worker.js` is an allowlist — any other origin gets a
 403. It currently permits:
 
-- `https://mcacricket.netlify.app`
-- `https://www.mcacricket.netlify.app`
+- `https://mcacric.com` and `https://www.mcacric.com`
+- the `workers.dev` preview URL
 - `localhost` / `127.0.0.1` on ports 3000 and 8000
 
-Add your custom domain to that array when you set one up, then redeploy.
+Add any new domain to that array, then redeploy.
 
 ## Cost guards
 
