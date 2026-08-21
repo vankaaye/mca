@@ -654,8 +654,7 @@
   } else if (chatToggle) {
     chatToggle.addEventListener('click', function () {
       var isOpen = chatPanel.classList.toggle('open');
-      chatToggle.classList.toggle('active', isOpen);
-      document.body.classList.toggle('chat-open', isOpen);
+      setLauncherState(isOpen);
       if (isOpen) {
         greet();
         // No focus() here — it would pop the keyboard the moment the sheet
@@ -664,14 +663,24 @@
     });
   }
 
+  // The launcher keeps its label at all times; only the wording changes so an
+  // open panel has an obvious way out on desktop, where it stays visible.
+  function setLauncherState(isOpen) {
+    document.body.classList.toggle('chat-open', isOpen);
+    if (!chatToggle) return;
+    chatToggle.classList.toggle('active', isOpen);
+    chatToggle.setAttribute('aria-label', isOpen ? 'Close the MCA Assistant' : 'Open the MCA Assistant');
+    var label = chatToggle.querySelector('.chat-launch-label');
+    if (label) label.textContent = isOpen ? 'Close chat' : 'Chat with us';
+  }
+
   // Close control inside the panel header — the only way out when the panel
   // is a full-screen sheet on a phone and the launcher is hidden behind it.
   var chatClose = document.getElementById('chatbot-close');
   if (chatClose) {
     chatClose.addEventListener('click', function () {
       chatPanel.classList.remove('open');
-      if (chatToggle) chatToggle.classList.remove('active');
-      document.body.classList.remove('chat-open');
+      setLauncherState(false);
     });
   }
 
