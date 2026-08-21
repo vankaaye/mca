@@ -87,6 +87,6 @@ jobs:
           if echo "$reply" | grep -qi 'registered'; then
             echo "::notice::Smoke test passed — the assistant answered from the rule book."
           else
-            echo "::error::Smoke test failed — the deployed assistant did not answer the fill-in question from the rule book."
+            echo "::error::Smoke test failed. If the reply above says 'Assistant is not configured', the Worker has lost its ANTHROPIC_API_KEY — add it back under the Worker's Settings → Variables and Secrets, as a Secret. Otherwise the deployed prompt is not the one in this repository."
             exit 1
           fi

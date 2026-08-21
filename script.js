@@ -187,6 +187,9 @@
   var chatInput = document.getElementById('chatbot-input');
   var chatSend = document.getElementById('chatbot-send');
   var chatMic = document.getElementById('chatbot-mic');
+  var chatAttach = document.getElementById('chatbot-attach');
+  var chatFile = document.getElementById('chatbot-file');
+  var chatAttachDock = document.getElementById('chatbot-attachment');
   var chatChips = document.getElementById('chatbot-chips');
   // Focusing an input on a touch device raises the on-screen keyboard, so the
   // widget never takes focus by itself there — the user taps the field first.
@@ -209,10 +212,21 @@
   function saveConversation() {
     try {
       if (!history.length) { localStorage.removeItem(STORE_KEY); return; }
+      // Attachments are never written to storage — a couple of photos would
+      // blow the ~5 MB quota and take the whole saved conversation with them.
+      // The words are kept, with a marker where the file was.
+      var saved = history.slice(-STORE_MAX_MESSAGES).map(function (m) {
+        if (typeof m.content === 'string') return m;
+        var text = (m.content || [])
+          .filter(function (b) { return b.type === 'text'; })
+          .map(function (b) { return b.text; })
+          .join('\n');
+        return { role: m.role, content: '📎 ' + (text || 'attachment') };
+      });
       localStorage.setItem(STORE_KEY, JSON.stringify({
         v: 1,
         at: Date.now(),
-        history: history.slice(-STORE_MAX_MESSAGES),
+        history: saved,
         chips: lastChips
       }));
     } catch (err) {
@@ -534,10 +548,29 @@
 
   // ---- Message rendering ----------------------------------------------------
 
-  function addUserMessage(text) {
+  function addUserMessage(text, attachment) {
     var div = document.createElement('div');
     div.className = 'chat-msg chat-msg-user';
-    div.textContent = text;
+
+    if (attachment) {
+      if (attachment.type === 'image' && attachment.previewUrl) {
+        var img = document.createElement('img');
+        img.className = 'chat-msg-image';
+        img.src = attachment.previewUrl;
+        img.alt = attachment.name || 'Attached photo';
+        div.appendChild(img);
+      } else {
+        var file = document.createElement('span');
+        file.className = 'chat-msg-file';
+        file.textContent = '📎 ' + (attachment.name || 'attachment');
+        div.appendChild(file);
+      }
+    }
+
+    var body = document.createElement('span');
+    body.textContent = text;
+    div.appendChild(body);
+
     chatMessages.appendChild(div);
     scrollChatToBottom();
   }
@@ -642,18 +675,38 @@
     chatBusy = state;
     chatSend.disabled = state;
     chatInput.disabled = state;
+    if (chatAttach) chatAttach.disabled = state;
   }
 
   // ---- Sending --------------------------------------------------------------
 
   function sendUserMessage() {
     var text = chatInput.value.trim();
+    var attachment = pendingAttachment;
+    // An attachment on its own is a fair question — "what does this say?"
+    if (!text && attachment) text = 'What can you tell me about this?';
     if (!text || chatBusy) return;
 
     clearChips();
-    addUserMessage(text);
+    addUserMessage(text, attachment);
     chatInput.value = '';
-    history.push({ role: 'user', content: text });
+
+    if (attachment) {
+      history.push({
+        role: 'user',
+        content: [
+          { type: attachment.type,
+            source: { type: 'base64', media_type: attachment.mediaType, data: attachment.data } },
+          { type: 'text', text: text },
+        ],
+      });
+      pendingAttachment = null;
+      if (chatFile) chatFile.value = '';
+      renderAttachment();
+    } else {
+      history.push({ role: 'user', content: text });
+    }
+
     saveConversation();
     setBusy(true);
 
@@ -684,6 +737,22 @@
 
     var url = endpoint();
 
+    // The offline lookup is a keyword search over text — it cannot see a
+    // picture. Answering the words while silently ignoring the attachment
+    // would be worse than saying so.
+    function cannotReadOffline() {
+      if (typing.parentNode) typing.remove();
+      addBotMessage('📎 I can only read attachments when the assistant is online, and it is not reachable ' +
+        'right now. Ask the question in words and I will answer from the rule books, or email ' +
+        '[melbournecricketassociation@gmail.com](mailto:melbournecricketassociation@gmail.com) with the file.');
+      setBusy(false);
+    }
+
+    if (!url && attachment) {
+      window.setTimeout(cannotReadOffline, 300);
+      return;
+    }
+
     if (!url) {
       // No Worker configured — answer from the offline knowledge base.
       window.setTimeout(function () {
@@ -708,10 +777,192 @@
         finish(data.reply, data.suggestions || []);
       })
       .catch(function () {
-        // Network trouble or the Worker is down — degrade to the local engine.
+        // Network trouble or the Worker is down — degrade to the local engine,
+        // unless there is a file it could never have read anyway.
+        if (attachment) { cannotReadOffline(); return; }
         var local = findAnswer(text);
         finish(local.answer, local.related);
       });
+  }
+
+  // ---- Attachments ----------------------------------------------------------
+  //
+  //  A photo of a scoresheet or a PlayHQ screen, or a PDF. Images are redrawn
+  //  through a canvas before sending: it caps the long edge at 1568px (past
+  //  which the model gains nothing), cuts a 4 MB phone photo to a couple of
+  //  hundred KB, and drops the EXIF — including the GPS tag — as a side effect.
+
+  var MAX_IMAGE_EDGE = 1568;
+  var MAX_FILE_BYTES = 5 * 1024 * 1024;
+  var IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  var pendingAttachment = null;   // { type, mediaType, data, name, previewUrl }
+
+  function humanSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+  }
+
+  function readAsDataUrl(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () { resolve(reader.result); };
+      reader.onerror = function () { reject(new Error('could not read the file')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Redraw an image at a sane size and return { mediaType, data, previewUrl }
+  function shrinkImage(file) {
+    return readAsDataUrl(file).then(function (dataUrl) {
+      return new Promise(function (resolve) {
+        var img = new Image();
+        img.onload = function () {
+          var scale = Math.min(1, MAX_IMAGE_EDGE / Math.max(img.width, img.height));
+          var w = Math.max(1, Math.round(img.width * scale));
+          var h = Math.max(1, Math.round(img.height * scale));
+
+          var canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          // A white bed, so a transparent PNG does not come through as black
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+
+          var out = canvas.toDataURL('image/jpeg', 0.85);
+          resolve({ mediaType: 'image/jpeg', data: out.split(',')[1], previewUrl: out });
+        };
+        // A file the browser cannot decode goes through untouched and the
+        // Worker will reject it if it is not something we accept.
+        img.onerror = function () {
+          resolve({ mediaType: file.type, data: String(dataUrl).split(',')[1], previewUrl: dataUrl });
+        };
+        img.src = dataUrl;
+      });
+    });
+  }
+
+  function renderAttachment() {
+    if (!chatAttachDock) return;
+    if (!pendingAttachment) {
+      chatAttachDock.hidden = true;
+      chatAttachDock.innerHTML = '';
+      return;
+    }
+
+    chatAttachDock.hidden = false;
+    chatAttachDock.innerHTML = '';
+
+    var card = document.createElement('div');
+    card.className = 'chat-attachment-card';
+
+    if (pendingAttachment.type === 'image') {
+      var thumb = document.createElement('img');
+      thumb.className = 'chat-attachment-thumb';
+      thumb.src = pendingAttachment.previewUrl;
+      thumb.alt = '';
+      card.appendChild(thumb);
+    } else {
+      var badge = document.createElement('span');
+      badge.className = 'chat-attachment-badge';
+      badge.textContent = 'PDF';
+      card.appendChild(badge);
+    }
+
+    var meta = document.createElement('div');
+    meta.className = 'chat-attachment-meta';
+    var name = document.createElement('span');
+    name.className = 'chat-attachment-name';
+    name.textContent = pendingAttachment.name;
+    var size = document.createElement('span');
+    size.className = 'chat-attachment-size';
+    size.textContent = humanSize(pendingAttachment.bytes);
+    meta.appendChild(name);
+    meta.appendChild(size);
+    card.appendChild(meta);
+
+    var remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'chat-attachment-remove';
+    remove.setAttribute('aria-label', 'Remove the attachment');
+    remove.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/>' +
+      '<line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    remove.addEventListener('click', function () {
+      pendingAttachment = null;
+      if (chatFile) chatFile.value = '';
+      renderAttachment();
+    });
+    card.appendChild(remove);
+
+    chatAttachDock.appendChild(card);
+  }
+
+  function attachmentError(message) {
+    pendingAttachment = null;
+    if (chatFile) chatFile.value = '';
+    if (!chatAttachDock) return;
+    chatAttachDock.hidden = false;
+    chatAttachDock.innerHTML = '';
+    var note = document.createElement('p');
+    note.className = 'chat-attachment-error';
+    note.textContent = message;
+    chatAttachDock.appendChild(note);
+    window.setTimeout(function () {
+      if (!pendingAttachment) renderAttachment();
+    }, 4000);
+  }
+
+  if (chatAttach && chatFile) {
+    chatAttach.addEventListener('click', function () {
+      if (chatBusy) return;
+      chatFile.click();
+    });
+
+    chatFile.addEventListener('change', function () {
+      var file = chatFile.files && chatFile.files[0];
+      if (!file) return;
+
+      var isImage = IMAGE_TYPES.indexOf(file.type) !== -1;
+      var isPdf = file.type === 'application/pdf';
+      if (!isImage && !isPdf) {
+        attachmentError('That file type is not supported. Attach a photo or a PDF.');
+        return;
+      }
+      // PDFs cannot be shrunk here, so the cap is checked before reading
+      if (isPdf && file.size > MAX_FILE_BYTES) {
+        attachmentError('That PDF is ' + humanSize(file.size) + '. The limit is 5 MB.');
+        return;
+      }
+
+      var work = isImage
+        ? shrinkImage(file)
+        : readAsDataUrl(file).then(function (dataUrl) {
+            return { mediaType: 'application/pdf', data: String(dataUrl).split(',')[1], previewUrl: '' };
+          });
+
+      work.then(function (out) {
+        var bytes = Math.floor(out.data.length * 3 / 4);
+        if (bytes > MAX_FILE_BYTES) {
+          attachmentError('That file is too large even after resizing. The limit is 5 MB.');
+          return;
+        }
+        pendingAttachment = {
+          type: isImage ? 'image' : 'document',
+          mediaType: out.mediaType,
+          data: out.data,
+          previewUrl: out.previewUrl,
+          name: file.name,
+          bytes: bytes,
+        };
+        renderAttachment();
+        if (!coarsePointer) chatInput.focus();
+      }).catch(function () {
+        attachmentError('That file could not be read. Try another one.');
+      });
+    });
   }
 
   // ---- Voice input (optional, where the browser supports it) ----------------

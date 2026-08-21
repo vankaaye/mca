@@ -2,14 +2,24 @@ name = "mca-assistant"
 main = "src/worker.js"
 compatibility_date = "2025-06-01"
 
+# Do not delete variables and secrets that are not named in this file.
+#
+# Without this, `wrangler deploy` replaces the Worker's whole binding set with
+# whatever is declared here — and the first automated deploy removed the
+# ANTHROPIC_API_KEY that had been added in the dashboard, which took the chat
+# down until it was put back. The key deliberately lives on the Worker and not
+# in this repository, so this file must not be treated as the whole truth
+# about it.
+keep_vars = true
+
 # Daily counters for the /stats dashboard. Optional — every KV call in the
 # Worker is guarded, so it runs fine with no binding at all and /stats simply
 # reports zeros.
 #
-# ⚠️  This file is the whole truth about the Worker's bindings. Deploying with
-# the block below commented out REMOVES any STATS binding the Worker currently
-# has, wherever it was added. If the Worker already has one, uncomment this and
-# paste the real id before the first automated deploy.
+# ⚠️  keep_vars above protects variables and secrets, but NOT KV bindings.
+# Deploying with the block below commented out removes any STATS binding the
+# Worker currently has, wherever it was added. If the Worker already has one,
+# uncomment this and paste the real id.
 #
 # To create one:  npx wrangler kv namespace create STATS
 #
