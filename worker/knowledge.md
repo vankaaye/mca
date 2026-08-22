@@ -54,8 +54,7 @@ Read off PlayHQ on 22 August 2026. Twelve grades: eight senior, four junior.
 | **Total** | **86** | **503** | **48** |
 
 - 551 games across the season, league and finals together.
-- The association counts 100 teams; PlayHQ ladders list 86. Use 100 when asked
-  how big MCA is, and 86 only if asked specifically about ladder listings.
+- 86 teams, which is what the PlayHQ ladders list. This is the figure to use.
 - Prize money is $1,500 per senior grade — eight of them, so $12,000 across the
   senior competitions.
 - Fixtures, ladders and results live on PlayHQ, never on this website.

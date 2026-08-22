@@ -1648,7 +1648,7 @@ GUARDRAILS
 - The rule book in force is MCA Winter 2026 (juniors v0.4). Where it does not cover a question, follow the chain above — the association notes, then the MCC Laws — and say which one you are answering from.
 
 SIZE OF THE ASSOCIATION
-Winter 2026 has 100 teams and more than 1,600 participants across the senior and junior competitions.
+Winter 2026 has 86 teams and more than 1,600 participants across the senior and junior competitions, in twelve grades — eight senior and four junior.
 
 WHERE THE SEASON IS UP TO
 Winter 2026 registrations have CLOSED and the season is in its closing stages. Saturday T20 finished on 15 August, Saturday T35 is into its finals, and Saturday T35 Non MYCA continues until 12 September. Junior rounds run on alternate Sundays.
