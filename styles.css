@@ -2182,6 +2182,17 @@ body[data-chat-page] .chat-launch { display: none; }
 .chat-cite-group { margin-bottom: 0.55rem; }
 .chat-cite-group:last-child { margin-bottom: 0; }
 
+/* Headings inside an answer */
+.chat-h {
+  margin: 0.7rem 0 0.3rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
+.chat-msg-bot .chat-h:first-child { margin-top: 0; }
+
 .chat-cite-books {
   display: flex;
   flex-wrap: wrap;
