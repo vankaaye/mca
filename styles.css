@@ -1594,15 +1594,15 @@ img { max-width: 100%; display: block; }
   width: 100%;
   padding: 1.1rem 1.25rem;
   border-radius: var(--radius);
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--surface-deep-line);
+  background: var(--surface-deep-card);
   color: inherit;
   font-family: 'Inter', sans-serif;
   text-align: left;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s, border-color 0.2s;
 }
-.contact-primary:hover { transform: translateY(-3px); background: rgba(255,255,255,0.11); }
+.contact-primary:hover { transform: translateY(-3px); border-color: var(--gold); }
 .contact-primary-chat { border-color: rgba(234,179,8,0.5); }
 .contact-primary-chat:hover { border-color: var(--gold); }
 .contact-primary-wa { border-color: rgba(37,211,102,0.45); }
@@ -1616,7 +1616,7 @@ img { max-width: 100%; display: block; }
   height: 46px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: rgba(255,255,255,0.1);
+  background: rgba(127,127,127,0.14);
   font-size: 1.35rem;
 }
 .contact-primary-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
@@ -1629,8 +1629,8 @@ img { max-width: 100%; display: block; }
   padding: 1.5rem;
   margin-bottom: 2rem;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--surface-deep-line);
+  background: var(--surface-deep-card);
 }
 .contact-form h3 { font-size: 1.15rem; margin-bottom: 1rem; }
 .contact-form-grid {
@@ -1647,11 +1647,19 @@ img { max-width: 100%; display: block; }
   min-width: 0;
   padding: 0.65rem 0.8rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(0,0,0,0.22);
-  color: inherit;
+  /* rgba(0,0,0,0.22) made these grey slabs in daylight — barely legible as
+     fields, let alone as text someone had typed. */
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--text-dim); }
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field textarea {
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.3);
 }
 .field input:focus, .field textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
 .field textarea { resize: vertical; }
@@ -1664,9 +1672,26 @@ img { max-width: 100%; display: block; }
   gap: 0.9rem;
   margin-top: 1.1rem;
 }
-.contact-form-status { margin: 0; font-size: 0.85rem; }
-.contact-form-status.is-error { color: #fca5a5; }
-.contact-form-status.is-ok { color: #86efac; }
+.contact-form-status {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+/* These were pale green and pale red, chosen for a dark panel — but
+   section-dark is only dark in dark mode, so in daylight they were washed out
+   on a near-white background. A tinted chip with a dark ink reads on both. */
+.contact-form-status.is-ok,
+.contact-form-status.is-error {
+  flex: 1 1 14rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 0.5rem;
+  border-left: 3px solid currentColor;
+  font-weight: 600;
+}
+.contact-form-status.is-ok    { color: #14532d; background: rgba(22,163,74,0.13); }
+.contact-form-status.is-error { color: #b91c1c; background: rgba(220,38,38,0.11); }
+[data-theme="dark"] .contact-form-status.is-ok    { color: #86efac; background: rgba(22,163,74,0.18); }
+[data-theme="dark"] .contact-form-status.is-error { color: #fca5a5; background: rgba(220,38,38,0.18); }
 
 .contact-people-head {
   font-size: 1.05rem;
