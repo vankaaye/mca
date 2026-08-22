@@ -294,10 +294,36 @@
 
   function safeUrl(url) {
     var u = String(url).trim();
-    // Only absolute http(s), in-page anchors and site-relative paths.
+    // Absolute http(s), in-page anchors and site-relative paths...
     if (/^https?:\/\//i.test(u)) return u;
     if (/^[/#]/.test(u)) return u;
+    // ...plus mail and phone, which are the whole point of a contact answer.
+    // These were being rejected, so every address the assistant wrote came out
+    // as dead text. Kept strict: no spaces, no second colon, nothing exotic.
+    if (/^mailto:[^\s:;,<>"']+@[^\s:;,<>"']+\.[A-Za-z]{2,}$/i.test(u)) return u;
+    if (/^tel:\+?[0-9]{6,15}$/i.test(u)) return u;
     return '';
+  }
+
+  // Addresses and numbers written as plain text still become tappable. The
+  // model does not always remember to mark them up, and a phone number you
+  // cannot press is no use on a phone.
+  var EMAIL_RE = /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g;
+  var PHONE_RE = /(\+61[\s-]?\d(?:[\s-]?\d){8}|0\d(?:[\s-]?\d){8})/g;
+
+  function autoLink(html) {
+    // Only touch the parts that are not already inside an anchor
+    return html.split(/(<a\b[^>]*>[\s\S]*?<\/a>)/g).map(function (chunk, idx) {
+      if (idx % 2) return chunk;                        // an existing link
+      return chunk
+        .replace(EMAIL_RE, function (m) {
+          return '<a href="mailto:' + m + '">' + m + '</a>';
+        })
+        .replace(PHONE_RE, function (m) {
+          var digits = m.replace(/[^0-9+]/g, '');
+          return '<a href="tel:' + digits + '">' + m + '</a>';
+        });
+    }).join('');
   }
 
   function renderInline(text) {
@@ -317,7 +343,7 @@
 
     out = out.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
-    return out;
+    return autoLink(out);
   }
 
   function splitRow(line) {
@@ -384,6 +410,16 @@
         // A lone pipe line is just text — fall through to the paragraph case.
       }
 
+      // Heading. Without this, "## Committee Members" appeared verbatim in the
+      // middle of an answer, hashes and all.
+      var heading = /^\s*(#{1,4})\s+(.*)$/.exec(line);
+      if (heading) {
+        var level = Math.min(heading[1].length + 2, 6);   // ## -> h4
+        html += '<h' + level + ' class="chat-h">' + renderInline(heading[2].trim()) + '</h' + level + '>';
+        i++;
+        continue;
+      }
+
       // Bullet list
       if (/^\s*[-*]\s+/.test(line)) {
         html += '<ul>';
@@ -414,6 +450,7 @@
           lines[i].trim() &&
           !/^\s*[-*]\s+/.test(lines[i]) &&
           !/^\s*\d+\.\s+/.test(lines[i]) &&
+          !/^\s*#{1,4}\s+/.test(lines[i]) &&
           !(/\|/.test(lines[i]) && i + 1 < lines.length && isTableSeparator(lines[i + 1]))
         ) {
           para.push(lines[i]);
