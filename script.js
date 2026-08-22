@@ -1559,6 +1559,8 @@
 
       if (data.name.length < 2) { say('Please tell us your name.', 'error'); form.elements.name.focus(); return; }
       if (data.phone.replace(/[^0-9]/g, '').length < 8) { say('Please give us a phone number we can reach you on.', 'error'); form.elements.phone.focus(); return; }
+      // Required — without it there is no way to write back
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) { say('Please give us an email address so we can reply.', 'error'); form.elements.email.focus(); return; }
       if (data.message.length < 5) { say('Please add a short message.', 'error'); form.elements.message.focus(); return; }
 
       var url = endpoint();
@@ -1577,7 +1579,7 @@
       })
         .then(function (res) {
           return res.json().catch(function () { return {}; }).then(function (body) {
-            if (!res.ok || body.error) throw new Error(body.error || 'Request failed');
+            if (!res.ok || body.error) throw new Error(body.error || '');
             return body;
           });
         })
@@ -1585,8 +1587,11 @@
           form.reset();
           say('Thanks — that has gone to the committee. We will get back to you.', 'ok');
         })
-        .catch(function () {
-          say('That did not send. Please call or WhatsApp us instead — the numbers are just below.', 'error');
+        .catch(function (err) {
+          // The Worker explains why when it can; only fall back to the generic
+          // line when there is nothing more useful to pass on.
+          say((err && err.message) ||
+              'That did not send. Please call or WhatsApp us instead — the numbers are just below.', 'error');
         })
         .then(function () { button.disabled = false; });
     });

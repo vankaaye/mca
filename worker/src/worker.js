@@ -2130,31 +2130,57 @@ async function handleEnquiry(request, env, ctx, origin) {
   if (phone.replace(/[^0-9]/g, '').length < 8) {
     return json({ error: 'Please provide a valid phone number.' }, 400, origin);
   }
+  // Required, not optional — without it there is no way to write back.
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return json({ error: 'Please provide an email address so we can reply.' }, 400, origin);
+  }
 
   try {
     const res = await fetch('https://formsubmit.co/ajax/' + ENQUIRY_EMAIL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        // FormSubmit refuses anything without one, with "Make sure you open
+        // this page through a web server". A Worker sends no Referer of its
+        // own, which is why every message was being turned away.
+        Referer: 'https://www.mcacric.com/',
+      },
       body: JSON.stringify({
         _subject: 'MCA website enquiry — ' + name,
         // So hitting reply in Gmail goes back to the person who wrote in
-        _replyto: email || undefined,
+        _replyto: email,
         _template: 'table',
         _captcha: 'false',
         name: name,
         phone: phone,
-        email: email || '(not supplied)',
+        email: email,
         message: message.slice(0, 2000) || '(no message)',
       }),
     });
 
-    if (!res.ok) throw new Error('formsubmit ' + res.status);
+    // FormSubmit answers 200 even when it has refused the message, with the
+    // reason in the body. Checking the status alone reported failures as sent.
+    const body = await res.json().catch(() => ({}));
+    const accepted = res.ok && String(body.success) !== 'false';
+
+    if (!accepted) {
+      const reason = String(body.message || 'status ' + res.status);
+      console.error('formsubmit refused:', reason);
+      if (/activation/i.test(reason)) {
+        return json({
+          error: 'The message form is not switched on yet. An activation email has been sent to the ' +
+                 'association inbox — once a committee member clicks the link in it, messages will come through.',
+        }, 503, origin);
+      }
+      return json({ error: 'Could not send your message. Please call or WhatsApp us instead.' }, 502, origin);
+    }
 
     ctx.waitUntil(bump(env, 'enquiries'));
     return json({ ok: true }, 200, origin);
   } catch (err) {
     console.error('enquiry failed:', err && err.message);
-    return json({ error: 'Could not send your enquiry. Please call us instead.' }, 502, origin);
+    return json({ error: 'Could not send your message. Please call or WhatsApp us instead.' }, 502, origin);
   }
 }
 
