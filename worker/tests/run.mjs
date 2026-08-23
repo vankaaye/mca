@@ -18,11 +18,15 @@ const ENDPOINT = process.argv[2] || process.env.ENDPOINT || 'https://mca-assista
 const ORIGIN = 'https://www.mcacric.com';
 const CONCURRENCY = 3;          // gentle on the per-IP rate limit
 
-async function ask(question) {
+async function ask(c) {
+  // A case is either a single question or a whole conversation. The
+  // conversation ones exist because the assistant defends what it said
+  // earlier, so a stale saved chat can undo a corrected prompt.
+  const messages = c.conversation || [{ role: 'user', content: c.ask }];
   const res = await fetch(ENDPOINT + '/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Origin: ORIGIN },
-    body: JSON.stringify({ messages: [{ role: 'user', content: question }] }),
+    body: JSON.stringify({ messages }),
     signal: AbortSignal.timeout(120000),
   });
   const body = await res.json().catch(() => ({}));
@@ -48,7 +52,7 @@ async function worker() {
   while (queue.length) {
     const c = queue.shift();
     try {
-      const reply = await ask(c.ask);
+      const reply = await ask(c);
       results.push({ c, problems: check(reply, c), reply });
     } catch (err) {
       results.push({ c, problems: ['request failed: ' + err.message], reply: '' });
@@ -67,7 +71,8 @@ for (const c of cases) {
   }
   failed++;
   console.log(' FAIL  ' + c.name);
-  console.log('        asked: ' + c.ask);
+  const asked = c.ask || c.conversation[c.conversation.length - 1].content;
+  console.log('        asked: ' + asked.replace(/\s+/g, ' ').slice(0, 160));
   console.log('        why it matters: ' + (c.why || ''));
   for (const p of r.problems) console.log('        ' + p);
   console.log('        reply: ' + r.reply.replace(/\s+/g, ' ').slice(0, 300));
