@@ -76,6 +76,31 @@ namespace id into `wrangler.toml` — that file is the whole truth about
 bindings, and deploying without it removes the binding. Analytics is the only
 thing affected; the chat is unaffected either way.
 
+## Checking it still tells the truth
+
+`worker/tests/cases.json` holds questions with known answers. Every deploy runs
+them against the live assistant and fails if a reply is wrong.
+
+Half the cases assert what a reply **must not** say. That half is the point:
+anyone can write a prompt telling a model not to invent things, but only a test
+catches it when it does anyway. Every `mustNot` in that file is a mistake the
+assistant actually made once — a dispensation process the senior rules do not
+have, a deadline borrowed from an unrelated clause, an extra run added to a
+revised target.
+
+Run them yourself any time:
+
+```bash
+node worker/tests/run.mjs
+```
+
+**When you change the prompt or the notes, add a case.** If you are correcting
+something the assistant got wrong, write the case first, watch it fail, then
+fix it — otherwise nothing stops it drifting back.
+
+Assertions are on facts, never on phrasing. The wording differs every run, and
+a suite that fails on wording is a suite people learn to ignore.
+
 ## Updating it by hand
 
 Only needed if the Action is not set up, or you want to bypass it.

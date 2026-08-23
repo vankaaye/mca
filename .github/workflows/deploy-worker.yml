@@ -55,6 +55,10 @@ jobs:
         working-directory: worker
         run: |
           node --check src/worker.js
+          # The suite is ESM, so --check needs to be told; and a malformed
+          # cases.json should fail here rather than after a live deploy.
+          node --check --input-type=module < tests/run.mjs
+          node -e "JSON.parse(require('fs').readFileSync('tests/cases.json','utf8'))"
           npx --yes wrangler@4 deploy --dry-run --outdir /tmp/worker-build
 
       - name: Deploy
@@ -65,28 +69,11 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy
 
-      - name: Ask the live assistant a question only the new prompt can answer
+      - name: Ask the live assistant questions with known answers
         if: steps.creds.outputs.ready == 'true'
         env:
           ENDPOINT: https://mca-assistant.astrocare.workers.dev
         run: |
           # Cloudflare takes a moment to roll the new version out worldwide.
           sleep 15
-          reply=$(curl -sS --max-time 90 -X POST "$ENDPOINT/chat" \
-            -H 'Content-Type: application/json' \
-            -H 'Origin: https://www.mcacric.com' \
-            -d '{"messages":[{"role":"user","content":"Can a fill-in player play a second game?"}]}')
-
-          echo "$reply" | head -c 1200
-          echo
-
-          # The rule is: a PlayHQ fill-in covers the first game only, and from
-          # the second game the player must be fully registered. If the answer
-          # does not mention registering, the deployed prompt is not the one in
-          # this repository.
-          if echo "$reply" | grep -qi 'registered'; then
-            echo "::notice::Smoke test passed — the assistant answered from the rule book."
-          else
-            echo "::error::Smoke test failed. If the reply above says 'Assistant is not configured', the Worker has lost its ANTHROPIC_API_KEY — add it back under the Worker's Settings → Variables and Secrets, as a Secret. Otherwise the deployed prompt is not the one in this repository."
-            exit 1
-          fi
+          node worker/tests/run.mjs "$ENDPOINT"
