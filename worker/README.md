@@ -101,6 +101,13 @@ fix it — otherwise nothing stops it drifting back.
 Assertions are on facts, never on phrasing. The wording differs every run, and
 a suite that fails on wording is a suite people learn to ignore.
 
+**Assert on the claim, not on a word.** This one bit immediately. The borrowing
+case forbade the phrase "loan player", and then a perfectly correct answer —
+*"the senior rule book does not set out a process for loaning players"* — failed
+it. The fix was to forbid an affirmative permission (*"you can use loan
+players"*) instead of the vocabulary. A test that fails on right answers is
+worse than no test.
+
 ## Updating it by hand
 
 Only needed if the Action is not set up, or you want to bypass it.
