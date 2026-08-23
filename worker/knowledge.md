@@ -59,6 +59,30 @@ Read off PlayHQ on 22 August 2026. Twelve grades: eight senior, four junior.
   senior competitions.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
+## Dispensations — juniors only
+
+The junior rule book has a dispensation process. The senior rule book has none.
+
+- **Juniors:** email melbournecricketassociation@gmail.com by **5 PM the Thursday
+  before the game**, with the player's name, date of birth and the grade
+  requested.
+- **Seniors:** there is no dispensation process in the rule book. A senior
+  captain short of eligible players for finals should email the committee, but
+  nothing in the rules obliges an exception or sets out how to ask for one.
+
+Say this plainly rather than lending the junior process to a senior question.
+
+## Finals eligibility — the senior rules that do exist
+
+- Minimum **6** league games to qualify for finals in regular T35 and T20
+  grades; **4** in the reduced-fixture (10 rounds) T35 grades.
+- A player at a club with teams in several grades may play in any of them
+  during the season, but qualifies for finals in only **one** grade — the one
+  they played the most games in. The same applies to a player who turned out
+  for two clubs in the same grade.
+- The rule book says nothing about loaning or borrowing players between teams
+  for finals. Do not describe such a thing.
+
 ## Committee decisions and clarifications
 
 - (nothing yet)
