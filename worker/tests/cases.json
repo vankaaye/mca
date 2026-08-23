@@ -9,91 +9,138 @@
     "case here with a 'mustNot' is a real mistake the assistant made once.",
     "",
     "Assertions are on facts, never on phrasing — the wording will differ every",
-    "run and a suite that fails on wording gets ignored."
+    "run and a suite that fails on wording gets ignored.",
+    "",
+    "A caveat learned the hard way: assert on the CLAIM, not on a word. 'loan player' was forbidden outright, and then a perfectly correct answer — 'the rule book sets out no process for loaning players' — failed the suite. A test that fails on right answers is worse than no test, because people stop believing it."
   ],
   "cases": [
     {
       "name": "fill-in second game",
       "ask": "Can a fill-in player play a second game?",
-      "must": ["register"],
+      "must": [
+        "register"
+      ],
       "why": "A PlayHQ fill-in covers the first game only; after that they must be registered."
     },
     {
       "name": "senior dispensation does not exist",
       "ask": "How do I request a dispensation for a senior finals game?",
-      "must": ["(does not|doesn't|no) (specify|set out|have|describe|cover|provide)"],
-      "mustNot": ["48 hours before", "within 48 hours of the (match|game|final)"],
+      "must": [
+        "(does not|doesn't|no) (specify|set out|have|describe|cover|provide)"
+      ],
+      "mustNot": [
+        "deadline.{0,30}48 hours",
+        "(request|apply|submit).{0,40}48 hours before",
+        "at least 48 hours before"
+      ],
       "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule."
     },
     {
       "name": "junior dispensation deadline",
       "ask": "What is the deadline to request a junior dispensation?",
-      "must": ["thursday", "5 ?pm"],
+      "must": [
+        "thursday",
+        "5 ?pm"
+      ],
       "why": "Juniors: by 5 PM the Thursday before the game."
     },
     {
       "name": "borrowing players for finals",
       "ask": "Can I borrow a player from another team at my club for a final?",
-      "mustNot": ["loan player", "loaning player"],
-      "must": ["(one|1) grade|most (number of )?games|does not|doesn't"],
-      "why": "Nothing in the senior book describes loaning players. It once said you could."
+      "mustNot": [
+        "you (can|may|are able to) (use|borrow|loan)",
+        "(borrowing|loaning) is (allowed|permitted)",
+        "you are allowed to (borrow|loan)"
+      ],
+      "must": [
+        "(does not|doesn't|no).{0,40}(cover|set out|specify|describe|process)"
+      ],
+      "why": "Nothing in the senior book describes loaning players. It once said you could. The assertion targets an affirmative permission, not the word itself — a correct denial says 'loan' too."
     },
     {
       "name": "U15 innings end",
       "ask": "How many wickets end a U15 innings?",
-      "must": ["10 wickets|ten wickets"],
+      "must": [
+        "10 wickets|ten wickets"
+      ],
       "why": "U15: 10 wickets, unlike U11 and U13."
     },
     {
       "name": "revised target, no plus one",
       "ask": "Team A scored 175 in 35 overs. The second innings is cut to 15 overs. What is the revised target?",
-      "must": ["75"],
-      "mustNot": ["76"],
+      "must": [
+        "75"
+      ],
+      "mustNot": [
+        "76"
+      ],
       "why": "MCA uses revised overs x run rate. It once applied the usual cricket +1 convention, which MCA does not use."
     },
     {
       "name": "umpire fee T35",
       "ask": "What is the umpire fee for T35?",
-      "must": ["\\$?85"],
+      "must": [
+        "\\$?85"
+      ],
       "why": "$85 per team."
     },
     {
       "name": "T20 powerplay",
       "ask": "How many powerplay overs in T20?",
-      "must": ["6 overs|first 6|six overs"],
+      "must": [
+        "6 overs|first 6|six overs"
+      ],
       "why": "First 6 overs, mandatory."
     },
     {
       "name": "league washout has no reserve day",
       "ask": "Our league game was washed out. When is the reserve day?",
-      "must": ["no reserve day|shared|share the points"],
+      "must": [
+        "no reserve day|shared|share the points"
+      ],
       "why": "League games washed out share the points; only finals have reserve days."
     },
     {
       "name": "team count",
       "ask": "How many teams play in MCA this season?",
-      "must": ["86"],
-      "mustNot": ["100 teams"],
+      "must": [
+        "86"
+      ],
+      "mustNot": [
+        "100 teams"
+      ],
       "why": "86 teams, matching the PlayHQ ladders."
     },
     {
       "name": "falls back to the MCC Laws",
       "ask": "What counts as obstructing the field?",
-      "must": ["mcc|laws of cricket|international"],
+      "must": [
+        "mcc|laws of cricket|international"
+      ],
       "why": "Not specified by MCA, so the Laws apply — the senior book says so."
     },
     {
       "name": "contact section exists",
       "ask": "Give me the website link for contacts",
-      "must": ["/#contact"],
-      "mustNot": ["does not have a (dedicated )?(website )?contact"],
+      "must": [
+        "/#contact"
+      ],
+      "mustNot": [
+        "does not have a (dedicated )?(website )?contact"
+      ],
       "why": "The site has a contact section. It once denied that."
     },
     {
       "name": "admits when it does not know",
       "ask": "What is the MCA policy on drone photography at grounds?",
-      "must": ["(not|isn't|does not|doesn't|no).{0,40}(cover|specify|mention|address|set out)|contact"],
-      "mustNot": ["you must apply", "submit a request form", "permit fee"],
+      "must": [
+        "(not|isn't|does not|doesn't|no).{0,40}(cover|specify|mention|address|set out)|contact"
+      ],
+      "mustNot": [
+        "you must apply",
+        "submit a request form",
+        "permit fee"
+      ],
       "why": "Nothing in either book covers this. It must say so rather than invent a policy."
     }
   ]
