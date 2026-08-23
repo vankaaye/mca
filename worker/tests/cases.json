@@ -11,7 +11,9 @@
     "Assertions are on facts, never on phrasing — the wording will differ every",
     "run and a suite that fails on wording gets ignored.",
     "",
-    "A caveat learned the hard way: assert on the CLAIM, not on a word. 'loan player' was forbidden outright, and then a perfectly correct answer — 'the rule book sets out no process for loaning players' — failed the suite. A test that fails on right answers is worse than no test, because people stop believing it."
+    "A caveat learned the hard way: assert on the CLAIM, not on a word. 'loan player' was forbidden outright, and then a perfectly correct answer — 'the rule book sets out no process for loaning players' — failed the suite. A test that fails on right answers is worse than no test, because people stop believing it.",
+    "",
+    "Cases may be a single 'ask' or a full 'conversation'. The multi-turn ones matter more than they look: the assistant defends its own earlier answers, so a stale saved chat can drag a corrected prompt back into a mistake."
   ],
   "cases": [
     {
@@ -142,6 +144,33 @@
         "permit fee"
       ],
       "why": "Nothing in either book covers this. It must say so rather than invent a policy."
+    },
+    {
+      "name": "does not defend its own earlier mistake",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Two of my players are unavailable for the 5 Sept final and one is injured. Can I get eligible players from another team at my club playing MCA 10 rounds in a different grade?"
+        },
+        {
+          "role": "assistant",
+          "content": "🏆 **What You Can Do**\n✅ **Loan players:** You can use loan players from other teams at your club, provided they meet the eligibility rule above.\n\n**Request a Dispensation**\nIf you have extenuating circumstances you can request a dispensation from the association:\nEmail: melbournecricketassociation@gmail.com\nDeadline: At least 48 hours before the match\n"
+        },
+        {
+          "role": "user",
+          "content": "Can you explain the loan player and dispensation options again?"
+        }
+      ],
+      "must": [
+        "(does not|doesn't|no).{0,60}(loan|dispensation|cover|set out)"
+      ],
+      "mustNot": [
+        "loan players are allowed",
+        "(3|three) league games.{0,40}loan",
+        "deadline.{0,30}48 hours",
+        "at least 48 hours before"
+      ],
+      "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
     }
   ]
 }

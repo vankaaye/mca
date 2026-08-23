@@ -204,7 +204,13 @@
   // The chat survives a refresh, a tab close and coming back later on the same
   // device. It is kept in this browser only — nothing is sent anywhere and no
   // other visitor can see it. Cleared with the bin button in the panel header.
-  var STORE_KEY = 'mca-chat-v1';
+  // Bumped to v2 deliberately. Saved conversations from before the rule-book
+  // guardrails carry the assistant's own wrong answers, and it stays consistent
+  // with what it said earlier — so a corrected prompt kept producing corrupted
+  // replies for anyone with an old conversation stored. Changing the key throws
+  // those away. Bump it again whenever a fix must not be undermined by history.
+  var STORE_KEY = 'mca-chat-v2';
+  var STORE_STALE_KEYS = ['mca-chat-v1'];
   var STORE_MAX_MESSAGES = 40;
   var STORE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // a month
   var lastChips = null;
@@ -234,6 +240,12 @@
          will not be there next time. Never let this break a reply. */
     }
   }
+
+  (function dropStaleConversations() {
+    for (var i = 0; i < STORE_STALE_KEYS.length; i++) {
+      try { localStorage.removeItem(STORE_STALE_KEYS[i]); } catch (err) { /* private mode */ }
+    }
+  })();
 
   function loadConversation() {
     var raw;
