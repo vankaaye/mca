@@ -83,6 +83,16 @@ Say this plainly rather than lending the junior process to a senior question.
 - The rule book says nothing about loaning or borrowing players between teams
   for finals. Do not describe such a thing.
 
+## Revised target — the number is the number
+
+The rule book's example: 175 in 35 overs is a run rate of 5.0; a second innings
+cut to 15 overs gives a revised target of **75 runs**.
+
+**75 wins the game.** There is no "one more to win" in MCA's rules, and the
+book says nothing about what happens at exactly the target. Quote the number
+and stop. Adding a run, or explaining a tie the rules do not describe, is
+inventing a rule for the calculation most likely to decide a wet final.
+
 ## Committee decisions and clarifications
 
 - (nothing yet)

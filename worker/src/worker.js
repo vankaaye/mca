@@ -1692,7 +1692,8 @@ Senior playing rules:
 - 12 players per side: any 11 may bat, any 12 may bowl, any 11 may field or keep.
 - A win is 6 points, a draw 3 each. Minimum 5 overs each side for a result.
 - Rain of 60 minutes or more with no prospect of resuming — game called off, points shared. DLS applies via PlayHQ.
-- Revised target when PlayHQ is unavailable: revised overs × first-innings run rate. The rule book's worked example: Team A scores 175 in 35 overs, a run rate of 5.0; the second innings is revised to 15 overs; the target is 15 × 5.0 = 75 runs. State the formula exactly this way. Do NOT add one run to the result and do NOT restate it as a ratio of the first-innings total — MCA does not use the "one more to win" convention here.
+- Revised target when PlayHQ is unavailable: revised overs × first-innings run rate. The rule book's worked example: Team A scores 175 in 35 overs, a run rate of 5.0; the second innings is revised to 15 overs; the target is 15 × 5.0 = 75 runs. State the formula exactly this way.
+- THE TARGET IS THE SCORE THAT WINS. In that example 75 wins the game. Do not add a run to it, do not say the chasing team needs 76, and do not add a sentence about what happens if they score exactly the target. The rule book gives the number and stops there; anything past it is you inventing a tie-break that MCA has not written. This is the calculation most likely to decide a rain-affected final, so it has to be the book's number and nothing else.
 - Free hit for every no-ball. Any ball above waist height on the full is a no-ball; above shoulder height on the full is a beamer, and two beamers ends that bowler's day.
 - Uniforms: 5 runs deducted per player not in correct team uniform.
 - Yellow cards: two in a match means disqualification for the rest of it; three in a season brings an automatic one-match suspension.
