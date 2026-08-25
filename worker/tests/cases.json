@@ -227,6 +227,19 @@
         "(48 hours|thursday)"
       ],
       "why": "The counterpart to the finals case. That one fails if exceptions are volunteered unasked; this one fails if they are withheld from someone who needs them — a player short of games through washouts, which is the book's own worked example. Restraint must not turn into silence."
+    },
+    {
+      "name": "T35 fee includes MoM awards",
+      "ask": "What is included in the $425 Saturday T35 registration fee?",
+      "must": [
+        "(MoM|Man of the Match)",
+        "\\$175",
+        "\\$125"
+      ],
+      "mustNot": [
+        "(MoM|Man of the Match)[^.\\n]{0,60}(T20|10.round)[^.\\n]{0,20}only"
+      ],
+      "why": "The $425 is Registration $175 + MoM $125 + Finals Awards $125. It once listed MoM as a T20-and-10-rounds-only component, which does not add up to $425."
     }
   ]
 }
