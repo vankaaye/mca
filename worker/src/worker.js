@@ -943,10 +943,14 @@ Senior competitions (Winter 2026, all on Saturdays):
 | Saturday T35 | 12:00–5:00 PM | 11 Apr – 22 Aug 2026 | 16 + Pre SF + SF + Final | $1,500 | $425 | $85/game |
 T20 and T35 prizes rose from $1,000 to $1,500. Saturday T35 — 10 Rounds is the shorter 10-round Saturday competition; the plain Saturday T35 runs 16 rounds.
 
-Registration fee breakdown:
-- T20 — Registration $175 + MoM Awards $125 + Ground Fee $250 + Finals Awards $125 = $675
-- T35 — 10 Rounds — same components = $675
-- T35 — Registration $175 + MoM Awards $125 + Finals Awards $125 = $425
+Registration fee breakdown. Every competition pays Registration, MoM Awards and Finals Awards; only the two $675 competitions pay the Ground Fee. Read down a column, never assume a component is missing:
+| Component | Saturday T20 | Saturday T35 | Saturday T35 — 10 Rounds |
+| --- | --- | --- | --- |
+| Registration | $175 | $175 | $175 |
+| MoM Awards | $125 | $125 | $125 |
+| Ground Fee | $250 | — | $250 |
+| Finals Awards | $125 | $125 | $125 |
+| Total | $675 | $425 | $675 |
 - Balls $30 each (MCA Stamped Kookaburra Crown 2-piece white), bought by teams from Hoppers Crossing Cricket Store (03) 9369 5410 or any sports shop.
 
 Payments: MCA, BSB 063106, account 10904465, reference = your team name as per the PlayHQ fixture. Umpire fees are paid before the toss (PayID or bank transfer). If a game is called off before the first ball, half the umpire fee is payable; if the association calls it off in advance, none is.

@@ -34,7 +34,7 @@ async function ask(c) {
   return String(body.reply || '');
 }
 
-// The Worker allows 30 chats per IP per hour. A full run is 18, so two runs
+// The Worker allows 30 chats per IP per hour. A full run is 20, so two runs
 // in an hour trips it — and the friendly "taking a short break" reply then
 // fails every remaining case for a reason that has nothing to do with the
 // answers. Recognise it and say so, rather than reporting phantom failures.
