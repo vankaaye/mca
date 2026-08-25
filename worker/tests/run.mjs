@@ -34,6 +34,12 @@ async function ask(c) {
   return String(body.reply || '');
 }
 
+// The Worker allows 30 chats per IP per hour. A full run is 18, so two runs
+// in an hour trips it — and the friendly "taking a short break" reply then
+// fails every remaining case for a reason that has nothing to do with the
+// answers. Recognise it and say so, rather than reporting phantom failures.
+const RATE_LIMITED = /taking a short break|asked quite a few questions/i;
+
 function check(reply, c) {
   const problems = [];
   for (const pattern of c.must || []) {
@@ -52,8 +58,17 @@ async function worker() {
   while (queue.length) {
     const c = queue.shift();
     try {
-      const reply = await ask(c);
-      results.push({ c, problems: check(reply, c), reply });
+      let reply = await ask(c);
+      if (RATE_LIMITED.test(reply)) {
+        // Wait out a slice of the window and give it one more go
+        await new Promise(r => setTimeout(r, 65000));
+        reply = await ask(c);
+      }
+      if (RATE_LIMITED.test(reply)) {
+        results.push({ c, problems: ['RATE LIMITED — not a content failure'], reply });
+      } else {
+        results.push({ c, problems: check(reply, c), reply });
+      }
     } catch (err) {
       results.push({ c, problems: ['request failed: ' + err.message], reply: '' });
     }
@@ -79,6 +94,13 @@ for (const c of cases) {
 }
 
 console.log('\n' + (cases.length - failed) + '/' + cases.length + ' passed');
+
+if (results.some(r => r.problems.some(p => p.startsWith('RATE LIMITED')))) {
+  console.log('\nSome cases could not be tested: the Worker rate-limits an IP to 30 chats');
+  console.log('an hour and this run went past it. Wait an hour and run again — those');
+  console.log('are not wrong answers.');
+}
+
 if (failed) {
   console.log('\nA failure here means the deployed assistant is telling players something');
   console.log('wrong. Fix the prompt or worker/knowledge.md and deploy again.');
