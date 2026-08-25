@@ -58,8 +58,8 @@ Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
 - Junior finals run over three Sundays: Finals Round 1 on 6 September,
   Preliminary Final on 13 September, Grand Final on 20 September. Every junior
   grade, including U11 A.
-- Senior T20 and T35 finals ran 8–22 August. The 10-round T35 grades play
-  theirs 5–19 September.
+- Senior T20 and T35 finals FINISHED on 22 August; both champions are decided.
+  The 10-round T35 grades play their finals on 5, 12 and 19 September.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
 ## Dispensations and exceptions — juniors only
