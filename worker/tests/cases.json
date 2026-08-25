@@ -39,12 +39,11 @@
     },
     {
       "name": "junior dispensation deadline",
-      "ask": "What is the deadline to request a junior dispensation?",
+      "ask": "What is the deadline to request a junior dispensation or exception?",
       "must": [
-        "thursday",
-        "5 ?pm"
+        "(thursday|48 hours)"
       ],
-      "why": "Juniors: by 5 PM the Thursday before the game."
+      "why": "The junior book carries two deadlines — 5 PM Thursday before the game in the contacts table, and 48 hours before the match for committee exceptions under Finals Eligibility. Either is a fair answer; inventing a third is not."
     },
     {
       "name": "borrowing players for finals",
@@ -171,6 +170,37 @@
         "at least 48 hours before"
       ],
       "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
+    },
+    {
+      "name": "all junior grades have finals",
+      "ask": "Are there finals for juniors?",
+      "must": [
+        "(top 4|top four)",
+        "(double chance|1st (and|&) 2nd)"
+      ],
+      "mustNot": [
+        "no finals",
+        "league only",
+        "league-only"
+      ],
+      "why": "It told a parent U11 A was league only. Every junior grade has finals — the rule book says Top 4, and PlayHQ has three finals rounds for all four grades."
+    },
+    {
+      "name": "junior finals dates",
+      "ask": "When are the junior finals played?",
+      "must": [
+        "(6|6th) september|september 6",
+        "(20|20th) september|september 20"
+      ],
+      "why": "Finals Round 1 on 6 Sep, Preliminary Final 13 Sep, Grand Final 20 Sep, every junior grade."
+    },
+    {
+      "name": "junior finals qualification",
+      "ask": "How many games does a junior need to play to qualify for finals?",
+      "must": [
+        "3 (home-and-away|league|matches|games)|minimum of 3|three"
+      ],
+      "why": "Minimum 3 home-and-away matches for that team, and more games for that team than any other in the age group."
     }
   ]
 }
