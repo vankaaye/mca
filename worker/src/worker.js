@@ -72,7 +72,16 @@ const STATS_TTL_SECONDS = 60 * 60 * 24 * 40; // keep daily counters ~40 days
  * text costs about 12,000 tokens per request, which prompt caching makes cheap,
  * and removes that whole class of failure.
  *
- * Re-extract with:  pdftotext rules/<file>.pdf -
+ * Re-extract with:
+ *   seniors  pdftotext rules/<file>.pdf -
+ *   juniors  python3 worker/tools/docx-to-text.py rules/<file>.docx
+ *
+ * The juniors book comes from the .docx on purpose. It is almost entirely
+ * tables — one column per grade — and pdftotext flattens those into a bare
+ * list of values. "Finals Qualification / Top 4 teams / Top 4 teams / Top 4
+ * teams" left the model no way to tell which grade each belonged to, and it
+ * guessed: it told a parent that U11 A had no finals. The docx keeps the
+ * headers, so every value stays attached to its grade.
  */
 const RULE_BOOK_SENIORS = `Melbourne Cricket Association
 
@@ -658,907 +667,127 @@ icket_form_id=46984
 Other Admin Guides: https://support.playhq.com/hc/en-au/categories/900000236046-Admi
 ns-for-Competitions`;
 
-const RULE_BOOK_JUNIORS = `Melbourne Cricket Association
-
-Melbourne Cricket Association (MCA)
+const RULE_BOOK_JUNIORS = `Melbourne Cricket Association (MCA)
 Juniors Competition Rules – Winter 2026
-Association Committee
 
-President: Gopi Kakivai – 0430 667 896
-Secretary: Mahendra Annem – 0433 960 586
-Treasurer: Sandeep Shamala – 0433 249 914
-Umpires Coordinator: Srikanth Dendi – 0430 408 093
-Juniors Coordinator:
-Deepak Kulkarni
-0404 073 222
-deepak7kulkarni@gmail.com
-
-Disputes and Complaints (within 48 hours
-of game completion)
-
-melbournecricketassociation@gmail.com
-
-Dispensation Requests (by 5 PM Thursday
-before the game)
-
-melbournecricketassociation@gmail.com. Include player name, DOB,
-and grade requested.
-
-Rules Version
-
-v0.4 (10/05/2026)
+| Association Committee | President: Gopi Kakivai – 0430 667 896 · Secretary: Mahendra Annem – 0433 960 586 · Treasurer: Sandeep Shamala – 0433 249 914Umpires Coordinator: Srikanth Dendi – 0430 408 093 · Juniors Coordinator: · Deepak Kulkarni · 0404 073 222 · deepak7kulkarni@gmail.com |
+| --- | --- |
+| Disputes and Complaints (within 48 hours of game completion) | melbournecricketassociation@gmail.com |
+| Dispensation Requests (by 5 PM Thursday before the game) | melbournecricketassociation@gmail.com. Include player name, DOB, and grade requested. |
+| Rules Version | v0.4 (10/05/2026) |
 
 Rules at a Glance
-Rule
 
-U11
-
-U13
-
-U15
-
-Format
-
-25 overs per side
-
-25 overs per side
-
-30 overs per side
-
-Match Days
-
-Alternate Sundays
-
-Alternate Sundays
-
-Alternate Sundays
-
-Season Start
-
-26 April 2026
-
-26 April 2026
-
-26 April 2026
-
-Start Time
-
-12:30 PM
-
-12:30 PM
-
-12:30 PM
-
-Age Range (on 26 Apr
-2026)
-
-8 to 11 years
-
-9 to 13 years
-
-12 to 15 years
-
-DOB Window
-
-27 Apr 2014 – 26 Apr 2018
-
-27 Apr 2012 – 26 Apr 2017
-
-27 Apr 2010 – 26 Apr 2014
-
-Dispensations
-
-Email MCA
-
-Email MCA
-
-Email MCA
-
-Match Ball
-
-Kooka Soft Pink – 130g
-
-MCA Stamped Kooka
-Crown White 2 Piece –
-142g
-
-MCA Stamped Kooka Crown
-White 2 Piece – 156g
-
-Umpire Fee (per team)
-
-$65
-
-$65
-
-$70
-
-Pitch Length
-
-16 m
-
-18 m
-
-20 m (full size)
-
-Players per Team
-(Ideal)
-
-7
-
-9
-
-11
-
-Rule
-Players per Team (Min /
-
-U11
-
-U13
-
-U15
-
-5 – 11
-
-7 – 11
-
-7 – 13
-
-Max Players on Field
-
-7
-
-9
-
-11
-
-Boundary
-
-40 m from centre of pitch
-
-45 m from centre of pitch
-
-55 m from centre of pitch
-
-Inner Circle
-
-N/A
-
-20 m
-
-25 m
-
-Batter Retirement
-
-See detail below
-
-See detail below
-
-After 50 runs
-
-Wickets to End Innings
-
-Unlimited dismissals
-
-Innings ends at wicket cap
-by team size: 7 players → 6
-
-10 wickets
-
-Max)
-
-wkts; 8 → 7; 9 → 8; 10 → 8;
-11 → 9
-Dismissal Penalty
-
-4 runs to fielding team per
-
-N/A
-
-N/A
-
-dismissal
-LBW
-
-No
-
-No
-
-Yes
-
-Ball Delivery Rule
-
-3 or more bounces before
-batter's crease = no-ball
-
-N/A
-
-N/A
-
-Max Balls per Over
-
-6 (all deliveries count, incl.
-
-6 (all deliveries count, incl.
-
-8 (6 legal deliveries
-
-wides/no-balls)
-
-wides/no-balls)
-
-required)
-
-Consecutive Overs per
-End
-
-5 overs per end
-
-5 overs per end
-
-5 overs per end
-
-Max Overs per Bowler
-
-5
-
-5
-
-6
-
-Min Bowlers Used
-
-All must bowl
-
-All must bowl
-
-Min 6
-
-Bowling Order Rule
-
-All (incl. keeper) bowl 2
-before 3rd; all (incl.
-keeper) bowl 3 before 4th
-
-All (incl. keeper) bowl 2
-before 3rd; all (incl.
-keeper) bowl 3 before 4th
-
-No restriction beyond max
-6
-
-Bowling Powerplay
-
-None
-
-First 4 overs – max 2
-outside circle
-
-First 5 overs – max 2
-outside circle
-
-Batting Powerplay
-
-None
-
-4 overs (batting choice) –
-max 3 outside circle
-
-5 overs (batting choice) –
-max 3 outside circle
-
-Total Powerplay Overs
-
-None
-
-8 overs per innings
-
-10 overs per innings
-
-Non-Powerplay Fielding
-
-N/A
-
-Max 4 outside inner circle
-
-Max 5 outside inner circle
-
-Max Fielders on Leg
-Side
-
-N/A
-
-N/A
-
-5 (excl. bowler & keeper)
-
-Fielding Safety Zone
-
-15 m from batter (keeper
-excepted)
-
-10 m from batter (keeper &
-slips excepted)
-
-10 m from batter (keeper &
-slips excepted)
-
-Free Hit
-
-No
-
-No
-
-Yes – every no-ball
-
-Rule
-Leg-Side Wides
-
-U11
-
-U13
-
-Standard
-
-Standard
-
-U15
-1 warning per over (unless
-too far – immediate wide).
-After warning: any leg-side
-= wide.
-Last ball of over:
-immediate wide.
-Down leg on free hit =
-wide + free hit carries.
-
-Helmets
-
-Mandatory – batters &
-
-Mandatory – batters &
-
-Mandatory – batters &
-
-keepers
-
-keepers
-
-keepers
-
-Points System
-
-As per PlayHQ
-
-As per PlayHQ
-
-As per PlayHQ
-
-Finals Qualification
-
-Top 4 teams
-
-Top 4 teams
-
-Top 4 teams
-
-Min Games for Finals
-
-3 league games
-
-3 league games
-
-3 league games
-
-Finals Format
-
-PlayHQ Standard (double
-
-PlayHQ Standard (double
-
-PlayHQ Standard (double
-
-chance for 1st & 2nd)
-
-chance for 1st & 2nd)
-
-chance for 1st & 2nd)
-
-Saturday 6:00 PM (day
-
-Saturday 6:00 PM (day
-
-Saturday 6:00 PM (day
-
-before)
-
-before)
-
-before)
-
-Live Scoring
-
-PlayHQ Live Scoring only
-
-PlayHQ Live Scoring only
-
-PlayHQ Live Scoring only
-
-Live Streaming
-
-Optional – Frogbox (see
-
-Optional – Frogbox (see
-
-Optional – Frogbox (see
-
-guidelines)
-
-guidelines)
-
-guidelines)
-
-Forfeit Notice
+| Rule | U11 | U13 | U15 |
+| --- | --- | --- | --- |
+| Format | 25 overs per side | 25 overs per side | 30 overs per side |
+| Match Days | Alternate Sundays | Alternate Sundays | Alternate Sundays |
+| Season Start | 26 April 2026 | 26 April 2026 | 26 April 2026 |
+| Start Time | 12:30 PM | 12:30 PM | 12:30 PM |
+| Age Range (on 26 Apr 2026) | 8 to 11 years | 9 to 13 years | 12 to 15 years |
+| DOB Window | 27 Apr 2014 – 26 Apr 2018 | 27 Apr 2012 – 26 Apr 2017 | 27 Apr 2010 – 26 Apr 2014 |
+| Dispensations | Email MCA | Email MCA | Email MCA |
+| Match Ball | Kooka Soft Pink – 130g | MCA Stamped Kooka Crown White 2 Piece – 142g | MCA Stamped Kooka Crown White 2 Piece – 156g |
+| Umpire Fee (per team) | $65 | $65 | $70 |
+| Pitch Length | 16 m | 18 m | 20 m (full size) |
+| Players per Team (Ideal) | 7 | 9 | 11 |
+| Players per Team (Min / Max) | 5 – 11 | 7 – 11 | 7 – 13 |
+| Max Players on Field | 7 | 9 | 11 |
+| Boundary | 40 m from centre of pitch | 45 m from centre of pitch | 55 m from centre of pitch |
+| Inner Circle | N/A | 20 m | 25 m |
+| Batter Retirement | See detail below | See detail below | After 50 runs |
+| Wickets to End Innings | Unlimited dismissals | Innings ends at wicket cap by team size: 7 players → 6 wkts; 8 → 7; 9 → 8; 10 → 8; 11 → 9 | 10 wickets |
+| Dismissal Penalty | 4 runs to fielding team per dismissal | N/A | N/A |
+| LBW | No | No | Yes |
+| Ball Delivery Rule | 3 or more bounces before batter's crease = no-ball | N/A | N/A |
+| Max Balls per Over | 6 (all deliveries count, incl. wides/no-balls) | 6 (all deliveries count, incl. wides/no-balls) | 8 (6 legal deliveries required) |
+| Consecutive Overs per End | 5 overs per end | 5 overs per end | 5 overs per end |
+| Max Overs per Bowler | 5 | 5 | 6 |
+| Min Bowlers Used | All must bowl | All must bowl | Min 6 |
+| Bowling Order Rule | All (incl. keeper) bowl 2 before 3rd; all (incl. keeper) bowl 3 before 4th | All (incl. keeper) bowl 2 before 3rd; all (incl. keeper) bowl 3 before 4th | No restriction beyond max 6 |
+| Bowling Powerplay | None | First 4 overs – max 2 outside circle | First 5 overs – max 2 outside circle |
+| Batting Powerplay | None | 4 overs (batting choice) – max 3 outside circle | 5 overs (batting choice) – max 3 outside circle |
+| Total Powerplay Overs | None | 8 overs per innings | 10 overs per innings |
+| Non-Powerplay Fielding | N/A | Max 4 outside inner circle | Max 5 outside inner circle |
+| Max Fielders on Leg Side | N/A | N/A | 5 (excl. bowler & keeper) |
+| Fielding Safety Zone | 15 m from batter (keeper excepted) | 10 m from batter (keeper & slips excepted) | 10 m from batter (keeper & slips excepted) |
+| Free Hit | No | No | Yes – every no-ball |
+| Leg-Side Wides | Standard | Standard | 1 warning per over (unless too far – immediate wide). · After warning: any leg-side = wide. · Last ball of over: immediate wide. · Down leg on free hit = wide + free hit carries. |
+| Helmets | Mandatory – batters & keepers | Mandatory – batters & keepers | Mandatory – batters & keepers |
+| Points System | As per PlayHQ | As per PlayHQ | As per PlayHQ |
+| Finals Qualification | Top 4 teams | Top 4 teams | Top 4 teams |
+| Min Games for Finals | 3 league games | 3 league games | 3 league games |
+| Finals Format | PlayHQ Standard (double chance for 1st & 2nd) | PlayHQ Standard (double chance for 1st & 2nd) | PlayHQ Standard (double chance for 1st & 2nd) |
+| Forfeit Notice | Saturday 6:00 PM (day before) | Saturday 6:00 PM (day before) | Saturday 6:00 PM (day before) |
+| Live Scoring | PlayHQ Live Scoring only | PlayHQ Live Scoring only | PlayHQ Live Scoring only |
+| Live Streaming | Optional – Frogbox (see guidelines) | Optional – Frogbox (see guidelines) | Optional – Frogbox (see guidelines) |
 
 Detailed Rules
-Batter Retirement
-U11 & U13
 
-Formula: Total balls in innings ÷ number of players in the team (round down).
-Balls per batter by team size:
-5 players: 30 balls | 6 players: 25 balls | 7 players: 21 balls | 8 players: 18 balls | 9 players:
-16 balls | 10 players: 15 balls | 11 players: 13 balls
-All deliveries (including wides and no-balls) count toward a batter's ball count. A batter must
-retire immediately upon reaching their allocation – not at the end of the over.
-Where the per-batter allocation does not divide evenly into the total balls in the innings (e.g.
-a 7-player team has 21 balls per batter × 7 = 147 of 150 balls; 3 balls are unallocated):
-U11: the last batsman faces the remaining balls. The team manager/coach nominates which
-player bats last.
-U13: there is no nominated last batsman. The innings runs to its allocated overs unless the
-wicket cap is reached first (see Wickets & Dismissals below); a dismissed batter does not
-return, so any unused per-batter allocation lapses with that batter.
-
-U15
-
-Batters retire after scoring 50 runs.
-Retired batters may return at the fall of the last available wicket and continue until
-dismissed or the innings is completed.
-
-Wickets & Dismissals
-
-Batter Retirement
-U11 & U13
-
-U11: Unlimited dismissals. All batters face their full ball allocation, and the innings
-concludes when all allocated overs are bowled; retired and dismissed batters do not return.
-U13: The innings ends when the wicket cap for the team's size is reached, or when all
-allocated overs are bowled, whichever comes first. Wicket cap by team size: 7 players – 6
-wickets; 8 players – 7 wickets; 9 players – 8 wickets; 10 players – 8 wickets; 11 players – 9
-wickets. A dismissed batter does not return. A batter who retires not out returns to bat at
-the fall of the last available wicket (i.e. once the wicket cap less one has been reached) and
-continues until dismissed or the innings ends. Where more than one batter has retired not
-out, they return in order of retirement. The chasing team, if the wicket cap has not been
-reached, may bat its full allocation of overs. Where the wicket cap is reached, the innings
-ends immediately even if remaining batters have not used their full ball allocation.
-Dismissal Penalty (U11 only): 4 runs are added to the fielding team's total for every
-dismissal.
-Dismissal Penalty (U13): None. A dismissed batter is out and does not return; no runs are
-added to the fielding team's total.
-LBW: Not applicable in U11 or U13.
-Ball Delivery Rule (U11 only): A delivery that bounces three or more times before
-reaching the batter's crease is called a no-ball.
-
-U15
-
-10 wickets end the innings.
-LBW: Applies in U15.
-
-Bowling
-U11 & U13
-
-Max 5 overs per bowler. Max 6 balls per over. All players must bowl.
-Bowling Order Rule: All players, including the wicketkeeper, must complete 2 overs before
-any bowler bowls a 3rd over. All players, including the wicketkeeper, must complete 3 overs
-before any bowler bowls a 4th over.
-
-U15
-
-Max 6 overs per bowler. Max 8 balls per over (6 legal deliveries required). Minimum 6
-bowlers must be used. Wicketkeepers are not mandated.
-
-Powerplay & Fielding Restrictions
-U11
-
-No powerplay. No inner circle.
-No fielder may stand closer than 15 m to the batter (wicketkeeper excepted).
-
-U13
-
-Bowling Powerplay: First 4 overs – maximum 2 fielders outside the 20 m inner circle.
-Batting Powerplay: 4 overs of the batting team's choice – maximum 3 fielders outside the
-inner circle.
-Total Powerplay: 8 overs per innings.
-Non-Powerplay: Maximum 4 fielders outside the inner circle.
-No fielder may stand closer than 10 m to the batter (wicketkeeper and slips excepted).
-
-U15
-
-Bowling Powerplay: First 5 overs – maximum 2 fielders outside the 25 m inner circle.
-Batting Powerplay: 5 overs of the batting team's choice – maximum 3 fielders outside the
-inner circle.
-Total Powerplay: 10 overs per innings.
-Non-Powerplay: Maximum 5 fielders outside the inner circle.
-Maximum 5 fielders on the leg side at any stage (excluding bowler and keeper).
-No fielder may stand closer than 10 m to the batter (wicketkeeper and slips excepted).
-End changes occur every 5 overs throughout the innings.
-
-Batter Retirement
-No-Balls, Free Hit & Leg-Side Wides
-U11 & U13
-
-No free hit. Standard wide rules apply (any ball deemed too wide for the batter to play a
-normal cricket shot is called wide). The U15 leg-side warn-then-wide regime does not apply
-in U11 or U13.
-
-U15
-
-Free Hit: A free hit is awarded for every no-ball (overstepping, waist height, above
-shoulder/head, ball outside mat, etc.). On a free hit, the batter can only be dismissed by
-run-out, hit ball twice, or obstructing the field.
-Any ball bowled down the leg side on a free hit delivery is called a wide – the free hit carries
-to the next delivery.
-Second short ball above the shoulder in the same over = no-ball.
-Bowler disturbing the stumps at the non-striker end while bowling = no-ball.
-All no-ball calls are made by the official (main) umpire. The main umpire may consult the
-square-leg umpire.
-Leg-Side Wides: One warning per over for a ball going down the leg side (unless clearly
-too far – immediate wide). After a warning, any subsequent leg-side delivery in that over =
-wide. The last ball of any over bowled down the leg side = immediate wide (no warning
-given).
-
-Hours of Play, Delayed Starts, Rain Interruptions & DLS (all grades)
-Hours of Play
-
-Scheduled start: 12:30 PM (all grades).
-First innings cut-off: 2:10 PM (U11 & U13) or 2:30 PM (U15) – the over in progress at the
-cut-off is completed.
-Innings break: 10 minutes.
-Scheduled finish (second innings cut-off): 4:20 PM (U11 & U13) or 5:00 PM (U15).
-Overs caps remain 25 (U11/U13) and 30 (U15).
-
-Delayed Starts
-
-One over is deducted from each innings for every 4 minutes of delayed start past 12:30 PM.
-Overs are reduced equally across both innings by the umpire.
-A team must start as soon as the grade minimum is present (U11: 5; U13: 7; U15: 7). If a
-team does not have the grade minimum by 1:00 PM, that team forfeits.
-
-Rain Interruptions
-
-A cumulative rain interruption of 60 minutes or more – if conditions are unsuitable to
-resume, the game is called off and points are shared.
-For shorter interruptions, the umpire determines whether to resume. Slight drizzle is at the
-umpire's discretion.
-
-DLS
-
-DLS applies when the second innings is interrupted by rain or weather. Use the DLS feature
-in the PlayHQ scoring app.
-Revised Target (if PlayHQ unavailable): Revised target = Revised overs × First innings
-run rate. Example: Team A scores 100 in 25 overs (run rate 4.0). Second innings revised to
-15 overs. Revised target = 15 × 4.0 = 60 runs.
-
-Minimum Overs
-
-5 overs must be completed by each team for a result to stand. If not achieved, the game is
-a draw and points are shared equally.
-Drawn / Abandoned: Points shared equally. Full washout with no play: match abandoned,
-points shared.
-
-Batter Retirement
-Bad Light (U15
-only)
-
-Play continues until the official sunset time (search "sunset" on Google for local time). No
-ball to be bowled after sunset.
-If light is poor before sunset, the umpire may direct that only spinners are bowled. The
-batting team may still take their batting powerplay. The bowling team may not object once
-the umpire has directed.
-Results in games shortened due to bad light are determined by DLS.
-
-Over Rate
-
-Teams are expected to maintain approximately 15 overs per hour. Umpires will warn teams
-falling behind. Persistent delays may result in penalties at the association's discretion.
-
-Square-Leg
-Umpire
-
-The square-leg umpire is provided by the batting team for each innings.
-
-Live Scoring & Live Streaming
-Live Scoring
-
-PlayHQ Live Scoring is mandatory for all matches. No manual scorebooks. The scorer is
-nominated by the batting team for that innings (any nominated person — player, parent,
-official — may score).
-
-Live Streaming
-
-Optional. Clubs choosing to stream must comply with all requirements below.
-Consent for Under-18 Participants: Clubs must confirm consent in FrogBox Go for any
-under-18 participants within 72 hours of the scheduled match start time.
-Access to Streams:
-Junior streams are accessible via an unlisted YouTube link shared by the hosting club.
-Once under-18 consent is confirmed, live streams and match highlights will also appear in
-the Play Cricket app.
-Access via the Play Cricket app is restricted to consented under-18 participants and
-protects players' privacy.
-Resources:
-See the Video Streaming requirements and Email Template on the Play Cricket Support
-website.
-Clubs are encouraged to communicate with parents as early as possible before the season
-begins.
-Complaints & Content Removal:
-Email melbournecricketassociation@gmail.com.
-Any footage subject to a valid complaint will be removed promptly from all online
-platforms.
-All videographers or video editors must hold a current Working with Children Check and
-must agree in writing that footage will only be used for purposes approved by the club
-and the association.
-
-Match-Day Operations
-The Toss
-
-The toss is to be conducted at least 15 minutes before the scheduled start of play, provided
-both teams have the minimum number of players present. If a team does not have the
-minimum number of players 15 minutes before start time, that team forfeits the toss.
-
-Batter Retirement
-Forfeits
-
-A team unable to field at least the minimum number of players within 30 minutes of the
-scheduled start time forfeits the match.
-Consequences:
-• The team giving the forfeit receives no points; the receiving team is awarded a
-maximum‑points result.
-• The forfeiting team is liable for the full umpire fees for both sides.
-• Late notice (after Saturday 6:00 PM) or no-show forfeits incur a fine in addition to umpire
-fees.
-• Any team forfeiting three matches in a season will be deemed to have withdrawn from the
-competition.
-
-Substitute / Loan
-Players
-
-Loan players (when one team is short and the opposition has surplus):
-• Strongly encouraged in the spirit of the game.
-• May bat, bowl and field.
-• Their batting and bowling figures count for the team they are loaned to for that match.
-Substitute fielders (covering illness or injury during the match):
-• May field only — they may not bat, bowl, or wicketkeep.
-• Maximum two sub fielders on the field at any time.
-• Must be flagged to the opposition coach and umpire before taking the field, and must be
-PlayHQ-registered.
-
-Home Team
-Responsibilities
-
-By the scheduled start time, the home club must ensure:
-• Crease lines clearly marked.
-• Boundary markers in place per the age-group dimensions.
-• Inner-circle markers placed (U13/U15).
-• Stumps and bails set up.
-• Scorers' table and chairs available.
-• Clubrooms and toilet access available where possible.
-• Ground mowed and pitch in playable condition.
-• Sprinklers programmed off the night before.
-Both teams must leave the pitch and ground in good order at the end of the match.
-
-Fill Ins
-
-Where a player's transfer or permit has not yet completed, the player may take the field as
-a Fill In for that match. The Fill In must be entered in PlayHQ using the player's exact
-registered name. Once the transfer or permit is finalised (typically by the Thursday following
-the match), the Fill In entry must be replaced with the player's actual PlayHQ profile. See
-PlayHQ Links at the end of this document for Fill Ins and Replacement of Fill Ins.
-
-Springback
-Stumps (U11 &
-
-Springback stumps are mandatory for U11 and U13 matches. Where springback stumps are
-used, the stumps are deemed broken if the ball strikes the stumps (other than the metal
-
-U13)
-
-base), even if the bails do not dislodge.
-
-Ball Replacement
-
-If during play the ball is lost, cannot be recovered, or in the umpire's opinion has become
-unfit for play, the umpire shall replace it with a ball of comparable wear. The umpire shall
-inform both batters and the fielding captain at the time of replacement.
-
-Coach on Field
-
-In all age groups, a coach or assistant coach is permitted to assist the team captain with
-field placements during play, provided this does not delay the game and is not used to
-coach the batter or to distract opponents.
-
-Pitch Surface
-
-All MCA matches are played on synthetic pitches. MCA does not play on turf wickets.
-
-Batter Retirement
-Finals Eligibility
-
-To qualify for finals in a particular team, a player must:
-• Have played a minimum of 3 home-and-away matches for that team during the season;
-and
-• Have played more games for that team than for any other team in the same age group
-across the season.
-“Active participation” means having batted, bowled, or fielded in the match.
-The MCA Committee may grant exceptions in extenuating circumstances (e.g. multiple
-washouts, extreme heat) on written application from the club at least 48 hours before the
-match.
-
-Child Safety & Compliance
-Policy Adoption
-
-MCA endorses and adopts Cricket Australia's Policy for Safeguarding Children and Young
-People, Cricket Australia's ‘Looking After Our Kids’ Code of Behaviour, Cricket Victoria's
-Member Protection Policy, and Cricket Victoria's Reporting and Complaints Policy. All clubs,
-coaches, players, parents and officials are bound by these policies and by the MCA Code of
-Behaviour set out in this document.
-
-Child Safety
-Officer &
-
-Deepak Kulkarni
-
-Complaints
-Manager
-
-deepak7kulkarni@gmail.com
-
-Working with
-Children Check
-(WWC)
-
-0404 073 222
-
-All coaches, assistant coaches, team managers, regular training staff, scorers who interact
-with players, and any videographers or video editors must hold a current Working with
-Children Check. Clubs must keep a copy on file and make the record available to MCA on
-request.
-
-First Aid
-
-Every team must carry a First Aid kit in its gear bag at all matches.
-Minimum contents:
-• Bandages, cotton wool, gauze.
-• Adhesive plaster, Band-Aids, wound closures.
-• Scissors, tweezers.
-• Antiseptic.
-• Disposable gloves, disposable plastic bags.
-• Ice pack.
-Failure to provide a First Aid kit on request may result in a fine.
-
-Sun Safety
-
-Clubs are to follow the SunSmart policy.
-• Wide-brimmed hats are to be available as an option (in addition to caps).
-• Three-quarter or long-sleeved shirts are preferred.
-• Each team shall have a 5-litre drinks container at every match.
-
-Helmets
-
-An approved helmet with visor/grille is mandatory for all batters and wicketkeepers in every
-age group at all times while batting or wicketkeeping. If a wicketkeeper is not wearing a
-helmet, the umpire shall stop play until the keeper complies.
-
-Insurance &
-
-All players must be registered on PlayHQ — PlayHQ registration is the players' insurance
-
-Registration
-
-vehicle. Each club is responsible for its own public liability insurance covering the club and
-its activities.
-
-Proof of Age
-
-All new players must provide a copy of their birth certificate (or other suitable proof of age)
-to the club at registration. Clubs must keep a copy on file and produce it on request.
-
-Batter Retirement
-Code of Behaviour & Disputes
-Spirit of Cricket
-
-All matches are to be played in the Spirit of Cricket. Players, coaches, parents and
-spectators must respect umpires, opponents, and each other. Sledging, send-offs, dissent,
-abuse of officials, and any conduct contrary to the Cricket Victoria Member Protection Policy
-are reportable.
-
-Alcohol
-
-Consumption of alcohol is forbidden in or in visible proximity to a junior match, before,
-during, or immediately after the game.
-
-Reporting
-
-Breaches of the Code of Behaviour, the Laws of Cricket, or these rules may be reported by
-any umpire, club official, or affected party to melbournecricketassociation@gmail.com within
-48 hours of game completion. The notification must include match details, the people
-involved, and the nature of the alleged breach.
-
-Dispute Resolution
-
-The MCA Committee will review the report, may seek further evidence from any party, and
-will issue a written decision within 7 days of receiving the report. The Committee may
-reprimand, fine, suspend, or impose any other penalty it considers appropriate to the nature
-of the breach. Decisions of the MCA Committee are final.
-
-Suspect Bowling
-Action
-
-MCA is a juniors-only competition. No umpire shall call a no-ball for a suspect action on the
-field.
-If an umpire or batting-side coach has concerns about a bowler's action:
-• Raise the concern quietly with the offending bowler's coach after the match.
-• Report it to the Juniors Coordinator.
-• The Coordinator will contact the player's club to enquire what corrective action is being
-taken.
-The player shall not be ostracised or publicly called out. Repeated concerns may result in
-the player being prevented from bowling until their club provides evidence the action has
-been corrected.
-
-PlayHQ Links
-
-Creating a Team
-
-https://support.playhq.com/hc/en-us/articles/23976947679
-132-Managing-teams
-
-Selecting Team
-
-https://support.playhq.com/hc/en-us/articles/23974184481436-M
-y-Teams-Select-Line-Ups-and-Player-Positions
-
-Adding / replacing a
-Fill-in Player
-
-https://support.playhq.com/hc/en-au/articles/5280258102937-Ma
-naging-Fill-in-Players-via-Admin-Portal
-
-How to Live Score
-
-https://support.playhq.com/hc/en-au/articles/5132680466969-Ho
-w-To-EScore-Cricket
-
-Other Live Scoring
-Guides
-
-https://support.playhq.com/hc/en-au/sections/5460166848025-El
-ectronic-Scoring-for-Cricket
-
-PlayHQ Game Permit
-
-https://support.playhq.com/hc/en-us/articles/23977397579420-Cr
-eating-a-Game-Permit-Request
-
-How to Raise a
-PlayHQ Support
-Request
-
-https://mycricketsupport.cricket.com.au/hc/en-us/requests/new?ti
-cket_form_id=46984
-
-Other Admin Guides
-
-https://support.playhq.com/hc/en-au/categories/900000236046-A
-dmins-for-Competitions`;
+| Batter Retirement |  |  |
+| --- | --- | --- |
+| U11 & U13 | Formula: Total balls in innings ÷ number of players in the team (round down). · Balls per batter by team size: · 5 players: 30 balls   /   6 players: 25 balls   /   7 players: 21 balls   /   8 players: 18 balls   /   9 players: 16 balls   /   10 players: 15 balls   /   11 players: 13 balls · All deliveries (including wides and no-balls) count toward a batter's ball count. A batter must retire immediately upon reaching their allocation – not at the end of the over. · Where the per-batter allocation does not divide evenly into the total balls in the innings (e.g. a 7-player team has 21 balls per batter × 7 = 147 of 150 balls; 3 balls are unallocated): · U11: the last batsman faces the remaining balls. The team manager/coach nominates which player bats last. · U13: there is no nominated last batsman. The innings runs to its allocated overs unless the wicket cap is reached first (see Wickets & Dismissals below); a dismissed batter does not return, so any unused per-batter allocation lapses with that batter. |  |
+| U15 | Batters retire after scoring 50 runs. · Retired batters may return at the fall of the last available wicket and continue until dismissed or the innings is completed. |  |
+| Wickets & Dismissals |  |  |
+| U11 & U13 | U11: Unlimited dismissals. All batters face their full ball allocation, and the innings concludes when all allocated overs are bowled; retired and dismissed batters do not return. · U13: The innings ends when the wicket cap for the team's size is reached, or when all allocated overs are bowled, whichever comes first. Wicket cap by team size: 7 players – 6 wickets; 8 players – 7 wickets; 9 players – 8 wickets; 10 players – 8 wickets; 11 players – 9 wickets. A dismissed batter does not return. A batter who retires not out returns to bat at the fall of the last available wicket (i.e. once the wicket cap less one has been reached) and continues until dismissed or the innings ends. Where more than one batter has retired not out, they return in order of retirement. The chasing team, if the wicket cap has not been reached, may bat its full allocation of overs. Where the wicket cap is reached, the innings ends immediately even if remaining batters have not used their full ball allocation. · Dismissal Penalty (U11 only): 4 runs are added to the fielding team's total for every dismissal. · Dismissal Penalty (U13): None. A dismissed batter is out and does not return; no runs are added to the fielding team's total. · LBW: Not applicable in U11 or U13. · Ball Delivery Rule (U11 only): A delivery that bounces three or more times before reaching the batter's crease is called a no-ball. |  |
+| U15 | 10 wickets end the innings. · LBW: Applies in U15. |  |
+| Bowling |  |  |
+| U11 & U13 | Max 5 overs per bowler. Max 6 balls per over. All players must bowl. · Bowling Order Rule: All players, including the wicketkeeper, must complete 2 overs before any bowler bowls a 3rd over. All players, including the wicketkeeper, must complete 3 overs before any bowler bowls a 4th over. |  |
+| U15 | Max 6 overs per bowler. Max 8 balls per over (6 legal deliveries required). Minimum 6 bowlers must be used. Wicketkeepers are not mandated. |  |
+| Powerplay & Fielding Restrictions |  |  |
+| U11 | No powerplay. No inner circle. · No fielder may stand closer than 15 m to the batter (wicketkeeper excepted). |  |
+| U13 | Bowling Powerplay: First 4 overs – maximum 2 fielders outside the 20 m inner circle. · Batting Powerplay: 4 overs of the batting team's choice – maximum 3 fielders outside the inner circle. · Total Powerplay: 8 overs per innings. · Non-Powerplay: Maximum 4 fielders outside the inner circle. · No fielder may stand closer than 10 m to the batter (wicketkeeper and slips excepted). |  |
+| U15 | Bowling Powerplay: First 5 overs – maximum 2 fielders outside the 25 m inner circle. · Batting Powerplay: 5 overs of the batting team's choice – maximum 3 fielders outside the inner circle. · Total Powerplay: 10 overs per innings. · Non-Powerplay: Maximum 5 fielders outside the inner circle. · Maximum 5 fielders on the leg side at any stage (excluding bowler and keeper). · No fielder may stand closer than 10 m to the batter (wicketkeeper and slips excepted). · End changes occur every 5 overs throughout the innings. |  |
+| No-Balls, Free Hit & Leg-Side Wides |  |  |
+| U11 & U13 | No free hit. Standard wide rules apply (any ball deemed too wide for the batter to play a normal cricket shot is called wide). The U15 leg-side warn-then-wide regime does not apply in U11 or U13. |  |
+| U15 | Free Hit: A free hit is awarded for every no-ball (overstepping, waist height, above shoulder/head, ball outside mat, etc.). On a free hit, the batter can only be dismissed by run-out, hit ball twice, or obstructing the field. · Any ball bowled down the leg side on a free hit delivery is called a wide – the free hit carries to the next delivery. · Second short ball above the shoulder in the same over = no-ball. · Bowler disturbing the stumps at the non-striker end while bowling = no-ball. · All no-ball calls are made by the official (main) umpire. The main umpire may consult the square-leg umpire. · Leg-Side Wides: One warning per over for a ball going down the leg side (unless clearly too far – immediate wide). After a warning, any subsequent leg-side delivery in that over = wide. The last ball of any over bowled down the leg side = immediate wide (no warning given). |  |
+| Hours of Play, Delayed Starts, Rain Interruptions & DLS (all grades) |  |  |
+| Hours of Play | Scheduled start: 12:30 PM (all grades). · First innings cut-off: 2:10 PM (U11 & U13) or 2:30 PM (U15) – the over in progress at the cut-off is completed. · Innings break: 10 minutes. · Scheduled finish (second innings cut-off): 4:20 PM (U11 & U13) or 5:00 PM (U15). · Overs caps remain 25 (U11/U13) and 30 (U15). |  |
+| Delayed Starts | One over is deducted from each innings for every 4 minutes of delayed start past 12:30 PM. Overs are reduced equally across both innings by the umpire. · A team must start as soon as the grade minimum is present (U11: 5; U13: 7; U15: 7). If a team does not have the grade minimum by 1:00 PM, that team forfeits. |  |
+| Rain Interruptions | A cumulative rain interruption of 60 minutes or more – if conditions are unsuitable to resume, the game is called off and points are shared. · For shorter interruptions, the umpire determines whether to resume. Slight drizzle is at the umpire's discretion. |  |
+| DLS | DLS applies when the second innings is interrupted by rain or weather. Use the DLS feature in the PlayHQ scoring app. · Revised Target (if PlayHQ unavailable): Revised target = Revised overs × First innings run rate. Example: Team A scores 100 in 25 overs (run rate 4.0). Second innings revised to 15 overs. Revised target = 15 × 4.0 = 60 runs. |  |
+| Minimum Overs | 5 overs must be completed by each team for a result to stand. If not achieved, the game is a draw and points are shared equally. · Drawn / Abandoned: Points shared equally. Full washout with no play: match abandoned, points shared. |  |
+| Bad Light (U15 only) | Play continues until the official sunset time (search "sunset" on Google for local time). No ball to be bowled after sunset. · If light is poor before sunset, the umpire may direct that only spinners are bowled. The batting team may still take their batting powerplay. The bowling team may not object once the umpire has directed. · Results in games shortened due to bad light are determined by DLS. |  |
+| Over Rate | Teams are expected to maintain approximately 15 overs per hour. Umpires will warn teams falling behind. Persistent delays may result in penalties at the association's discretion. |  |
+| Square-Leg Umpire | The square-leg umpire is provided by the batting team for each innings. |  |
+| Live Scoring & Live Streaming |  |  |
+| Live Scoring | PlayHQ Live Scoring is mandatory for all matches. No manual scorebooks. The scorer is nominated by the batting team for that innings (any nominated person — player, parent, official — may score). |  |
+| Live Streaming | Optional. Clubs choosing to stream must comply with all requirements below. · Consent for Under-18 Participants: Clubs must confirm consent in FrogBox Go for any under-18 participants within 72 hours of the scheduled match start time. · Access to Streams: · Junior streams are accessible via an unlisted YouTube link shared by the hosting club. Once under-18 consent is confirmed, live streams and match highlights will also appear in the Play Cricket app. · Access via the Play Cricket app is restricted to consented under-18 participants and protects players' privacy. · Resources: · See the Video Streaming requirements and Email Template on the Play Cricket Support website. · Clubs are encouraged to communicate with parents as early as possible before the season begins. · Complaints & Content Removal: · Email melbournecricketassociation@gmail.com. · Any footage subject to a valid complaint will be removed promptly from all online platforms. · All videographers or video editors must hold a current Working with Children Check and must agree in writing that footage will only be used for purposes approved by the club and the association. |  |
+| Match-Day Operations |  |  |
+| The Toss | The toss is to be conducted at least 15 minutes before the scheduled start of play, provided both teams have the minimum number of players present. If a team does not have the minimum number of players 15 minutes before start time, that team forfeits the toss. |  |
+| Forfeits | A team unable to field at least the minimum number of players within 30 minutes of the scheduled start time forfeits the match.Consequences:•  The team giving the forfeit receives no points; the receiving team is awarded a maximum‑points result.•  The forfeiting team is liable for the full umpire fees for both sides.•  Late notice (after Saturday 6:00 PM) or no-show forfeits incur a fine in addition to umpire fees.•  Any team forfeiting three matches in a season will be deemed to have withdrawn from the competition. |  |
+| Substitute / Loan Players | Loan players (when one team is short and the opposition has surplus):•  Strongly encouraged in the spirit of the game.•  May bat, bowl and field.•  Their batting and bowling figures count for the team they are loaned to for that match.Substitute fielders (covering illness or injury during the match):•  May field only — they may not bat, bowl, or wicketkeep.•  Maximum two sub fielders on the field at any time.•  Must be flagged to the opposition coach and umpire before taking the field, and must be PlayHQ-registered. |  |
+| Home Team Responsibilities | By the scheduled start time, the home club must ensure:•  Crease lines clearly marked.•  Boundary markers in place per the age-group dimensions.•  Inner-circle markers placed (U13/U15).•  Stumps and bails set up.•  Scorers' table and chairs available.•  Clubrooms and toilet access available where possible.•  Ground mowed and pitch in playable condition.•  Sprinklers programmed off the night before.Both teams must leave the pitch and ground in good order at the end of the match. |  |
+| Fill Ins | Where a player's transfer or permit has not yet completed, the player may take the field as a Fill In for that match. The Fill In must be entered in PlayHQ using the player's exact registered name. Once the transfer or permit is finalised (typically by the Thursday following the match), the Fill In entry must be replaced with the player's actual PlayHQ profile. See PlayHQ Links at the end of this document for Fill Ins and Replacement of Fill Ins. |  |
+| Springback Stumps (U11 & U13) | Springback stumps are mandatory for U11 and U13 matches. Where springback stumps are used, the stumps are deemed broken if the ball strikes the stumps (other than the metal base), even if the bails do not dislodge. |  |
+| Ball Replacement | If during play the ball is lost, cannot be recovered, or in the umpire's opinion has become unfit for play, the umpire shall replace it with a ball of comparable wear. The umpire shall inform both batters and the fielding captain at the time of replacement. |  |
+| Coach on Field | In all age groups, a coach or assistant coach is permitted to assist the team captain with field placements during play, provided this does not delay the game and is not used to coach the batter or to distract opponents. |  |
+| Pitch Surface | All MCA matches are played on synthetic pitches. MCA does not play on turf wickets. |  |
+| Finals Eligibility | To qualify for finals in a particular team, a player must:•  Have played a minimum of 3 home-and-away matches for that team during the season; and•  Have played more games for that team than for any other team in the same age group across the season.“Active participation” means having batted, bowled, or fielded in the match.The MCA Committee may grant exceptions in extenuating circumstances (e.g. multiple washouts, extreme heat) on written application from the club at least 48 hours before the match. |  |
+| Child Safety & Compliance |  |  |
+| Policy Adoption | MCA endorses and adopts Cricket Australia's Policy for Safeguarding Children and Young People, Cricket Australia's ‘Looking After Our Kids’ Code of Behaviour, Cricket Victoria's Member Protection Policy, and Cricket Victoria's Reporting and Complaints Policy. All clubs, coaches, players, parents and officials are bound by these policies and by the MCA Code of Behaviour set out in this document. |  |
+| Child Safety Officer & Complaints Manager | Deepak Kulkarni · 0404 073 222 · deepak7kulkarni@gmail.com |  |
+| Working with Children Check (WWC) | All coaches, assistant coaches, team managers, regular training staff, scorers who interact with players, and any videographers or video editors must hold a current Working with Children Check. Clubs must keep a copy on file and make the record available to MCA on request. |  |
+| First Aid | Every team must carry a First Aid kit in its gear bag at all matches.Minimum contents:•  Bandages, cotton wool, gauze.•  Adhesive plaster, Band-Aids, wound closures.•  Scissors, tweezers.•  Antiseptic.•  Disposable gloves, disposable plastic bags.•  Ice pack.Failure to provide a First Aid kit on request may result in a fine. |  |
+| Sun Safety | Clubs are to follow the SunSmart policy.• Wide-brimmed hats are to be available as an option (in addition to caps).• Three-quarter or long-sleeved shirts are preferred.• Each team shall have a 5-litre drinks container at every match. |  |
+| Helmets | An approved helmet with visor/grille is mandatory for all batters and wicketkeepers in every age group at all times while batting or wicketkeeping. If a wicketkeeper is not wearing a helmet, the umpire shall stop play until the keeper complies. |  |
+| Insurance & Registration | All players must be registered on PlayHQ — PlayHQ registration is the players' insurance vehicle. Each club is responsible for its own public liability insurance covering the club and its activities. |  |
+| Proof of Age | All new players must provide a copy of their birth certificate (or other suitable proof of age) to the club at registration. Clubs must keep a copy on file and produce it on request. |  |
+| Code of Behaviour & Disputes |  |  |
+| Spirit of Cricket | All matches are to be played in the Spirit of Cricket. Players, coaches, parents and spectators must respect umpires, opponents, and each other. Sledging, send-offs, dissent, abuse of officials, and any conduct contrary to the Cricket Victoria Member Protection Policy are reportable. |  |
+| Alcohol | Consumption of alcohol is forbidden in or in visible proximity to a junior match, before, during, or immediately after the game. |  |
+| Reporting | Breaches of the Code of Behaviour, the Laws of Cricket, or these rules may be reported by any umpire, club official, or affected party to melbournecricketassociation@gmail.com within 48 hours of game completion. The notification must include match details, the people involved, and the nature of the alleged breach. |  |
+| Dispute Resolution | The MCA Committee will review the report, may seek further evidence from any party, and will issue a written decision within 7 days of receiving the report. The Committee may reprimand, fine, suspend, or impose any other penalty it considers appropriate to the nature of the breach. Decisions of the MCA Committee are final. |  |
+| Suspect Bowling Action | MCA is a juniors-only competition. No umpire shall call a no-ball for a suspect action on the field.If an umpire or batting-side coach has concerns about a bowler's action:•  Raise the concern quietly with the offending bowler's coach after the match.•  Report it to the Juniors Coordinator.•  The Coordinator will contact the player's club to enquire what corrective action is being taken.The player shall not be ostracised or publicly called out. Repeated concerns may result in the player being prevented from bowling until their club provides evidence the action has been corrected. |  |
+| PlayHQ Links | Creating a Team | https://support.playhq.com/hc/en-us/articles/23976947679132-Managing-teams |
+| Selecting Team | https://support.playhq.com/hc/en-us/articles/23974184481436-My-Teams-Select-Line-Ups-and-Player-Positions |  |
+| Adding / replacing a Fill-in Player | https://support.playhq.com/hc/en-au/articles/5280258102937-Managing-Fill-in-Players-via-Admin-Portal |  |
+| How to Live Score | https://support.playhq.com/hc/en-au/articles/5132680466969-How-To-EScore-Cricket |  |
+| Other Live Scoring Guides | https://support.playhq.com/hc/en-au/sections/5460166848025-Electronic-Scoring-for-Cricket |  |
+| PlayHQ Game Permit | https://support.playhq.com/hc/en-us/articles/23977397579420-Creating-a-Game-Permit-Request |  |
+| How to Raise a PlayHQ Support Request | https://mycricketsupport.cricket.com.au/hc/en-us/requests/new?ticket_form_id=46984 |  |
+| Other Admin Guides | https://support.playhq.com/hc/en-au/categories/900000236046-Admins-for-Competitions |  |
+`;
 
 const SYSTEM_PROMPT = `You are MCA Assistant, the chat helper on the Melbourne Cricket Association (MCA) website — a community cricket association in Melbourne, Australia running Saturday senior competitions and Sunday junior competitions.
 
@@ -1647,8 +876,8 @@ GUARDRAILS
 - Never give personal medical, legal or financial advice.
 - Never invent facts. No made-up grounds, officials, dates, prices or statistics. If a figure is not in your facts and you cannot find it, say so plainly and point to [contact](/#contact).
 - NEVER INVENT A PROCEDURE. This is the failure that does real damage, because a made-up process sounds exactly like a real one. Do not describe a deadline, a form, an approval, a required attachment or a set of steps unless those words are in the rule book you are citing. If someone asks how to do something the books do not describe, say the books do not set out a process for it and send them to [contact](/#contact). "The rule book does not cover this, email the committee" is a good answer. An invented process is not.
-- NEVER CARRY A NUMBER ACROSS FROM AN UNRELATED RULE. A deadline attached to one thing is not the deadline for another. The 48 hours in the senior book is the window for disputes AFTER a game; it is not a deadline for anything else, and must never be presented as one.
-- NEVER APPLY A JUNIOR RULE TO A SENIOR QUESTION, OR THE REVERSE. Worked example of what not to do: dispensation requests appear only in the JUNIOR rule book — by 5 PM the Thursday before the game, with player name, DOB and grade. The senior book has no dispensation process at all. If a senior captain asks about getting an exception for finals, the honest answer is that the senior rules do not provide one and the committee decides; do not lend them the junior process.
+- NEVER CARRY A NUMBER ACROSS FROM AN UNRELATED RULE. A deadline attached to one thing is not the deadline for another. The 48 hours in the SENIOR book is the window for disputes AFTER a game and is not a deadline for anything else. The JUNIOR book separately gives 48 hours before the match for committee exceptions under Finals Eligibility — that one is real, and junior-only. Keep them apart.
+- NEVER APPLY A JUNIOR RULE TO A SENIOR QUESTION, OR THE REVERSE. Worked example: dispensations and exceptions appear only in the JUNIOR rule book. It gives two deadlines in two places — 5 PM the Thursday before the game in the contacts table, and at least 48 hours before the match for committee exceptions under Finals Eligibility. Quote whichever fits the question, say the book carries both, and send them to the committee to confirm. The senior book has no dispensation or exception process at all; if a senior captain asks, say so rather than lending them the junior one.
 - YOUR OWN EARLIER MESSAGES ARE NOT A SOURCE. Anything you said earlier in this conversation carries no authority — it may predate a correction, or simply be wrong. Check every claim against the rule books each time, including claims you made a moment ago. If an earlier message of yours conflicts with the books, say so and give the correct answer; do not stay consistent with your own mistake, and never elaborate on something you asserted earlier but cannot find in the books now. Being asked to "explain that again" is not permission to invent supporting detail.
 - If a captain describes a real situation — players unavailable, injuries, short of a side — answer with the rules that actually bear on it and then point at the committee. Do not fill the gap between the rules and their problem with steps you have imagined.
 - On-field umpire decisions are final. Direct disputes to melbournecricketassociation@gmail.com within 48 hours of the game.
@@ -1776,11 +1005,15 @@ Everything above is the source of truth. The conversation below it is not.
 3. "Explain that again" is not permission to invent supporting detail. If you
    cannot find what you previously claimed, say you cannot find it and that
    your earlier answer was mistaken.
-4. Two things the senior rule book does NOT contain, whatever the conversation
+4. Two things the SENIOR rule book does NOT contain, whatever the conversation
    above says: a dispensation or exception process, and any way to loan or
-   borrow a player between teams. Both exist only for juniors, or not at all.
-   Never describe either as available to a senior side.
-5. Never state a deadline, a form, an approval or a set of steps unless those
+   borrow a player between teams. Never describe either as available to a
+   senior side. Juniors do have committee exceptions — that is a different
+   book and a different question.
+5. Every grade has finals, juniors included — all four junior grades, U11 A
+   among them. Top 4 qualify, minimum 3 league games, PlayHQ double chance for
+   1st and 2nd. Never tell anyone a grade is league-only.
+6. Never state a deadline, a form, an approval or a set of steps unless those
    words appear in the book you are citing.
 Three likely follow-ups, each under 40 characters, written in the user's own voice ("What's the umpire fee?" rather than "Umpire fees").`;
 

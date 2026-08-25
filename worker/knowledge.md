@@ -35,42 +35,51 @@ the rule book — a stale note here is worse than no note.
 
 ## Grades and fixtures — Winter 2026
 
-Read off PlayHQ on 22 August 2026. Twelve grades: eight senior, four junior.
+Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
+**Every grade has finals, juniors included.**
 
-| Grade | Teams | League games | Finals |
-| --- | --- | --- | --- |
-| T20 — A Grade | 6 | 48 | 4 |
-| T20 — B Grade | 7 | 49 | 5 |
-| T35 — A Grade | 8 | 64 | 5 |
-| T35 — B Grade | 8 | 64 | 5 |
-| T35 (10 Rounds) — A Grade | 8 | 40 | 5 |
-| T35 (10 Rounds) — B Grade | 8 | 40 | 5 |
-| T35 (10 Rounds) — C Grade | 8 | 40 | 5 |
-| T35 (10 Rounds) — D Grade | 8 | 40 | 5 |
-| Juniors U11 A | 6 | 34 | 0 |
-| Juniors U11 B | 6 | 24 | 3 |
-| Juniors U13 | 8 | 40 | 3 |
-| Juniors U15 | 5 | 20 | 3 |
-| **Total** | **86** | **503** | **48** |
+| Grade | League | Finals | Total | Finals dates |
+| --- | --- | --- | --- | --- |
+| T20 — A Grade | 48 | 4 | 52 | 8, 15, 22 Aug |
+| T20 — B Grade | 49 | 5 | 54 | 8, 15, 22 Aug |
+| T35 — A Grade | 64 | 5 | 69 | 8, 15, 22 Aug |
+| T35 — B Grade | 64 | 5 | 69 | 8, 15, 22 Aug |
+| T35 (10 Rounds) — A | 40 | 5 | 45 | 5, 12, 19 Sep |
+| T35 (10 Rounds) — B | 40 | 5 | 45 | 5, 12, 19 Sep |
+| T35 (10 Rounds) — C | 40 | 5 | 45 | 5, 12, 19 Sep |
+| T35 (10 Rounds) — D | 40 | 5 | 45 | 5, 12, 19 Sep |
+| Juniors U11 A | 34 | 4 | 38 | 6, 13, 20 Sep |
+| Juniors U11 B | 24 | 4 | 28 | 6, 13, 20 Sep |
+| Juniors U13 | 40 | 4 | 44 | 6, 13, 20 Sep |
+| Juniors U15 | 20 | 4 | 24 | 6, 13, 20 Sep |
+| **Total** | **503** | **55** | **558** | |
 
-- 551 games across the season, league and finals together.
-- 86 teams, which is what the PlayHQ ladders list. This is the figure to use.
-- Prize money is $1,500 per senior grade — eight of them, so $12,000 across the
-  senior competitions.
+- 558 games across the season, 86 teams.
+- Junior finals run over three Sundays: Finals Round 1 on 6 September,
+  Preliminary Final on 13 September, Grand Final on 20 September. Every junior
+  grade, including U11 A.
+- Senior T20 and T35 finals ran 8–22 August. The 10-round T35 grades play
+  theirs 5–19 September.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
-## Dispensations — juniors only
+## Dispensations and exceptions — juniors only
 
-The junior rule book has a dispensation process. The senior rule book has none.
+The junior rule book covers these. The senior rule book has none of it.
 
-- **Juniors:** email melbournecricketassociation@gmail.com by **5 PM the Thursday
-  before the game**, with the player's name, date of birth and the grade
-  requested.
-- **Seniors:** there is no dispensation process in the rule book. A senior
-  captain short of eligible players for finals should email the committee, but
-  nothing in the rules obliges an exception or sets out how to ask for one.
+The junior book gives **two different deadlines**, in two different places, and
+they do not agree:
 
-Say this plainly rather than lending the junior process to a senior question.
+| Where | What | Deadline |
+| --- | --- | --- |
+| Contacts table | Dispensation requests | **5 PM the Thursday before the game** |
+| Finals Eligibility | Committee exceptions in extenuating circumstances, e.g. multiple washouts, extreme heat | **at least 48 hours before the match** |
+
+Both are quoted verbatim from v0.4. Give whichever matches what is being asked,
+say the book carries both, and point the person at the committee to confirm.
+Do not silently pick one. **The committee should reconcile these in v0.5.**
+
+Either way both are junior-only. Seniors have no dispensation or exception
+process at all — say so plainly rather than lending them the junior one.
 
 ## Finals eligibility — the senior rules that do exist
 
