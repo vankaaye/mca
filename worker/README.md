@@ -88,6 +88,11 @@ assistant actually made once — a dispensation process the senior rules do not
 have, a deadline borrowed from an unrelated clause, an extra run added to a
 revised target.
 
+One thing to know before you chase a failure: the Worker allows **30 chats per
+IP per hour**, and a full run is 18. Two runs inside an hour trips it, and the
+"taking a short break" reply then fails every remaining case for a reason that
+has nothing to do with the answers. The runner spots that and says so.
+
 Run them yourself any time:
 
 ```bash

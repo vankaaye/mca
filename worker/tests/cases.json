@@ -13,7 +13,9 @@
     "",
     "A caveat learned the hard way: assert on the CLAIM, not on a word. 'loan player' was forbidden outright, and then a perfectly correct answer — 'the rule book sets out no process for loaning players' — failed the suite. A test that fails on right answers is worse than no test, because people stop believing it.",
     "",
-    "Cases may be a single 'ask' or a full 'conversation'. The multi-turn ones matter more than they look: the assistant defends its own earlier answers, so a stale saved chat can drag a corrected prompt back into a mistake."
+    "Cases may be a single 'ask' or a full 'conversation'. The multi-turn ones matter more than they look: the assistant defends its own earlier answers, so a stale saved chat can drag a corrected prompt back into a mistake.",
+    "",
+    "Second time bitten by the same thing: match on meaning with tolerant patterns. 'double-chance' did not match 'double chance', and forbidding '48 hours' outright failed an answer that correctly said seniors have no such process while juniors do. Prefer a loose alternation over an exact phrase, and scope a mustNot to the claim you actually object to."
   ],
   "cases": [
     {
@@ -31,9 +33,9 @@
         "(does not|doesn't|no) (specify|set out|have|describe|cover|provide)"
       ],
       "mustNot": [
-        "deadline.{0,30}48 hours",
-        "(request|apply|submit).{0,40}48 hours before",
-        "at least 48 hours before"
+        "senior[^.]{0,80}(request|apply for) a dispensation",
+        "you can request a dispensation for (a |your )?senior",
+        "seniors?[^.]{0,60}(at least )?48 hours before"
       ],
       "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule."
     },
@@ -176,7 +178,7 @@
       "ask": "Are there finals for juniors?",
       "must": [
         "(top 4|top four)",
-        "(double chance|1st (and|&) 2nd)"
+        "double.?chance|two chances|1st (and|&) 2nd"
       ],
       "mustNot": [
         "no finals",
