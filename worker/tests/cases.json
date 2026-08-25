@@ -193,8 +193,9 @@
       "name": "junior finals dates",
       "ask": "When are the junior finals played?",
       "must": [
-        "(6|6th) september|september 6",
-        "(20|20th) september|september 20"
+        "(6|6th)[^.]{0,40}september|september[^.]{0,25}\\b6\\b",
+        "(13|13th)[^.]{0,40}september|september[^.]{0,25}\\b13\\b",
+        "(20|20th)[^.]{0,40}september|september[^.]{0,25}\\b20\\b"
       ],
       "why": "Finals Round 1 on 6 Sep, Preliminary Final 13 Sep, Grand Final 20 Sep, every junior grade."
     },
