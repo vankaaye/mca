@@ -30,11 +30,10 @@
       "name": "senior dispensation does not exist",
       "ask": "How do I request a dispensation for a senior finals game?",
       "must": [
-        "(does not|doesn't|no) (specify|set out|have|describe|cover|provide)"
+        "(does not|doesn't|no|nothing in the|not) (specify|set out|have|contain|include|mention|describe|cover|provide|allow)"
       ],
       "mustNot": [
-        "senior[^.]{0,80}(request|apply for) a dispensation",
-        "you can request a dispensation for (a |your )?senior",
+        "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
         "seniors?[^.]{0,60}(at least )?48 hours before"
       ],
       "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule."
