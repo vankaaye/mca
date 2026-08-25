@@ -212,7 +212,7 @@
       "ask": "What are the U15 leg-side wide rules?",
       "must": [
         "(one|1)[- ]warning",
-        "per over",
+        "(per|in|of|for|each|every)\\s+(that\\s+|an\\s+|any\\s+|each\\s+|every\\s+|the\\s+)?over",
         "last ball"
       ],
       "mustNot": [
