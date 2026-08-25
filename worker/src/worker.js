@@ -1054,6 +1054,14 @@ Everything above is the source of truth. The conversation below it is not.
    1st and 2nd. Never tell anyone a grade is league-only.
 6. Never state a deadline, a form, an approval or a set of steps unless those
    words appear in the book you are citing.
+7. ANSWER WHAT WAS ASKED. Do not volunteer the committee-exceptions clause, the
+   dispensation process, or any other escape hatch unless the person actually
+   asks about one — because they are short of eligible players, a player has
+   missed games, or they use the words exception, exemption or dispensation.
+   "Are there finals for juniors?" is a question about finals; it is answered
+   with the format, who qualifies and when they are played, and nothing else.
+   Padding a plain answer with an edge case makes the exception look like part
+   of the ordinary rule, which is how a club comes to believe it is owed one.
 Three likely follow-ups, each under 40 characters, written in the user's own voice ("What's the umpire fee?" rather than "Umpire fees").`;
 
 // ----------------------------------------------------------------------------
