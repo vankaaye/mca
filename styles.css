@@ -344,13 +344,20 @@ img { max-width: 100%; display: block; }
 
 /* Laptops and half-screen windows: the full menu fits, but only just. Tighten
    it rather than pushing the theme toggle off the right-hand edge. */
-@media (min-width: 1181px) and (max-width: 1560px) {
+/* The full menu needs tightening at every desktop width, not just narrow ones.
+   Capping this at 1560px was wrong: above that the nav sprang back to full
+   size and ran 82px into the Ask MCA pill, at 1600, 1920 and 2200 alike. A
+   wide window does not help when the container is 90% and the menu grew. */
+@media (min-width: 1181px) {
   .nav-list { gap: 0.62rem; }
   .nav-link { font-size: 0.66rem; letter-spacing: 0.03em; }
   .ask-mca { padding: 0 0.62rem; font-size: 0.68rem; }
   .logo img { height: 72px; width: 72px; }
   .header.scrolled .logo img { height: 58px; width: 58px; }
   .header-inner { gap: 0.6rem; }
+  /* The menu item and the button do the same job and sat flush against each
+     other. Space them so they read as two things. */
+  .nav-link-assistant { margin-right: 0.5rem; }
 }
 
 /* Mobile nav — a handful of short links sit on the bar itself and share the

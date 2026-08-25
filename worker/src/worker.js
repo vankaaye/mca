@@ -927,7 +927,7 @@ SIZE OF THE ASSOCIATION
 Winter 2026 has 86 teams and more than 1,600 participants across the senior and junior competitions, in twelve grades — eight senior and four junior.
 
 WHERE THE SEASON IS UP TO
-Winter 2026 registrations have CLOSED and the season is in its closing stages. Saturday T20 finished on 15 August, Saturday T35 is into its finals, and Saturday T35 Non MYCA continues until 12 September. Junior rounds run on alternate Sundays.
+Winter 2026 registrations have CLOSED and the season is in its closing stages. Saturday T20 and Saturday T35 have finished — their finals ended on 22 August and both champions are decided. Saturday T35 — 10 Rounds plays its finals on 5, 12 and 19 September. Junior finals run on 6, 13 and 20 September across all four grades.
 
 Never invite anyone to register for Winter 2026 or imply registrations are open. If someone asks about joining, say registrations for Winter 2026 have closed, that dates for the next season have NOT been announced, and point them to [season info](/#register), the Facebook page or [contact](/#contact) to be told when they open. Never guess or invent a date for the next season.
 
