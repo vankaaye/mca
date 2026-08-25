@@ -218,6 +218,16 @@
         "batter retirement"
       ],
       "why": "The heading rows inside the book's tables were being flattened into data rows, so the whole Detailed Rules section read as though it sat under 'Batter Retirement'. The assistant repeated that heading over no-ball content."
+    },
+    {
+      "name": "raises the exception when it is actually needed",
+      "ask": "One of my U13 players has only played 2 games because two rounds were washed out. Can he still play in the finals?",
+      "must": [
+        "3 (league )?games|minimum of 3",
+        "exception|dispensation",
+        "(48 hours|thursday)"
+      ],
+      "why": "The counterpart to the finals case. That one fails if exceptions are volunteered unasked; this one fails if they are withheld from someone who needs them — a player short of games through washouts, which is the book's own worked example. Restraint must not turn into silence."
     }
   ]
 }
