@@ -167,8 +167,8 @@
       "mustNot": [
         "loan players are allowed",
         "(3|three) league games.{0,40}loan",
-        "deadline.{0,30}48 hours",
-        "at least 48 hours before"
+        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation",
+        "(you|your (side|team|club))[^.]{0,80}48 hours"
       ],
       "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
     },
@@ -210,7 +210,8 @@
       "name": "quotes a section under its own heading",
       "ask": "What are the U15 leg-side wide rules?",
       "must": [
-        "(one|1) warning per over",
+        "(one|1)[- ]warning",
+        "per over",
         "last ball"
       ],
       "mustNot": [
