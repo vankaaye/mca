@@ -939,13 +939,13 @@ Senior competitions (Winter 2026, all on Saturdays):
 | Competition | Time | Season | Rounds | Prize | Registration | Umpire |
 | --- | --- | --- | --- | --- | --- | --- |
 | Saturday T20 | 8:00–11:30 AM | 12 Apr – 15 Aug 2026 | 16 + Pre SF + SF + Final | $1,500 | $675 | $65/game |
-| Saturday T35 Non MYCA | 12:00–5:00 PM | 11 Apr – 12 Sep 2026 | 10 + Pre SF + SF + Final | $1,000 | $675 | $85/game |
+| Saturday T35 — 10 Rounds | 12:00–5:00 PM | 11 Apr – 12 Sep 2026 | 10 + Pre SF + SF + Final | $1,000 | $675 | $85/game |
 | Saturday T35 | 12:00–5:00 PM | 11 Apr – 22 Aug 2026 | 16 + Pre SF + SF + Final | $1,500 | $425 | $85/game |
-T20 and T35 prizes rose from $1,000 to $1,500. T35 Non MYCA runs on Saturdays with no MYCA competition.
+T20 and T35 prizes rose from $1,000 to $1,500. Saturday T35 — 10 Rounds is the shorter 10-round Saturday competition; the plain Saturday T35 runs 16 rounds.
 
 Registration fee breakdown:
 - T20 — Registration $175 + MoM Awards $125 + Ground Fee $250 + Finals Awards $125 = $675
-- T35 Non MYCA — same components = $675
+- T35 — 10 Rounds — same components = $675
 - T35 — Registration $175 + MoM Awards $125 + Finals Awards $125 = $425
 - Balls $30 each (MCA Stamped Kookaburra Crown 2-piece white), bought by teams from Hoppers Crossing Cricket Store (03) 9369 5410 or any sports shop.
 
