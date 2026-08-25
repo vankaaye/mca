@@ -6,6 +6,18 @@
  *
  * Runs after every deploy. A prompt instruction is not a guarantee; this is
  * what turns "we told it not to" into "we checked it didn't".
+ *
+ * Writing cases: assert on the claim, not the wording. Every false failure
+ * this suite has produced came from matching phrasing — demanding "one
+ * warning per over" from a reply that said "a one-warning system that runs
+ * per over", or listing six verbs for "does not ..." and omitting "contain".
+ * Two rules follow from that:
+ *   - must patterns: allow the synonyms a correct answer would reach for.
+ *   - mustNot patterns: they are blind to negation, so scope them to the
+ *     affirmative claim. Banning "48 hours" outright also failed answers
+ *     that correctly attributed the junior deadline to juniors.
+ * Before adding a case, run both a correct reply and the wrong one you are
+ * guarding against through its patterns.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
