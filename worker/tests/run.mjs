@@ -16,6 +16,8 @@
  *   - mustNot patterns: they are blind to negation, so scope them to the
  *     affirmative claim. Banning "48 hours" outright also failed answers
  *     that correctly attributed the junior deadline to juniors.
+ *   - patterns run against the reply with markdown emphasis stripped, so a
+ *     phrase may span bold: "the top **4 teams**" matches /top 4/.
  * Before adding a case, run both a correct reply and the wrong one you are
  * guarding against through its patterns.
  */
@@ -52,13 +54,24 @@ async function ask(c) {
 // answers. Recognise it and say so, rather than reporting phantom failures.
 const RATE_LIMITED = /taking a short break|asked quite a few questions/i;
 
+// The assistant answers in markdown, so a phrase the case is looking for can
+// arrive with formatting inside it: "the top **4 teams**" does not match
+// /top 4/, though it says exactly that. Strip emphasis before matching rather
+// than teaching every pattern to expect asterisks. Whitespace and sentence
+// punctuation are left alone — the mustNot patterns use [^.] windows to stay
+// inside one sentence, and collapsing newlines would let them span a list.
+function forMatching(reply) {
+  return reply.replace(/\*\*|__|(?<![A-Za-z0-9])[*_](?![A-Za-z0-9])|`/g, '');
+}
+
 function check(reply, c) {
   const problems = [];
+  const text = forMatching(reply);
   for (const pattern of c.must || []) {
-    if (!new RegExp(pattern, 'i').test(reply)) problems.push('missing: ' + pattern);
+    if (!new RegExp(pattern, 'i').test(text)) problems.push('missing: ' + pattern);
   }
   for (const pattern of c.mustNot || []) {
-    if (new RegExp(pattern, 'i').test(reply)) problems.push('INVENTED: ' + pattern);
+    if (new RegExp(pattern, 'i').test(text)) problems.push('INVENTED: ' + pattern);
   }
   return problems;
 }
