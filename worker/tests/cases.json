@@ -201,6 +201,18 @@
         "3 (home-and-away|league|matches|games)|minimum of 3|three"
       ],
       "why": "Minimum 3 home-and-away matches for that team, and more games for that team than any other in the age group."
+    },
+    {
+      "name": "quotes a section under its own heading",
+      "ask": "What are the U15 leg-side wide rules?",
+      "must": [
+        "(one|1) warning per over",
+        "last ball"
+      ],
+      "mustNot": [
+        "batter retirement"
+      ],
+      "why": "The heading rows inside the book's tables were being flattened into data rows, so the whole Detailed Rules section read as though it sat under 'Batter Retirement'. The assistant repeated that heading over no-ball content."
     }
   ]
 }
