@@ -138,6 +138,16 @@ for (const c of cases) {
 
 console.log('\n' + (cases.length - failed) + '/' + cases.length + ' passed');
 
+// Repeat the failures at the very end, one line each. The detail above is worth
+// having, but it is long, and a log viewer that only shows the tail cuts it off
+// — which is exactly when you most want to know which case broke.
+if (failed) {
+  console.log('\nFailed: ' + results
+    .filter(r => r.problems.length)
+    .map(r => r.c.name + ' (' + r.problems.map(p => p.split(':')[0]).join(', ') + ')')
+    .join('; '));
+}
+
 if (results.some(r => r.problems.some(p => p.startsWith('RATE LIMITED')))) {
   console.log('\nSome cases could not be tested: the Worker rate-limits an IP to 30 chats');
   console.log('an hour and this run went past it. Wait an hour and run again — those');
