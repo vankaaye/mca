@@ -485,11 +485,11 @@
 
   var RULE_BOOKS = {
     senior: {
-      label: 'Seniors — T35 &amp; T20 rules',
+      label: 'MCA-Winter-2026-T35-and-T20-Rules-v1.0.pdf',
       href: 'rules/MCA-Winter-2026-T35-and-T20-Rules-v1.0.pdf'
     },
     junior: {
-      label: 'Juniors — U11, U13 &amp; U15 rules',
+      label: 'MCA-Juniors-Winter-2026-Rules-v0.4.pdf',
       href: 'rules/MCA-Juniors-Winter-2026-Rules-v0.4.pdf'
     }
   };

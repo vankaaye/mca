@@ -1302,7 +1302,18 @@ img { max-width: 100%; display: block; }
 .rules-text { flex: 1; min-width: 200px; }
 .rules-text h3 { font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--text); }
 .rules-text p { font-size: 0.9rem; color: var(--text-dim); }
-.rules-btn { flex-shrink: 0; }
+/* The label is the file's real name, so people can see which version they are
+   downloading — the v0.1/v0.4 mix-up is exactly what this prevents. That is
+   longer than a "Download" label, so let it wrap rather than overflow. */
+.rules-btn {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  word-break: break-word;
+  max-width: 100%;
+  text-align: center;
+}
 
 /* ============================================================
    Register
