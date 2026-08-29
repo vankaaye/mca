@@ -267,9 +267,10 @@
         "umpires? (are|is|was|were) (applying the )?(correct|right|wrong)",
         "(that|the) advice was wrong",
         "no need to argue",
-        "making the right call"
+        "making the right call",
+        "(which|what) grade"
       ],
-      "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute."
+      "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute. It later swung the other way and asked the captain which grade they play, in a question that says 30 overs — U15 and nothing else."
     },
     {
       "name": "junior loan player comes from the opposition",
