@@ -251,7 +251,8 @@
         "(may|can) bat[^.]{0,30}full allocation|full allocation of overs"
       ],
       "mustNot": [
-        "(rule book|books?) (is|are) silent",
+        "(rule ?books?|books?|rules?) (is|are) silent",
+        "silent on (this|that|the) (point|question|matter)",
         "no MCA rule",
         "(does not|doesn't) (contain|cover|mention|address) (any|a|this)?[^.]{0,20}rule"
       ],
@@ -284,6 +285,20 @@
         "(you|your (side|team|club)) (can|may|could|are able to) (borrow|loan|use|take)[^.]{0,60}(your club|another team)"
       ],
       "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book."
+    },
+    {
+      "name": "U11 innings runs to the full overs",
+      "ask": "In U11, does the side batting second stop as soon as they pass the target?",
+      "must": [
+        "all allocated overs are bowled|full ball allocation|all the allocated overs",
+        "committee|contact|melbournecricketassociation@gmail.com"
+      ],
+      "mustNot": [
+        "(rule ?books?|books?|rules?) (is|are) silent",
+        "silent on (this|that|the) (point|question|matter)",
+        "U11[^.]{0,40}(is|are) silent"
+      ],
+      "why": "The U11 rule reads 'All batters face their full ball allocation, and the innings concludes when all allocated overs are bowled' — the innings is defined by the overs running out, not the target being passed. It told a club 'for U11, the rule book is silent on this point', which is the opposite of what the book says."
     }
   ]
 }
