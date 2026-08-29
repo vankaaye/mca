@@ -127,6 +127,20 @@ their briefing was wrong — say what the rule is and send them to
 The other grades are not covered by this decision. U11 and U13 have their own
 wording in the rule book; the senior books say nothing either way.
 
+### Junior loan players — from the opposition only
+
+Confirmed by the committee. A loan player comes from the side you are playing
+that day, when one team is short and the opposition has spare players. Borrowing
+a player from another team at your own club is NOT allowed, in any junior grade.
+
+The rule book describes the opposition case and does not spell out the rest, so
+say this plainly rather than treating the silence as permission. There is no
+games-played condition on a loan player either — the "minimum 3 home-and-away
+games" is the finals qualification rule for a player in their own team, and it
+has nothing to do with loans.
+
+Seniors have no loan provision at all.
+
 ### U15 — tied games go to a Super Over
 
 Read off the U15 grade settings in PlayHQ. Super Over is enabled with usage

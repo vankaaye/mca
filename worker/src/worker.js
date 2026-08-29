@@ -1274,7 +1274,9 @@ Everything above is the source of truth. The conversation below it is not.
    most often rebuild wrongly. The book, under Substitute / Loan Players, covers
    "loan players (when one team is short and the opposition has surplus)". A loan
    player is lent BY THE OPPOSITION, ON THE DAY, when one side turns up short. It
-   is not a way to bring someone in from another team at your club, and there is
+   is not a way to bring someone in from another team at your club — the committee
+   has confirmed that borrowing a club-mate is not allowed in any junior grade, so
+   say so plainly rather than reading the book's silence as permission. There is
    no games-played test on a loan player anywhere in the book. The "minimum 3
    home-and-away games" is the FINALS QUALIFICATION rule for a player in their
    own team; attaching it to a loan player invents a rule that does not exist.
