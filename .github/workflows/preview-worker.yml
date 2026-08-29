@@ -1,0 +1,90 @@
+# Tries a branch's assistant against the real rule books, without putting it live.
+#
+# The answer tests can only judge a running assistant, so a prompt change could
+# not be checked until it had already been deployed to everyone. That made every
+# attempt a production change and a failure email, and there were a dozen of them
+# in one evening.
+#
+# `wrangler versions upload` uploads the branch as a new Worker version and gives
+# it its own preview URL WITHOUT sending any traffic to it. The preview shares the
+# Worker's existing secrets, so the ANTHROPIC_API_KEY still works and nothing new
+# has to be set up in Cloudflare. mcacric.com keeps serving the deployed version
+# throughout.
+#
+# Run it from the Actions tab: "Try the assistant on a branch" → Run workflow →
+# pick the branch. Merge once it comes back clean.
+name: Try the assistant on a branch
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: preview-worker
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Is Cloudflare set up yet?
+        id: creds
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$TOKEN" ] && [ -n "$ACCOUNT" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::error::Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets first. See worker/README.md."
+            exit 1
+          fi
+
+      - name: Check it builds
+        working-directory: worker
+        run: |
+          node --check src/worker.js
+          node --check --input-type=module < tests/run.mjs
+          node -e "JSON.parse(require('fs').readFileSync('tests/cases.json','utf8'))"
+
+      - name: Upload this branch as a preview version
+        id: upload
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -o pipefail
+          npx --yes wrangler@4 versions upload \
+            --message "preview ${GITHUB_REF_NAME}@${GITHUB_SHA:0:7}" 2>&1 | tee upload.log
+
+          # Wrangler prints "Version Preview URL: https://<prefix>-mca-assistant...".
+          # Take the last workers.dev URL it printed, whatever the surrounding wording.
+          URL="$(grep -oE 'https://[A-Za-z0-9.-]+\.workers\.dev' upload.log | tail -n 1)"
+          if [ -z "$URL" ]; then
+            echo "::error::Wrangler did not print a preview URL. Preview URLs may be turned off for this Worker — Cloudflare dashboard → Workers & Pages → mca-assistant → Settings → Domains & Routes → Preview URLs. Nothing was deployed; the live assistant is untouched."
+            exit 1
+          fi
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Preview: $URL"
+
+      - name: Ask the preview the questions with known answers
+        env:
+          ENDPOINT: ${{ steps.upload.outputs.url }}
+        run: |
+          # Give Cloudflare a moment to make the new version reachable.
+          sleep 15
+          node worker/tests/run.mjs "$ENDPOINT"
+
+      - name: What this means
+        if: always()
+        run: |
+          echo "The live assistant on mcacric.com was NOT changed by this run."
+          echo "Green here means the branch is safe to merge; merging deploys it."
