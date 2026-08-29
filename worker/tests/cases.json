@@ -281,7 +281,7 @@
       "mustNot": [
         "(3|three) (home-and-away|league)[^.]{0,30}(loan|borrow)",
         "(loan|borrow)[^.]{0,40}(3|three) (home-and-away|league)",
-        "another team at your club"
+        "(you|your (side|team|club)) (can|may|could|are able to) (borrow|loan|use|take)[^.]{0,60}(your club|another team)"
       ],
       "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book."
     }
