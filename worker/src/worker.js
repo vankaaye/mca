@@ -83,57 +83,29 @@ const STATS_TTL_SECONDS = 60 * 60 * 24 * 40; // keep daily counters ~40 days
  * guessed: it told a parent that U11 A had no finals. The docx keeps the
  * headers, so every value stays attached to its grade.
  */
-const RULE_BOOK_SENIORS = `Melbourne Cricket Association
-
-Melbourne Cricket Association (MCA)
+const RULE_BOOK_SENIORS = `Melbourne Cricket Association (MCA)
 One Day (T35) and T20 Rules – Winter 2026
 Association Committee
-
-President: Gopi Kakivai – 0430 667 896
-
 (You may contact anyone for any queries)
-
+President: Gopi Kakivai – 0430 667 896
 Secretary: Mahendra Annem – 0433 960 586
 Treasurer: Sandeep Shamala – 0433 249 914
-Umpires Coordinator: Srikanth Dendi – 0430 408
-093
-
-Disputes and Complaints (within 48 hours of game
-completion game)
-
+Umpires Coordinator: Srikanth Dendi – 0430 408 093
+Disputes and Complaints (within 48 hours of game completion game)
 melbournecricketassociation@gmail.com
-
 Format
-
 T35:
-1.
-
 35 overs per side (unless rain interrupted / wet outfield).
-
-2.
-
 5 overs to be played from each side before a side change.
-
-3.
-
 7 overs maximum for any bowler.
 T20:
-
-1.
-2.
-
 20 overs per side (unless rain interrupted / wet outfield).
-The bowling team should change sides every over until the first 5 overs. And
-from over 6 onwards, change sides every 5 overs until the end of the game. If
-there is a reduced over game, change sides until the power play overs finished,
-and then change every 5 overs. The changing sides of every over in the first 5
-overs is to take advantage of the wind conditions during power play overs.
-
-3.
-Powerplay
-
+The bowling team should change sides every over until the first 5 overs.
+And from over 6 onwards, change sides every 5 overs until the end of the game.
+If there is a reduced over game, change sides until the power play overs finished, and then change every 5 overs.
+The changing sides of every over in the first 5 overs is to take advantage of the wind conditions during power play overs.
 4 overs maximum for any bowler.
-
+Powerplay
 T35:
 Mandatory:
 Bowling Power Play: First 5 overs mandatory power play.
@@ -141,71 +113,40 @@ Batting Power Play: The remaining 5 overs of power play is up to the batting tea
 Total 10 overs of power play in the 35 overs.
 T20:
 First 6 overs of mandatory power play.
-
-Fielding
-Restrictions
-
-During Bowling Powerplay Overs: Only two fielders allowed outside inner circle
-regardless of the number of fielders inside the circle. For example, if a team is playing with
-only 9 players, 2 players can still field outside the circle.
-During Batting Powerplay Overs: Only three fielders allowed outside inner circle
-regardless of the number of fielders inside the circle. For example, if a team is playing with
-only 9 players, 3 players can still field outside the circle.
-Non-Powerplay Overs: A maximum of 5 fielders are allowed outside the inner circle during
-non-power play overs. This is regardless of the number of players fielding inside the circle.
-For example, if a team is playing with only 9 players, 5 players can still be outside the inner
-circle. This means that there will only be 2 players fielding inside the circle (excluding the
-keeper and bowler).
-Others: A maximum of 5 fielders are allowed on the leg side at any stage of the game
-(excluding the bowler and keeper). Bowler guard – for example, right hand bowler bowling
-around the wicket doesn’t count as a fielder.
-
-Competition
-Details
-
+Fielding Restrictions
+During Bowling Powerplay Overs: Only two fielders allowed outside inner circle regardless of the number of fielders inside the circle. For example, if a team is playing with only 9 players, 2 players can still field outside the circle.
+During Batting Powerplay Overs: Only three fielders allowed outside inner circle regardless of the number of fielders inside the circle. For example, if a team is playing with only 9 players, 3 players can still field outside the circle.
+Non-Powerplay Overs: A maximum of 5 fielders are allowed outside the inner circle during non-power play overs.
+This is regardless of the number of players fielding inside the circle.
+For example, if a team is playing with only 9 players, 5 players can still be outside the inner circle.
+This means that there will only be 2 players fielding inside the circle (excluding the keeper and bowler).
+Others: A maximum of 5 fielders are allowed on the leg side at any stage of the game (excluding the bowler and keeper).
+Bowler guard – for example, right hand bowler bowling around the wicket doesn’t count as a fielder.
+Competition Details
 Regular T35 and T20 Grades:
-1. 16 League Rounds for both T35 and T20, followed by finals. The finals structure depends on
-the number of teams in the fixture — Quarter Finals (10 or more teams), Preliminary Semis
-(8 or more teams), Semi Finals, and Grand Final.
-2. Finals Format: Where possible, an IPL/BBL-style playoff system will be used. Under this
-format, the top two teams on the ladder get two chances to reach the Grand Final, while
-3rd and 4th place teams get one chance. Specifically — 1st vs 2nd (winner goes straight to
-the Grand Final; loser gets another chance), and 3rd vs 4th (loser is eliminated). The two
-losers/survivors then play a final qualifier, with the winner joining the top-two winner in the
-Grand Final. This format may be adjusted based on the number of teams and available
-dates.
-3. All matches will be on Saturday afternoons, except for reserve days.
-4. Reserve days only for Preliminary Semis, Semis and Finals
-5. A player should have played minimum 6 league games to qualify for Preliminary Semis,
-Semis and Finals
-6. If a club has two or more teams participating in multiple grades, a player from the same
-club can play in any team during the season but will only qualify for one grade where the
-player has played most number of games in that grade. Same rule applies if a player has
-played for two different clubs in the same grade.
+16 League Rounds for both T35 and T20, followed by finals. The finals structure depends on the number of teams in the fixture — Quarter Finals (10 or more teams), Preliminary Semis (8 or more teams), Semi Finals, and Grand Final.
+Finals Format: Where possible, an IPL/BBL-style playoff system will be used.
+Under this format, the top two teams on the ladder get two chances to reach the Grand Final, while 3rd and 4th place teams get one chance.
+Specifically — 1st vs 2nd (winner goes straight to the Grand Final; loser gets another chance), and 3rd vs 4th (loser is eliminated).
+The two losers/survivors then play a final qualifier, with the winner joining the top-two winner in the Grand Final.
+This format may be adjusted based on the number of teams and available dates.
+All matches will be on Saturday afternoons, except for reserve days.
+Reserve days only for Preliminary Semis, Semis and Finals
+A player should have played minimum 6 league games to qualify for Preliminary Semis, Semis and Finals
+If a club has two or more teams participating in multiple grades, a player from the same club can play in any team during the season but will only qualify for one grade where the player has played most number of games in that grade.
+Same rule applies if a player has played for two different clubs in the same grade.
 Reduced T35 Fixtured Grades:
-1. 10 League Rounds, followed by finals. The finals structure depends on the number of teams
-in the fixture — Preliminary Semis (more than 6 teams), Semi Finals, and Grand Final.
-2. Finals Format: Where possible, an IPL/BBL-style playoff system will be used. Under this
-format, the top two teams on the ladder get two chances to reach the Grand Final, while
-3rd and 4th place teams get one chance. This format may be adjusted based on the
-number of teams and available dates.
-3. 6 teams qualify for Preliminary Semis (only for some fixtures where the teams are more
-than 6), if not 4 teams qualify for Semis.
-4. All matches will be on Saturday afternoons, except for reserve days.
-5. Reserve days only for Preliminary Semis, Semis and Finals
-6. A player should have played minimum 4 league games to qualify for Preliminary Semis,
-Semis and Finals
-7. If a club has two or more teams participating in multiple grades, a player from the same
-club can play in any team during the season but will only qualify for one grade where the
-player has played most number of games in that grade. Same rule applies if a player has
-played for two different clubs in the same grade.
-
-Game Times
-
+10 League Rounds, followed by finals. The finals structure depends on the number of teams in the fixture — Preliminary Semis (more than 6 teams), Semi Finals, and Grand Final.
+Finals Format: Where possible, an IPL/BBL-style playoff system will be used. Under this format, the top two teams on the ladder get two chances to reach the Grand Final, while 3rd and 4th place teams get one chance. This format may be adjusted based on the number of teams and available dates.
+6 teams qualify for Preliminary Semis (only for some fixtures where the teams are more than 6), if not 4 teams qualify for Semis.
+All matches will be on Saturday afternoons, except for reserve days.
+Reserve days only for Preliminary Semis, Semis and Finals
+A player should have played minimum 4 league games to qualify for Preliminary Semis, Semis and Finals
+If a club has two or more teams participating in multiple grades, a player from the same club can play in any team during the season but will only qualify for one grade where the player has played most number of games in that grade.
+Same rule applies if a player has played for two different clubs in the same grade.
+Game Times
 T35:
-Toss: by 11:45 AM (if less than 6 players are available at toss time, opponent team will be
-awarded the toss. If both teams have less than 6 players at toss time, the first team to have 6
-players at toss time will be awarded the toss).
+Toss: by 11:45 AM (if less than 6 players are available at toss time, opponent team will be awarded the toss. If both teams have less than 6 players at toss time, the first team to have 6 players at toss time will be awarded the toss).
 Fielding team: Minimum 6 players to start the game.
 1st Innings:
 Scheduled Start Time: 12 PM
@@ -216,9 +157,7 @@ Scheduled Start Time: 2:30 PM
 Scheduled Finish Time: 4:45 PM
 Drinks break: 5 minutes drinks break at the end of 20th over.
 T20:
-Toss: by 7:45 AM (if less than 6 players are available at toss time, opponent team will be
-awarded the toss. If both teams have less than 6 players at toss time, the first team to have 6
-players at toss time will be awarded the toss).
+Toss: by 7:45 AM (if less than 6 players are available at toss time, opponent team will be awarded the toss. If both teams have less than 6 players at toss time, the first team to have 6 players at toss time will be awarded the toss).
 Fielding team: Minimum 6 players to start the game.
 1st Innings:
 Scheduled Start Time: 8 AM
@@ -228,444 +167,217 @@ Innings Break: 10 mins
 Scheduled Start Time: 9:40 AM
 Scheduled Finish Time: 11:10 AM
 Drinks break: 5 minutes drinks break at the end of 10th over.
-
 Umpires
-
-1. One professional umpire will be present for all league rounds.
-2. Two umpires will be provided for Pre-semis (if the fixture has one), Semi-Finals and Finals.
-Teams have to pay for both the umpires.
-
+One professional umpire will be present for all league rounds.
+Two umpires will be provided for Pre-semis (if the fixture has one), Semi-Finals and Finals. Teams have to pay for both the umpires.
 Ground Setup
-
-1. Home team (listed top on PlayHQ fixture) will have to setup stumps and cones for that
-week. Home team has to also supply the scoreboard, spare used balls, white spray can,
-first aid kit, measuring tape, ball counter, and the square leg umpire vest (any orange HiVis vest)
-2. Home team to ensure the ground is left clean
-
+Home team (listed top on PlayHQ fixture) will have to setup stumps and cones for that week. Home team has to also supply the scoreboard, spare used balls, white spray can, first aid kit, measuring tape, ball counter, and the square leg umpire vest (any orange Hi-Vis vest)
+Home team to ensure the ground is left clean
 Team Sheets
-
-1. 12 players can play per side. Any 11 out of the 12 can bat. Any 12 out of the 12 can bowl.
-Any 11 out of the 12 can field/wicket keep. All players should be added to the PlayHQ team
-list before the game starts.
-2. All games should be live scored using PlayHQ scoring website
-(https://ca.score.playhq.com). No manual books are allowed unless there is an issue with
-the PlayHQ scoring system.
-3. All matches will be locked on the Wednesday the following week. Matches would be
-unlocked if required by the association for valid reasons.
-
+12 players can play per side. Any 11 out of the 12 can bat. Any 12 out of the 12 can bowl. Any 11 out of the 12 can field/wicket keep. All players should be added to the PlayHQ team list before the game starts.
+All games should be live scored using PlayHQ scoring website (https://ca.score.playhq.com). No manual books are allowed unless there is an issue with the PlayHQ scoring system.
+All matches will be locked on the Wednesday the following week. Matches would be unlocked if required by the association for valid reasons.
 Delayed Starts
-
-Weather/wet outfield: One over lost for every 4 mins of delayed start. Umpire will reduce
-the overs equally between the teams.
-
-Rain
-Interruptions
-
-60 minutes or more of rain interruption: If conditions are unsuitable to play again, game
-should be called off and points are shared. Please note, it is up to the umpire’s discretion,
-whether to continue the game or not if there is a slight drizzle. The umpire will also make the
-decision on the ground and pitch conditions, whether it is suitable to play or not.
-DLS (Duckworth Lewis) will come in play if the second innings is interrupted due to rain on
-other weather conditions. PlayHQ scoring app has the DLS feature inbuilt and should be used
-accordingly. If the app isn’t working, the ‘Revised Target’ rule will be followed. See ‘Revised
-Target’ section below.
-
+Weather/wet outfield: One over lost for every 4 mins of delayed start. Umpire will reduce the overs equally between the teams.
+Rain Interruptions
+60 minutes or more of rain interruption: If conditions are unsuitable to play again, game should be called off and points are shared.
+Please note, it is up to the umpire’s discretion, whether to continue the game or not if there is a slight drizzle.
+The umpire will also make the decision on the ground and pitch conditions, whether it is suitable to play or not.
+DLS (Duckworth Lewis) will come in play if the second innings is interrupted due to rain on other weather conditions.
+PlayHQ scoring app has the DLS feature inbuilt and should be used accordingly.
+If the app isn’t working, the ‘Revised Target’ rule will be followed.
+See ‘Revised Target’ section below.
 Bad Light
-
 T35 only:
-1. Only applicable for T35 at this stage due to ‘bad light after sunset’ concerns
-2. Batsmen or bowling teams should not stop the game due bad light, until the official sunset
-time for that day.
-3. To check the official sunset time for the day, go to google.com on your mobile and search
-with the word ‘sunset’. It will show the sunset time for the day in that local area.
-4. No further ball should be bowled beyond the official sunset time. Result will be based on
-DLS.
-5. If the light conditions are gloomy (before the sunset time), the officiating umpire will assess
-the light conditions and make a final call if the spinners are to be bowled until the light
-conditions improved or until the closure of play if the conditions are not improving.
-6. Batting powerplay can still be taken during this time. Bowling team shouldn’t object for
-bowling spinners or for the batting powerplay if umpire has made the final call.
-
-Reduced overs
-for delayed
-starts and
-finishes
-
+Only applicable for T35 at this stage due to ‘bad light after sunset’ concerns
+Batsmen or bowling teams should not stop the game due bad light, until the official sunset time for that day.
+To check the official sunset time for the day, go to google.com on your mobile and search with the word ‘sunset’. It will show the sunset time for the day in that local area.
+No further ball should be bowled beyond the official sunset time. Result will be based on DLS.
+If the light conditions are gloomy (before the sunset time), the officiating umpire will assess the light conditions and make a final call if the spinners are to be bowled until the light conditions improved or until the closure of play if the conditions are not improving.
+Batting powerplay can still be taken during this time. Bowling team shouldn’t object for bowling spinners or for the batting powerplay if umpire has made the final call.
+Reduced overs for delayed starts and finishes
 T35 only:
-1. Only applicable for T35 at this stage due to ‘bad light after sunset’ concerns
-2. When teams turn up late, an over will be reduced for every 4 mins of delay past the 5
-minutes of scheduled start time (that is 12:00 PM for T35).
-3. First innings should be completed by 2:15 PM. If the team bowling first had a delayed finish
-to their innings, when they come on to bat, they will have reduced overs. An over will be
-reduced for every 4 mins of delayed finish past 2:15 PM. On such instances, the target to
-chase remains the same. If the team fielding second had a delayed finish (that is, unable to
-complete the bowling innings by the ‘Scheduled Finish Time’ or official sunset time
-(whichever is applicable), then DLS comes into play. See ‘Rain Interruptions’ section
-above for DLS rules.
-4. Umpires will be warning the teams throughout the course of the game if teams are behind
-their over rate. Generally speaking, 15 overs per hour if you have mix of pace bowlers and
-spin bowlers in that hour.
-5. Penalties may apply if a team turn up late on multiple occasions during the season.
-6. A team must start the game as soon as there are 6 players in the ground.
-7. If a team doesn’t have 6 players by 12:30 PM, that team is considered a forfeit.
+Only applicable for T35 at this stage due to ‘bad light after sunset’ concerns
+When teams turn up late, an over will be reduced for every 4 mins of delay past the 5 minutes of scheduled start time (that is 12:00 PM for T35).
+First innings should be completed by 2:15 PM.
+If the team bowling first had a delayed finish to their innings, when they come on to bat, they will have reduced overs.
+An over will be reduced for every 4 mins of delayed finish past 2:15 PM.
+On such instances, the target to chase remains the same.
+If the team fielding second had a delayed finish (that is, unable to complete the bowling innings by the ‘Scheduled Finish Time’ or official sunset time (whichever is applicable), then DLS comes into play.
+See ‘Rain Interruptions’ section above for DLS rules.
+Umpires will be warning the teams throughout the course of the game if teams are behind their over rate. Generally speaking, 15 overs per hour if you have mix of pace bowlers and spin bowlers in that hour.
+Penalties may apply if a team turn up late on multiple occasions during the season.
+A team must start the game as soon as there are 6 players in the ground.
+If a team doesn’t have 6 players by 12:30 PM, that team is considered a forfeit.
 DLS Notes:
-8. Umpires will apply DLS if the second innings could not be finished by the fielding team
-within the scheduled closing time, or as agreed during the course of the game with
-captains.
-9. The DLS rule is at the full discretion of the umpires considering all the circumstances of the
-game. If the umpire allowed a bit of levy for the first fielding team that finished late during
-the first innings, the umpire will also allow similar levy during the second innings for the
-team fielding second.
-10. Rules like these are a joint effort between the captains and the umpire. Any DLS
-discussions should happen during the game. Decisions won’t be overturned by the
-association after the game.
-
-Revised Target
-
-1. For rain interrupted games, if PlayHQ is not working, the revised target is determined by
-the run rate of the first innings score.
-a. Example: If Team A scores 175 in 35 overs (at a run rate of 5 runs per over), and if there
-is a rain interruption for Team B during their batting innings, and the 2nd innings has
-been revised to 15 overs. The revised target is 75 runs (15 overs x 5 run rate = 75 runs).
-2. Minimum 5 overs to be played in either first or second innings for a result. Otherwise, the
-game is considered a draw.
-3. If complete game was washed out, the game is considered abandoned.
-4. For a draw or abandoned game, the match points will be shared between both teams.
-5. A win gets 6 points. A draw gets 3 points each.
-
+Umpires will apply DLS if the second innings could not be finished by the fielding team within the scheduled closing time, or as agreed during the course of the game with captains.
+The DLS rule is at the full discretion of the umpires considering all the circumstances of the game.
+If the umpire allowed a bit of levy for the first fielding team that finished late during the first innings, the umpire will also allow similar levy during the second innings for the team fielding second.
+Rules like these are a joint effort between the captains and the umpire. Any DLS discussions should happen during the game. Decisions won’t be overturned by the association after the game.
+Revised Target
+For rain interrupted games, if PlayHQ is not working, the revised target is determined by the run rate of the first innings score.
+Example: If Team A scores 175 in 35 overs (at a run rate of 5 runs per over), and if there is a rain interruption for Team B during their batting innings, and the 2nd innings has been revised to 15 overs. The revised target is 75 runs (15 overs x 5 run rate = 75 runs).
+Minimum 5 overs to be played in either first or second innings for a result. Otherwise, the game is considered a draw.
+If complete game was washed out, the game is considered abandoned.
+For a draw or abandoned game, the match points will be shared between both teams.
+A win gets 6 points. A draw gets 3 points each.
 Free hit
-
-1. Free hit applies for every no-ball such as waist height, over-stepping, ball landing outside
-the mat, above shoulder/head short balls, etc.
-2. Second short ball above the shoulder in the same over is referred to as a no-ball
-3. Bowler disturbing the stumps at the non-striker end while bowling will be considered a noball
-4. All no-ball calls including waist high no-balls will be called by the official/main umpire.
-Official/main umpire may consult the square leg umpire if in doubt. The final call will be
-made by the official/main umpire.
-5. Any ball bowled down leg side on a free hit delivery ball to be called a wide
-
-Square Leg
-Umpires
-(Players)
-
-1. All teams to provide an Orange Hi-Vis Vest and Ball Counter for Square Leg Umpires.
-2. Square Leg is required to reset the stumps when broken on the keeper end.
-3. Square Leg Umpires are not to interact or speak with batters during overs, in between
-overs or at the fall of a wicket. If they are observed doing so a 5-run penalty will be
-awarded against the batting team and they are to be rotated off from square leg duties.
-4. Square leg umpires are not to carry mobile phones or drink bottles. If they are observed
-doing so a 5-run penalty will be awarded against the batting team and they will be rotated
-off from square leg duties.
-5. A quick drink may be allowed during the change of ends or when a wicket was fallen.
-
+Free hit applies for every no-ball such as waist height, over-stepping, ball landing outside the mat, above shoulder/head short balls, etc.
+Second short ball above the shoulder in the same over is referred to as a no-ball
+Bowler disturbing the stumps at the non-striker end while bowling will be considered a no-ball
+All no-ball calls including waist high no-balls will be called by the official/main umpire. Official/main umpire may consult the square leg umpire if in doubt. The final call will be made by the official/main umpire.
+Any ball bowled down leg side on a free hit delivery ball to be called a wide
+Square Leg Umpires (Players)
+All teams to provide an Orange Hi-Vis Vest and Ball Counter for Square Leg Umpires.
+Square Leg is required to reset the stumps when broken on the keeper end.
+Square Leg Umpires are not to interact or speak with batters during overs, in between overs or at the fall of a wicket. If they are observed doing so a 5-run penalty will be awarded against the batting team and they are to be rotated off from square leg duties.
+Square leg umpires are not to carry mobile phones or drink bottles. If they are observed doing so a 5-run penalty will be awarded against the batting team and they will be rotated off from square leg duties.
+A quick drink may be allowed during the change of ends or when a wicket was fallen.
 Leg Side Wides
-
 T35:
-1. ‘One’ warning per over down the leg (unless it’s too far - which is going to be a wide
-without a warning). Anything after that will be a wide. If the first one down the leg was
-given a wide (because it is too far), the next one down the leg will be considered a warning
-(if it is not too far).
-2. The last ball of any over bowled down leg side to be called a wide
-3. Any ball bowled down leg side on a free hit delivery ball to be called a wide, and the free
-hit will be moved to the next delivery.
+‘One’ warning per over down the leg (unless it’s too far - which is going to be a wide without a warning). Anything after that will be a wide. If the first one down the leg was given a wide (because it is too far), the next one down the leg will be considered a warning (if it is not too far).
+The last ball of any over bowled down leg side to be called a wide
+Any ball bowled down leg side on a free hit delivery ball to be called a wide, and the free hit will be moved to the next delivery.
 T20:
-1. Any ball down the leg is considered a wide.
-2. Any ball bowled down leg side on a free hit delivery ball to be called a wide, and the free
-hit will be moved to the next delivery.
-
-Yellow/Red Card
-Offence
-
-1. If a player is issued a yellow card the umpire is to report the player and details of incident
-to the board via email.
-2. If a player receives two yellow cards in the same game he will be disqualified from playing
-for the rest of the game and he cannot be replaced for the remainder of the game.
-3. The umpire to report all incidences to the board by email by the following Sunday evening
-at the latest.
-4. The board to investigate two yellow or red card reports and proceed with disciplinary
-action.
-5. Any player receiving 3 yellow cards during the season will receive an automatic suspension
-of one game. Any further yellow cards thereafter during the season will automatically incur
-a further one match suspension penalty.
-6. One card to be deducted from the number of cards issued for the following season,
-example if a player receives 2 yellow cards during the season 1 will be deducted leaving 1
-remaining current for the following season.
-
+Any ball down the leg is considered a wide.
+Any ball bowled down leg side on a free hit delivery ball to be called a wide, and the free hit will be moved to the next delivery.
+Yellow/Red Card Offence
+If a player is issued a yellow card the umpire is to report the player and details of incident to the board via email.
+If a player receives two yellow cards in the same game he will be disqualified from playing for the rest of the game and he cannot be replaced for the remainder of the game.
+The umpire to report all incidences to the board by email by the following Sunday evening at the latest.
+The board to investigate two yellow or red card reports and proceed with disciplinary action.
+Any player receiving 3 yellow cards during the season will receive an automatic suspension of one game. Any further yellow cards thereafter during the season will automatically incur a further one match suspension penalty.
+One card to be deducted from the number of cards issued for the following season, example if a player receives 2 yellow cards during the season 1 will be deducted leaving 1 remaining current for the following season.
 Team Attire
-
-1. All teams to have uniforms, including the same hoodie/jumper/jacket.
-2. Teams that do not have coloured uniforms have to be dressed in whites only.
-3. Any coloured or white uniforms are permitted as long as all the team members are wearing
-the same uniform.
-4. Full team must wear the same uniform, that is full whites or full club coloured uniform. No
-mix matching. Teams must carry spares for last minute fill-ins who may have whites or club
-coloured uniform.
-5. No mixed uniforms from different clubs.
-6. 5-runs will be deducted from the team’s score for each player that doesn’t have proper
-uniforms.
-
+All teams to have uniforms, including the same hoodie/jumper/jacket.
+Teams that do not have coloured uniforms have to be dressed in whites only.
+Any coloured or white uniforms are permitted as long as all the team members are wearing the same uniform.
+Full team must wear the same uniform, that is full whites or full club coloured uniform. No mix matching. Teams must carry spares for last minute fill-ins who may have whites or club coloured uniform.
+No mixed uniforms from different clubs.
+5-runs will be deducted from the team’s score for each player that doesn’t have proper uniforms.
 Bowler Clothing
-
-1. If the fielding team is wearing white clothing, and if the batsmen on strike has sighting
-concerns, the batsmen can request the umpire for the bowler of that particular over to
-wear a black top (t-shirt/jumper/hoody) for the duration of that over.
-2. Only black coloured top, no other colours.
-3. Teams are to always carry couple of spare black tops.
-4. The bowler can continue to wear whites while bowling, if the batsman on strike doesn’t
-have any sighting concerns.
-
-Umpire/Captains
-Reports
-
-1. Umpires to provide match report by the Sunday evening at the latest. This provides
-ongoing feedback to committee.
-2. Captains can provide match day report by the Sunday evening at the latest. This is
-optional.
-3. Captains can also email the association directly for any match day matters.
-
+If the fielding team is wearing white clothing, and if the batsmen on strike has sighting concerns, the batsmen can request the umpire for the bowler of that particular over to wear a black top (t-shirt/jumper/hoody) for the duration of that over.
+Only black coloured top, no other colours.
+Teams are to always carry couple of spare black tops.
+The bowler can continue to wear whites while bowling, if the batsman on strike doesn’t have any sighting concerns.
+Umpire/Captains Reports
+Umpires to provide match report by the Sunday evening at the latest. This provides ongoing feedback to committee.
+Captains can provide match day report by the Sunday evening at the latest. This is optional.
+Captains can also email the association directly for any match day matters.
 Match Result
-
-Home team to enter match results manually by 10 PM the following day if PlayHQ Live
-Scoring wasn’t working during the match time.
-
+Home team to enter match results manually by 10 PM the following day if PlayHQ Live Scoring wasn’t working during the match time.
 Umpires Decision
-
-Umpires’ decision is the final decision throughout the course of the match. Email the
-committee for any disputes or complaints after the game (within 48 hours of completion) - m
-elbournecricketassociation@gmail.com
-
-Fees
-
+Umpires’ decision is the final decision throughout the course of the match. Email the committee for any disputes or complaints after the game (within 48 hours of completion) - melbournecricketassociation@gmail.com
+Fees
 Fees are as advised in the competition flyers.
 Bank Details,
 Name: MCA
 BSB: 063106
 Account number: 10904465
 Reference: Please use your team’s name as per the PlayHQ fixture
-
 Umpire Fee
-
 T35:
-$85 per team to be paid by each team in full if the game starts. If the game gets called off
-before the ball is bowled, half payment to be made to the umpire. If the association calls off
-the game (before 11 AM on the game day), then no umpire fee to be paid by the teams.
+$85 per team to be paid by each team in full if the game starts. If the game gets called off before the ball is bowled, half payment to be made to the umpire. If the association calls off the game (before 11 AM on the game day), then no umpire fee to be paid by the teams.
 T20:
-$65 per team to be paid by each team in full if the game starts. If the game gets called off
-before the ball is bowled, half payment to be made to the umpire. If the association calls off
-the game (previous night of the game), then no umpire fee to be paid by the teams.
-Umpire payments should be paid before the toss. Can be an online payment (PayID or bank
-transfer).
-
+$65 per team to be paid by each team in full if the game starts. If the game gets called off before the ball is bowled, half payment to be made to the umpire. If the association calls off the game (previous night of the game), then no umpire fee to be paid by the teams.
+Umpire payments should be paid before the toss. Can be an online payment (PayID or bank transfer).
 Balls
-
-Balls ($30 a ball) to be purchased by the teams directly from Hoppers Crossing Cricket
-Store - (03) 9369 5410 or any other sports shop nearby.
-Ask for MCA Kookaburra Crown 2-piece white ball. There is an association specific ball with a
-logo on it.
-
+Balls ($30 a ball) to be purchased by the teams directly from Hoppers Crossing Cricket Store - (03) 9369 5410 or any other sports shop nearby.
+Ask for MCA Kookaburra Crown 2-piece white ball. There is an association specific ball with a logo on it.
 Other Rules
-Powerplay for
-games with
-reduced overs
-
 International cricket rules apply in general where not exclusively specified in this rule book.
-Total overs in the innings
+Powerplay for games with reduced overs
 
-Total Powerplay Overs
+| Total overs in the innings | Total Powerplay Overs |
+| --- | --- |
+| 5-6 | 1 |
+| 7-9 | 2 |
+| 10-13 | 3 |
+| 14-16 | 4 |
+| 17-19 | 5 |
+| 20-22 | 6 |
+| 23-25 | 7 |
+| 26-28 | 8 |
+| 29-31 | 9 |
+| 32-35 | 10 |
 
-5-6
-
-1
-
-7-9
-
-2
-
-10-13
-
-3
-
-14-16
-
-4
-
-17-19
-
-5
-
-20-22
-
-6
-
-23-25
-
-7
-
-26-28
-
-8
-
-29-31
-
-9
-
-32-35
-
-10
-
-Reduced powerplay overs will be shared half each between mandatory and batting
-powerplays. If the reduced powerplay overs are in odd number, it will be divided by 2 and the
-higher number will be for the mandatory powerplay. For example, if reduced powerplay is 7
-overs in total, first 4 overs of the innings will be mandatory powerplay overs and 3 will be
-batting powerplay overs chosen anytime during the innings by the batting team.
-
-Player
-Registration and
-Fill-ins
-
-1. All players should be registered on PlayHQ
-2. A registered player cannot play for two teams in the same tournament on the same day.
-3. A player wishing to play for another team in the same fixture will need a Transfer, not a
-Permit. If two teams are from the same club, then the player Transfer/Permit is not
-required.
-4. Its captain’s responsibility to check whether a player has played for another team in the
-same fixture.
-5. If a player gets reported noncompliance of the above rules, the association committee
-would be awarding points to the loosing team or taking off points from the ladder.
-6. A team can have as many fill ins as needed, as long as the fill in rules are followed.
-7. Fills ins are permitted but they have to be either registered or be added using the ‘game
-permit’ option (refer to ‘PlayHQ Game Permit’ link at the end of the rule book) if it’s only
-once off or while waiting for the permit/transfer approvals to come through.
-8. If the player never played cricket using their PlayHQ ID, they can be used as a ‘Fill In’ in
-PlayHQ (also known as PlayHQ Fill In). A PlayHQ fill in is only for the first game. Second
-game onwards (if at all), they must be fully registered.
-
+Reduced powerplay overs will be shared half each between mandatory and batting powerplays.
+If the reduced powerplay overs are in odd number, it will be divided by 2 and the higher number will be for the mandatory powerplay.
+For example, if reduced powerplay is 7 overs in total, first 4 overs of the innings will be mandatory powerplay overs and 3 will be batting powerplay overs chosen anytime during the innings by the batting team.
+Player Registration and Fill-ins
+All players should be registered on PlayHQ
+A registered player cannot play for two teams in the same tournament on the same day.
+A player wishing to play for another team in the same fixture will need a Transfer, not a Permit. If two teams are from the same club, then the player Transfer/Permit is not required.
+Its captain’s responsibility to check whether a player has played for another team in the same fixture.
+If a player gets reported noncompliance of the above rules, the association committee would be awarding points to the loosing team or taking off points from the ladder.
+A team can have as many fill ins as needed, as long as the fill in rules are followed.
+Fills ins are permitted but they have to be either registered or be added using the ‘game permit’ option (refer to ‘PlayHQ Game Permit’ link at the end of the rule book) if it’s only once off or while waiting for the permit/transfer approvals to come through.
+If the player never played cricket using their PlayHQ ID, they can be used as a ‘Fill In’ in PlayHQ (also known as PlayHQ Fill In). A PlayHQ fill in is only for the first game. Second game onwards (if at all), they must be fully registered.
 Reserve Days
-
-1. If a league game is washed out by rain, there are no reserve days and points will be
-shared.
-2. Only Pre-semis, Semi Finals and Grand Finals will have reserve days.
-3. If a Pre-semis or Semi Final is washed out on a reserve day (game has not started or was
-not completed) the team that finished on top of the ladder goes through to the next stage.
-4. If a Grand Final is washed out on a reserve day (game has not started or was not
-completed) the team that finished on top of the ladder will be awarded the championship.
-
+If a league game is washed out by rain, there are no reserve days and points will be shared.
+Only Pre-semis, Semi Finals and Grand Finals will have reserve days.
+If a Pre-semis or Semi Final is washed out on a reserve day (game has not started or was not completed) the team that finished on top of the ladder goes through to the next stage.
+If a Grand Final is washed out on a reserve day (game has not started or was not completed) the team that finished on top of the ladder will be awarded the championship.
 No-balls
-
-Any ball above the batmen’s waist (without pitching the ball) will be called a no-ball
-regardless of the bowler type (i.e., spin or medium or pace).
-A ball above the shoulder (without pitching the ball) is considered a beamer. Two such
-beamers by a bowler during the course of the game will not be continued to bowl for the rest
-of the game.
-
+Any ball above the batmen’s waist (without pitching the ball) will be called a no-ball regardless of the bowler type (i.e., spin or medium or pace).
+A ball above the shoulder (without pitching the ball) is considered a beamer. Two such beamers by a bowler during the course of the game will not be continued to bowl for the rest of the game.
 Slow over rate
-
-While there is no blanket rule covering slow over rates, the general conscious is that the
-umpire would keep an eye on the over rate and keep reminding the fielding team if they are
-running behind.
-
-Players arriving
-late
-
-No restrictions on players arriving late. They can bowl or bat anytime. This will go hand in
-hand with the other rule that is ‘a player should not be playing two games at the same time
-slot’ within the same club or another grade/comp. So, if a player turned up late, that could be
-because of a ‘running late’ scenario, or coming from work scenario, or due to other family
-commitments, etc., but not coming from another game.
-
+While there is no blanket rule covering slow over rates, the general conscious is that the umpire would keep an eye on the over rate and keep reminding the fielding team if they are running behind.
+Players arriving late
+No restrictions on players arriving late.
+They can bowl or bat anytime.
+This will go hand in hand with the other rule that is ‘a player should not be playing two games at the same time slot’ within the same club or another grade/comp.
+So, if a player turned up late, that could be because of a ‘running late’ scenario, or coming from work scenario, or due to other family commitments, etc., but not coming from another game.
 Balls
-
-1. MCA Kookaburra Crown 2-piece white ball to start with.
-2. Will assess the ball colour and durability as we go through the season and change if it is
-required.
-3. We may try out other branded balls if needed for a few rounds.
-
+MCA Kookaburra Crown 2-piece white ball to start with.
+Will assess the ball colour and durability as we go through the season and change if it is required.
+We may try out other branded balls if needed for a few rounds.
 Abuse
-
-1. No personal or racist comments will be tolerated. No abuse will be tolerated.
-2. If any team gets involved in any physical abuse or fight, there will be strict actions.
-
+No personal or racist comments will be tolerated. No abuse will be tolerated.
+If any team gets involved in any physical abuse or fight, there will be strict actions.
 Fielder’s call
-
-Fielder’s call is to be accepted for the boundaries, unless the umpire can clearly see the
-fielder going over a cone or the fielder touching the cone. Where there is no cone in the area
-fielded, fielder’s call stays.
-
-Bowling action
-objections
-
-1. A batsman or a team shouldn’t stop a bowler for suspected bowling action. The objecting
-team's square leg umpire may record a clipping or multiple clippings to cover the entire
-over and send it to the association for review.
-2. The square leg umpire should notify the main umpire that he is going to record the bowler
-action. Main umpire should then notify the bowler.
-3. Videos should not be recorded without notifying the umpire.
-4. If the bowler is identified to be chucking the ball or needs correction, the association may
-advise the player to take a training session at Cricket Victoria to rectify the bowling action.
-
+Fielder’s call is to be accepted for the boundaries, unless the umpire can clearly see the fielder going over a cone or the fielder touching the cone. Where there is no cone in the area fielded, fielder’s call stays.
+Bowling action objections
+A batsman or a team shouldn’t stop a bowler for suspected bowling action. The objecting team's square leg umpire may record a clipping or multiple clippings to cover the entire over and send it to the association for review.
+The square leg umpire should notify the main umpire that he is going to record the bowler action. Main umpire should then notify the bowler.
+Videos should not be recorded without notifying the umpire.
+If the bowler is identified to be chucking the ball or needs correction, the association may advise the player to take a training session at Cricket Victoria to rectify the bowling action.
 Awards
-
 Awards for the One Day competition,
-1. Best bowler of the tournament
-2. Best batsman of the tournament
-3. Best fielder of the tournament
-4. Best keeper of the tournament
-5. Most 6s award for T20
-6. Man of the match for every game including Pre-Semis, Semi Finals and Grand Finals
-7. Medals and trophies for all the players in the winning team
-8. Medals for all the players in the runner up team
-9. Championship trophy for the winning team
-10. Runner up trophy for the runner up team
-11. ‘Finals Umpire’ Trophy for the umpires in Grand Finals
-12. Any other recognition awards
-
-FrogBox/YouTube
-Live Streaming
-
-1. Some games will be live streamed through FrogBox on PlayHQ app and YouTube channels.
-2. Umpires will also allow extra time to fix any Live Streaming issues.
-3. All participating clubs/teams are assumed to be in acceptance of the privacy laws around
-this.
-
+Best bowler of the tournament
+Best batsman of the tournament
+Best fielder of the tournament
+Best keeper of the tournament
+Most 6s award for T20
+Man of the match for every game including Pre-Semis, Semi Finals and Grand Finals
+Medals and trophies for all the players in the winning team
+Medals for all the players in the runner up team
+Championship trophy for the winning team
+Runner up trophy for the runner up team
+‘Finals Umpire’ Trophy for the umpires in Grand Finals
+Any other recognition awards
+FrogBox/YouTube  Live Streaming
+Some games will be live streamed through FrogBox on PlayHQ app and YouTube channels.
+Umpires will also allow extra time to fix any Live Streaming issues.
+All participating clubs/teams are assumed to be in acceptance of the privacy laws around this.
 Online Scoring
-
-1. All games should be scored online through the PlayHQ website on a phone or a tablet. No
-exceptions to this.
-2. Umpires will allow extra time to fix any technology issues.
-
+All games should be scored online through the PlayHQ website on a phone or a tablet. No exceptions to this.
+Umpires will allow extra time to fix any technology issues.
 Lost ball
-
-1. In case a ball is lost during play, please replace them with an old used ball from a previous
-game.
-2. Umpire will agree on the ball’s condition.
-
+In case a ball is lost during play, please replace them with an old used ball from a previous game.
+Umpire will agree on the ball’s condition.
 Game forfeits
-
-If you do not have enough players and cannot play that week’s game, please notify the
-opponent team and the association by Thursday before 8 pm.
-
+If you do not have enough players and cannot play that week’s game, please notify the opponent team and the association by Thursday before 8 pm.
 COVID Rules
-
-1. No Kit or food sharing.
-2. All the waste should go into the bins.
-3. No saliva on the ball.
-
-PlayHQ Links
-
-Creating a Team: https://support.playhq.com/hc/en-au/articles/900003189363-Managing-te
-ams
-Selecting Team: https://support.playhq.com/hc/en-au/articles/4407752360601-My-Teams-Se
-lect-Line-Ups-and-Player-Positions
-Adding / replacing a Fill-in Player: https://support.playhq.com/hc/en-au/articles/52802581
-02937-Managing-Fill-in-Players-via-Admin-Portal
-How to Live Score: https://support.playhq.com/hc/en-au/articles/5132680466969-How-To-EScore-Cricket
-Other Live Scoring Guides: https://support.playhq.com/hc/en-au/sections/5460166848025Electronic-Scoring-for-Cricket
-PlayHQ Game Permit: https://support.playhq.com/hc/en-au/articles/4405246316697-Creati
-ng-a-Game-Permit-Request
-PlayHQ Support Request: https://mycricketsupport.cricket.com.au/hc/en-us/requests/new?t
-icket_form_id=46984
-Other Admin Guides: https://support.playhq.com/hc/en-au/categories/900000236046-Admi
-ns-for-Competitions`;
+No Kit or food sharing.
+All the waste should go into the bins.
+No saliva on the ball.
+PlayHQ Links
+Creating a Team: https://support.playhq.com/hc/en-au/articles/900003189363-Managing-teams Selecting Team: https://support.playhq.com/hc/en-au/articles/4407752360601-My-Teams-Select-Line-Ups-and-Player-PositionsAdding / replacing a Fill-in Player: https://support.playhq.com/hc/en-au/articles/5280258102937-Managing-Fill-in-Players-via-Admin-Portal How to Live Score: https://support.playhq.com/hc/en-au/articles/5132680466969-How-To-E-Score-Cricket
+Other Live Scoring Guides: https://support.playhq.com/hc/en-au/sections/5460166848025-Electronic-Scoring-for-Cricket
+PlayHQ Game Permit: https://support.playhq.com/hc/en-au/articles/4405246316697-Creating-a-Game-Permit-Request
+PlayHQ Support Request: https://mycricketsupport.cricket.com.au/hc/en-us/requests/new?ticket_form_id=46984
+Other Admin Guides: https://support.playhq.com/hc/en-au/categories/900000236046-Admins-for-Competitions`;
 
 const RULE_BOOK_JUNIORS = `Melbourne Cricket Association (MCA)
 Juniors Competition Rules – Winter 2026
