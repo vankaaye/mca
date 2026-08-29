@@ -95,6 +95,10 @@ jobs:
         if: always()
         run: |
           RESULT="$(grep -oE '[0-9]+/[0-9]+ passed' answers.log | tail -n 1 || true)"
+          # Carry the failing case names into this step's own output. They are
+          # printed by the step above, but this step's log occupies the tail,
+          # so a truncated view shows the count and not what broke.
+          WHICH="$(grep -m1 '^Failed: ' answers.log || true)"
           {
             echo "### Preview result: ${RESULT:-see the step above}"
             echo ""
@@ -102,6 +106,7 @@ jobs:
               echo "Clean — this branch is safe to merge."
             else
               echo "Some answers did not match. Read the step above, fix, and run again."
+              [ -n "$WHICH" ] && echo "" && echo "\`${WHICH}\`"
             fi
             echo ""
             echo "The live assistant on mcacric.com was NOT changed by this run."
