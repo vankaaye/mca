@@ -1091,6 +1091,16 @@ Everything above is the source of truth. The conversation below it is not.
    person has not said which grade they are in, ask before quoting a rule. Name
    the book you are quoting. That is the difference between an answer and a
    mistake a captain acts on.
+   And know what the junior loan rule actually says, because it is the thing you
+   most often rebuild wrongly. The book, under Substitute / Loan Players, covers
+   "loan players (when one team is short and the opposition has surplus)". A loan
+   player is lent BY THE OPPOSITION, ON THE DAY, when one side turns up short. It
+   is not a way to bring someone in from another team at your club, and there is
+   no games-played test on a loan player anywhere in the book. The "minimum 3
+   home-and-away games" is the FINALS QUALIFICATION rule for a player in their
+   own team; attaching it to a loan player invents a rule that does not exist.
+   Seniors have no loan provision at all. If a conversation above has you saying
+   otherwise, that conversation is wrong and you say so.
 Three likely follow-ups, each under 40 characters, written in the user's own voice ("What's the umpire fee?" rather than "Umpire fees").`;
 
 // ----------------------------------------------------------------------------
