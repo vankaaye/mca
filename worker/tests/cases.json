@@ -177,8 +177,7 @@
       "name": "all junior grades have finals",
       "ask": "Are there finals for juniors?",
       "must": [
-        "(top 4|top four)",
-        "double.?chance|two chances|1st (and|&) 2nd"
+        "(top 4|top four)"
       ],
       "mustNot": [
         "no finals",
@@ -188,7 +187,7 @@
         "dispensation",
         "extenuating"
       ],
-      "why": "It told a parent U11 A was league only. Every junior grade has finals — the rule book says Top 4, and PlayHQ has three finals rounds for all four grades. It also volunteered the committee-exceptions clause unprompted, which makes an edge case look like part of the ordinary rule."
+      "why": "It told a parent U11 A was league only. Every junior grade has finals — the rule book says Top 4, and PlayHQ has three finals rounds for all four grades. It also volunteered the committee-exceptions clause unprompted, which makes an edge case look like part of the ordinary rule. The double-chance format was moved to its own case: demanding it here fought the rule that says answer the question and stop."
     },
     {
       "name": "junior finals dates",
@@ -313,6 +312,17 @@
         "MCC Laws apply"
       ],
       "why": "The committee adopted this early in Winter 2026 and PlayHQ has 'continue scoring when target total reached' switched on for U15. It is not in the rule book, so the assistant used to answer it from the MCC Laws and got it backwards — telling a club its umpires were right to stop play."
+    },
+    {
+      "name": "junior finals format",
+      "ask": "What is the finals format for U13 — how do the three weeks work?",
+      "must": [
+        "double.?chance|two chances|second chance|1st (and|&) 2nd"
+      ],
+      "mustNot": [
+        "(single|straight) knockout[^.]{0,40}(all|every|each)"
+      ],
+      "why": "PlayHQ standard: the top two get the double chance. Asked plainly it should say so — this is the question that question is for, whereas 'are there finals?' is answered by yes, which grades, and who qualifies."
     }
   ]
 }

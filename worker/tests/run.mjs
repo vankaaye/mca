@@ -48,7 +48,7 @@ async function ask(c) {
   return String(body.reply || '');
 }
 
-// The Worker allows 30 chats per IP per hour. A full run is 25, so two runs
+// The Worker allows 30 chats per IP per hour. A full run is 26, so two runs
 // in an hour trips it — and the friendly "taking a short break" reply then
 // fails every remaining case for a reason that has nothing to do with the
 // answers. Recognise it and say so, rather than reporting phantom failures.
@@ -138,16 +138,6 @@ for (const c of cases) {
 
 console.log('\n' + (cases.length - failed) + '/' + cases.length + ' passed');
 
-// Repeat the failures at the very end, one line each. The detail above is worth
-// having, but it is long, and a log viewer that only shows the tail cuts it off
-// — which is exactly when you most want to know which case broke.
-if (failed) {
-  console.log('\nFailed: ' + results
-    .filter(r => r.problems.length)
-    .map(r => r.c.name + ' (' + r.problems.map(p => p.split(':')[0]).join(', ') + ')')
-    .join('; '));
-}
-
 if (results.some(r => r.problems.some(p => p.startsWith('RATE LIMITED')))) {
   console.log('\nSome cases could not be tested: the Worker rate-limits an IP to 30 chats');
   console.log('an hour and this run went past it. Wait an hour and run again — those');
@@ -157,5 +147,12 @@ if (results.some(r => r.problems.some(p => p.startsWith('RATE LIMITED')))) {
 if (failed) {
   console.log('\nA failure here means the deployed assistant is telling players something');
   console.log('wrong. Fix the prompt or worker/knowledge.md and deploy again.');
+  // Genuinely last, so a log view that only keeps the tail still names the
+  // cases. Printing it above this advice was not far enough down: twice the
+  // window cut off one line short of it.
+  console.log('\nFailed: ' + results
+    .filter(r => r.problems.length)
+    .map(r => r.c.name + ' (' + r.problems.map(p => p.split(':')[0]).join(', ') + ')')
+    .join('; '));
   process.exit(1);
 }
