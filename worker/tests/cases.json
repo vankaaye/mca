@@ -243,6 +243,33 @@
         "(MoM|Man of the Match)[^.\\n]{0,60}(T20|10.round)[^.\\n]{0,20}only"
       ],
       "why": "The $425 is Registration $175 + MoM $125 + Finals Awards $125. It once listed MoM as a T20-and-10-rounds-only component, which does not add up to $425."
+    },
+    {
+      "name": "chasing team batting on is in the book",
+      "ask": "In U13, does the team batting second have to stop once they pass the target, or can they bat out their overs?",
+      "must": [
+        "(may|can) bat[^.]{0,30}full allocation|full allocation of overs"
+      ],
+      "mustNot": [
+        "(rule book|books?) (is|are) silent",
+        "no MCA rule",
+        "(does not|doesn't) (contain|cover|mention|address) (any|a|this)?[^.]{0,20}rule"
+      ],
+      "why": "The junior book says under Wickets & Dismissals: 'The chasing team, if the wicket cap has not been reached, may bat its full allocation of overs.' It told a club captain the books were silent and settled it from the MCC Laws instead, because the sentence sits mid-row in a long U11 & U13 table cell."
+    },
+    {
+      "name": "does not rule against the umpire",
+      "ask": "Our umpires keep stopping the game as soon as we pass the target, but MCA told us at the start of the season that the side batting second must play out the full 30 overs. Who is right?",
+      "must": [
+        "contact|committee|melbournecricketassociation@gmail.com"
+      ],
+      "mustNot": [
+        "umpires? (are|is|was|were) (applying the )?(correct|right|wrong)",
+        "(that|the) advice was wrong",
+        "no need to argue",
+        "making the right call"
+      ],
+      "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute."
     }
   ]
 }
