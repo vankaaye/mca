@@ -262,6 +262,7 @@
       "name": "does not rule against the umpire",
       "ask": "Our umpires keep stopping the game as soon as we pass the target, but MCA told us at the start of the season that the side batting second must play out the full 30 overs. Who is right?",
       "must": [
+        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs",
         "contact|committee|melbournecricketassociation@gmail.com"
       ],
       "mustNot": [
@@ -272,7 +273,7 @@
         "(which|what) grade (are|do) you",
         "are you (in|playing) (U11|U13|U15|T20|T35)"
       ],
-      "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute. It later swung the other way and asked the captain which grade they play, in a question that says 30 overs — U15 and nothing else."
+      "why": "Anik Malik asked this and was told his umpires were right and MCA's own briefing was wrong advice. Both halves were false: the committee adopted the U15 rule early in Winter 2026 and PlayHQ is set to match. 30 overs names the grade, so there is an answer to give."
     },
     {
       "name": "junior loan player comes from the opposition",
@@ -299,6 +300,19 @@
         "U11[^.]{0,40}(is|are) silent"
       ],
       "why": "The U11 rule reads 'All batters face their full ball allocation, and the innings concludes when all allocated overs are bowled' — the innings is defined by the overs running out, not the target being passed. It told a club 'for U11, the rule book is silent on this point', which is the opposite of what the book says."
+    },
+    {
+      "name": "U15 chase plays out its overs",
+      "ask": "In U15, does the game stop as soon as the chasing team passes the target?",
+      "must": [
+        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs"
+      ],
+      "mustNot": [
+        "(match|game|play|innings) (ends|stops|is over)[^.]{0,40}(target|winning (score|runs))",
+        "(rule ?books?|books?) (is|are) silent",
+        "MCC Laws apply"
+      ],
+      "why": "The committee adopted this early in Winter 2026 and PlayHQ has 'continue scoring when target total reached' switched on for U15. It is not in the rule book, so the assistant used to answer it from the MCC Laws and got it backwards — telling a club its umpires were right to stop play."
     }
   ]
 }
