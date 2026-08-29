@@ -75,16 +75,35 @@ jobs:
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "Preview: $URL"
 
+      # continue-on-error keeps this run from going red, on purpose. A failure
+      # here is a note to whoever is iterating on the branch, not an incident:
+      # nothing is live, and a red run only fills the owner's inbox with mail
+      # about a preview. The result is printed below and in the job summary, and
+      # the deploy workflow keeps its hard gate on main, where red does matter.
       - name: Ask the preview the questions with known answers
+        id: answers
+        continue-on-error: true
         env:
           ENDPOINT: ${{ steps.upload.outputs.url }}
         run: |
           # Give Cloudflare a moment to make the new version reachable.
           sleep 15
-          node worker/tests/run.mjs "$ENDPOINT"
+          node worker/tests/run.mjs "$ENDPOINT" | tee answers.log
+          exit "${PIPESTATUS[0]}"
 
       - name: What this means
         if: always()
         run: |
-          echo "The live assistant on mcacric.com was NOT changed by this run."
-          echo "Green here means the branch is safe to merge; merging deploys it."
+          RESULT="$(grep -oE '[0-9]+/[0-9]+ passed' answers.log | tail -n 1 || true)"
+          {
+            echo "### Preview result: ${RESULT:-see the step above}"
+            echo ""
+            if [ "${{ steps.answers.outcome }}" = "success" ]; then
+              echo "Clean — this branch is safe to merge."
+            else
+              echo "Some answers did not match. Read the step above, fix, and run again."
+            fi
+            echo ""
+            echo "The live assistant on mcacric.com was NOT changed by this run."
+          } >> "$GITHUB_STEP_SUMMARY"
+          cat "$GITHUB_STEP_SUMMARY"

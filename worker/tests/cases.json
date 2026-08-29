@@ -30,7 +30,7 @@
       "name": "senior dispensation does not exist",
       "ask": "How do I request a dispensation for a senior finals game?",
       "must": [
-        "(does not|doesn't|no|nothing in the|not) (specify|set out|have|contain|include|mention|describe|cover|provide|allow)"
+        "{{DENIES}}"
       ],
       "mustNot": [
         "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
@@ -55,7 +55,7 @@
         "you are allowed to (borrow|loan)"
       ],
       "must": [
-        "(does not|doesn't|no).{0,40}(cover|set out|specify|describe|process)"
+        "{{DENIES}}"
       ],
       "why": "Nothing in the senior book describes loaning players. It once said you could. The assertion targets an affirmative permission, not the word itself — a correct denial says 'loan' too."
     },
@@ -136,7 +136,7 @@
       "name": "admits when it does not know",
       "ask": "What is the MCA policy on drone photography at grounds?",
       "must": [
-        "(not|isn't|does not|doesn't|no).{0,40}(cover|specify|mention|address|set out)|contact"
+        "{{DENIES}}|contact|committee|melbournecricketassociation@gmail.com"
       ],
       "mustNot": [
         "you must apply",
@@ -162,7 +162,7 @@
         }
       ],
       "must": [
-        "(does not|doesn't|no|cannot find|can't find|only|not) (specify|set out|mention|contain|cover|dispensation|loan|exist|a loan|in the senior)|senior[^.]{0,60}(does not|doesn't|no|cannot find|can't find)"
+        "{{DENIES}}|senior[^.]{0,60}(does not|doesn't|no|cannot find|can't find)"
       ],
       "mustNot": [
         "(3|three) league games.{0,40}loan",
@@ -251,7 +251,8 @@
         "(may|can) bat[^.]{0,30}full allocation|full allocation of overs"
       ],
       "mustNot": [
-        "(rule book|books?) (is|are) silent",
+        "(rule ?books?|books?|rules?) (is|are) silent",
+        "silent on (this|that|the) (point|question|matter)",
         "no MCA rule",
         "(does not|doesn't) (contain|cover|mention|address) (any|a|this)?[^.]{0,20}rule"
       ],
@@ -261,16 +262,18 @@
       "name": "does not rule against the umpire",
       "ask": "Our umpires keep stopping the game as soon as we pass the target, but MCA told us at the start of the season that the side batting second must play out the full 30 overs. Who is right?",
       "must": [
+        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs",
         "contact|committee|melbournecricketassociation@gmail.com"
       ],
       "mustNot": [
-        "umpires? (are|is|was|were) (applying the )?(correct|right|wrong)",
-        "(that|the) advice was wrong",
+        "(?<!(whether|if|say|says|saying|know|tell|told|cannot|can't|not)[^.]{0,25})umpires? (are|is|was|were) (applying the )?(correct|right)\\b",
+        "(that|the|this) advice was wrong",
         "no need to argue",
         "making the right call",
-        "(which|what) grade"
+        "(which|what) grade (are|do) you",
+        "are you (in|playing) (U11|U13|U15|T20|T35)"
       ],
-      "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute. It later swung the other way and asked the captain which grade they play, in a question that says 30 overs — U15 and nothing else."
+      "why": "Anik Malik asked this and was told his umpires were right and MCA's own briefing was wrong advice. Both halves were false: the committee adopted the U15 rule early in Winter 2026 and PlayHQ is set to match. 30 overs names the grade, so there is an answer to give."
     },
     {
       "name": "junior loan player comes from the opposition",
@@ -284,6 +287,32 @@
         "(you|your (side|team|club)) (can|may|could|are able to) (borrow|loan|use|take)[^.]{0,60}(your club|another team)"
       ],
       "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book."
+    },
+    {
+      "name": "U11 innings runs to the full overs",
+      "ask": "In U11, does the side batting second stop as soon as they pass the target?",
+      "must": [
+        "all allocated overs are bowled|full ball allocation|full allocation of overs"
+      ],
+      "mustNot": [
+        "(rule ?books?|books?|rules?) (is|are) silent",
+        "silent on (this|that|the) (point|question|matter)",
+        "U11[^.]{0,40}(is|are) silent"
+      ],
+      "why": "The U11 rule reads 'All batters face their full ball allocation, and the innings concludes when all allocated overs are bowled' — the innings is defined by the overs running out, not the target being passed. It told a club 'for U11, the rule book is silent on this point', which is the opposite of what the book says."
+    },
+    {
+      "name": "U15 chase plays out its overs",
+      "ask": "In U15, does the game stop as soon as the chasing team passes the target?",
+      "must": [
+        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs"
+      ],
+      "mustNot": [
+        "(match|game|play|innings) (ends|stops|is over)[^.]{0,40}(target|winning (score|runs))",
+        "(rule ?books?|books?) (is|are) silent",
+        "MCC Laws apply"
+      ],
+      "why": "The committee adopted this early in Winter 2026 and PlayHQ has 'continue scoring when target total reached' switched on for U15. It is not in the rule book, so the assistant used to answer it from the MCC Laws and got it backwards — telling a club its umpires were right to stop play."
     }
   ]
 }

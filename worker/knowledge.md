@@ -104,4 +104,56 @@ inventing a rule for the calculation most likely to decide a wet final.
 
 ## Committee decisions and clarifications
 
-- (nothing yet)
+### U15 — the chasing team plays out its full quota of overs
+
+Adopted by the committee early in Winter 2026 and announced in the MCA Juniors
+group: the chasing side plays its full quota of overs **even after the result is
+achieved**. Passing the target does not end the innings in U15.
+
+This is a change from ordinary cricket practice and from the MCC Laws, and the
+U15 section of the rule book does not carry it — so it lives here until it does.
+Never answer this one from the Laws.
+
+PlayHQ is configured to match: on the U15 grade, **Continue scoring when target
+total reached** is switched on. The extra runs and wickets count toward player
+statistics, team totals and the ladder; the result of the match does not change.
+Before that setting was turned on, scorers had to record those overs by hand.
+
+If someone reports that umpires are stopping U15 games at the target, that does
+not match the rule. Do not tell them the umpires are right, and do not tell them
+their briefing was wrong — say what the rule is and send them to
+[contact](/#contact) so the committee can brief the umpires.
+
+The other grades are not covered by this decision. U11 and U13 have their own
+wording in the rule book; the senior books say nothing either way.
+
+### Junior loan players — from the opposition only
+
+Confirmed by the committee. A loan player comes from the side you are playing
+that day, when one team is short and the opposition has spare players. Borrowing
+a player from another team at your own club is NOT allowed, in any junior grade.
+
+The rule book describes the opposition case and does not spell out the rest, so
+say this plainly rather than treating the silence as permission. There is no
+games-played condition on a loan player either — the "minimum 3 home-and-away
+games" is the finals qualification rule for a player in their own team, and it
+has nothing to do with loans.
+
+Seniors have no loan provision at all.
+
+### U15 — tied games go to a Super Over
+
+Read off the U15 grade settings in PlayHQ. Super Over is enabled with usage
+**Always**, so a tie is played out rather than shared. The rule book does not
+mention it — do not answer a tie question from the MCC Laws for U15.
+
+### Ladder order — how teams are separated on equal points
+
+From the U15 grade settings in PlayHQ, the ranking order is:
+
+1. Ladder points
+2. Net Run Rate
+3. Quotient
+
+Game outcome points are PlayHQ's sport default. The rule book only says "Points
+System: As per PlayHQ", so this is the detail behind that line.
