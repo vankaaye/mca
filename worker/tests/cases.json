@@ -265,11 +265,12 @@
         "contact|committee|melbournecricketassociation@gmail.com"
       ],
       "mustNot": [
-        "umpires? (are|is|was|were) (applying the )?(correct|right|wrong)",
-        "(that|the) advice was wrong",
+        "(?<!(whether|if|say|says|saying|know|tell|told|cannot|can't|not)[^.]{0,25})umpires? (are|is|was|were) (applying the )?(correct|right)\\b",
+        "(that|the|this) advice was wrong",
         "no need to argue",
         "making the right call",
-        "(which|what) grade"
+        "(which|what) grade (are|do) you",
+        "are you (in|playing) (U11|U13|U15|T20|T35)"
       ],
       "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute. It later swung the other way and asked the captain which grade they play, in a question that says 30 overs — U15 and nothing else."
     },
@@ -290,8 +291,7 @@
       "name": "U11 innings runs to the full overs",
       "ask": "In U11, does the side batting second stop as soon as they pass the target?",
       "must": [
-        "all allocated overs are bowled|full ball allocation|all the allocated overs",
-        "committee|contact|melbournecricketassociation@gmail.com"
+        "all allocated overs are bowled|full ball allocation|full allocation of overs"
       ],
       "mustNot": [
         "(rule ?books?|books?|rules?) (is|are) silent",
