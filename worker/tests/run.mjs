@@ -60,6 +60,24 @@ const RATE_LIMITED = /taking a short break|asked quite a few questions/i;
 // than teaching every pattern to expect asterisks. Whitespace and sentence
 // punctuation are left alone — the mustNot patterns use [^.] windows to stay
 // inside one sentence, and collapsing newlines would let them span a list.
+// A denial, in whichever words a correct answer reaches for. Four cases each
+// grew their own hand-rolled version of this list, and each one eventually
+// failed a right answer over a verb its list happened to miss — "does not
+// contain", then "does not allow". One list, fixed in one place.
+const MACROS = {
+  DENIES:
+    "(does not|doesn't|do not|don't|no|not|nothing in the|cannot find|can't find)" +
+    "[^.]{0,40}" +
+    "(allow|permit|cover|contain|include|mention|describe|specify|set out|provide|state|exist|process|rule|address|answer)",
+};
+
+function expand(pattern) {
+  return pattern.replace(/\{\{(\w+)\}\}/g, (whole, name) => {
+    if (!(name in MACROS)) throw new Error('unknown macro in cases.json: ' + whole);
+    return MACROS[name];
+  });
+}
+
 function forMatching(reply) {
   return reply.replace(/\*\*|__|(?<![A-Za-z0-9])[*_](?![A-Za-z0-9])|`/g, '');
 }
@@ -68,10 +86,10 @@ function check(reply, c) {
   const problems = [];
   const text = forMatching(reply);
   for (const pattern of c.must || []) {
-    if (!new RegExp(pattern, 'i').test(text)) problems.push('missing: ' + pattern);
+    if (!new RegExp(expand(pattern), 'i').test(text)) problems.push('missing: ' + pattern);
   }
   for (const pattern of c.mustNot || []) {
-    if (new RegExp(pattern, 'i').test(text)) problems.push('INVENTED: ' + pattern);
+    if (new RegExp(expand(pattern), 'i').test(text)) problems.push('INVENTED: ' + pattern);
   }
   return problems;
 }

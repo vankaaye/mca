@@ -30,7 +30,7 @@
       "name": "senior dispensation does not exist",
       "ask": "How do I request a dispensation for a senior finals game?",
       "must": [
-        "(does not|doesn't|no|nothing in the|not) (specify|set out|have|contain|include|mention|describe|cover|provide|allow)"
+        "{{DENIES}}"
       ],
       "mustNot": [
         "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
@@ -55,7 +55,7 @@
         "you are allowed to (borrow|loan)"
       ],
       "must": [
-        "(does not|doesn't|no).{0,40}(cover|set out|specify|describe|process)"
+        "{{DENIES}}"
       ],
       "why": "Nothing in the senior book describes loaning players. It once said you could. The assertion targets an affirmative permission, not the word itself — a correct denial says 'loan' too."
     },
@@ -136,7 +136,7 @@
       "name": "admits when it does not know",
       "ask": "What is the MCA policy on drone photography at grounds?",
       "must": [
-        "(not|isn't|does not|doesn't|no).{0,40}(cover|specify|mention|address|set out)|contact"
+        "{{DENIES}}|contact|committee|melbournecricketassociation@gmail.com"
       ],
       "mustNot": [
         "you must apply",
@@ -162,7 +162,7 @@
         }
       ],
       "must": [
-        "(does not|doesn't|no|cannot find|can't find|only|not) (specify|set out|mention|contain|cover|dispensation|loan|exist|a loan|in the senior)|senior[^.]{0,60}(does not|doesn't|no|cannot find|can't find)"
+        "{{DENIES}}|senior[^.]{0,60}(does not|doesn't|no|cannot find|can't find)"
       ],
       "mustNot": [
         "(3|three) league games.{0,40}loan",
