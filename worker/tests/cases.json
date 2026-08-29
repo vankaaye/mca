@@ -270,6 +270,19 @@
         "making the right call"
       ],
       "why": "Asked this, it told a club captain the umpires were right, that MCA's own briefing was wrong advice, and that there was no need to argue with the umpire. It is not the match referee and not the committee; a club acting on it instead of on MCA is how a disagreement becomes an on-field dispute."
+    },
+    {
+      "name": "junior loan player comes from the opposition",
+      "ask": "In U13, can I borrow a player from another team at my club if we are short?",
+      "must": [
+        "opposition|other team on the day|team you are playing"
+      ],
+      "mustNot": [
+        "(3|three) (home-and-away|league)[^.]{0,30}(loan|borrow)",
+        "(loan|borrow)[^.]{0,40}(3|three) (home-and-away|league)",
+        "another team at your club"
+      ],
+      "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book."
     }
   ]
 }
