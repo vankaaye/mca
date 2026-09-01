@@ -63,7 +63,7 @@
       "name": "U15 innings end",
       "ask": "How many wickets end a U15 innings?",
       "must": [
-        "10 wickets|ten wickets"
+        "(10|ten)[^.]{0,30}wickets"
       ],
       "why": "U15: 10 wickets, unlike U11 and U13."
     },
@@ -90,7 +90,7 @@
       "name": "T20 powerplay",
       "ask": "How many powerplay overs in T20?",
       "must": [
-        "6 overs|first 6|six overs"
+        "(6|six)[^.]{0,30}overs|first (6|six)"
       ],
       "why": "First 6 overs, mandatory."
     },
