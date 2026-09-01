@@ -1,0 +1,341 @@
+{
+  "comment": [
+    "Questions with known answers, run against the live assistant after every",
+    "deploy. Each case says what the reply must contain and — more importantly —",
+    "what it must not.",
+    "",
+    "The 'mustNot' half is the point. Anyone can write a prompt telling a model",
+    "not to invent things; only a test catches it when it does anyway. Every",
+    "case here with a 'mustNot' is a real mistake the assistant made once.",
+    "",
+    "Assertions are on facts, never on phrasing — the wording will differ every",
+    "run and a suite that fails on wording gets ignored.",
+    "",
+    "A caveat learned the hard way: assert on the CLAIM, not on a word. 'loan player' was forbidden outright, and then a perfectly correct answer — 'the rule book sets out no process for loaning players' — failed the suite. A test that fails on right answers is worse than no test, because people stop believing it.",
+    "",
+    "Cases may be a single 'ask' or a full 'conversation'. The multi-turn ones matter more than they look: the assistant defends its own earlier answers, so a stale saved chat can drag a corrected prompt back into a mistake.",
+    "",
+    "Second time bitten by the same thing: match on meaning with tolerant patterns. 'double-chance' did not match 'double chance', and forbidding '48 hours' outright failed an answer that correctly said seniors have no such process while juniors do. Prefer a loose alternation over an exact phrase, and scope a mustNot to the claim you actually object to."
+  ],
+  "cases": [
+    {
+      "name": "fill-in second game",
+      "ask": "Can a fill-in player play a second game?",
+      "must": [
+        "register"
+      ],
+      "why": "A PlayHQ fill-in covers the first game only; after that they must be registered."
+    },
+    {
+      "name": "senior dispensation does not exist",
+      "ask": "How do I request a dispensation for a senior finals game?",
+      "must": [
+        "{{DENIES}}"
+      ],
+      "mustNot": [
+        "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
+        "seniors?[^.]{0,60}(at least )?48 hours before"
+      ],
+      "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule."
+    },
+    {
+      "name": "junior dispensation deadline",
+      "ask": "What is the deadline to request a junior dispensation or exception?",
+      "must": [
+        "(thursday|48 hours)"
+      ],
+      "why": "The junior book carries two deadlines — 5 PM Thursday before the game in the contacts table, and 48 hours before the match for committee exceptions under Finals Eligibility. Either is a fair answer; inventing a third is not."
+    },
+    {
+      "name": "borrowing players for finals",
+      "ask": "Can I borrow a player from another team at my club for a final?",
+      "mustNot": [
+        "you (can|may|are able to) (use|borrow|loan)",
+        "(borrowing|loaning) is (allowed|permitted)",
+        "you are allowed to (borrow|loan)"
+      ],
+      "must": [
+        "{{DENIES}}"
+      ],
+      "why": "Nothing in the senior book describes loaning players. It once said you could. The assertion targets an affirmative permission, not the word itself — a correct denial says 'loan' too."
+    },
+    {
+      "name": "U15 innings end",
+      "ask": "How many wickets end a U15 innings?",
+      "must": [
+        "(10|ten)[^.]{0,30}wickets"
+      ],
+      "why": "U15: 10 wickets, unlike U11 and U13."
+    },
+    {
+      "name": "revised target, no plus one",
+      "ask": "Team A scored 175 in 35 overs. The second innings is cut to 15 overs. What is the revised target?",
+      "must": [
+        "75"
+      ],
+      "mustNot": [
+        "76"
+      ],
+      "why": "MCA uses revised overs x run rate. It once applied the usual cricket +1 convention, which MCA does not use."
+    },
+    {
+      "name": "umpire fee T35",
+      "ask": "What is the umpire fee for T35?",
+      "must": [
+        "\\$?85"
+      ],
+      "why": "$85 per team."
+    },
+    {
+      "name": "T20 powerplay",
+      "ask": "How many powerplay overs in T20?",
+      "must": [
+        "(6|six)[^.]{0,30}overs|first (6|six)"
+      ],
+      "why": "First 6 overs, mandatory."
+    },
+    {
+      "name": "league washout has no reserve day",
+      "ask": "Our league game was washed out. When is the reserve day?",
+      "must": [
+        "no reserve day|shared|share the points"
+      ],
+      "why": "League games washed out share the points; only finals have reserve days."
+    },
+    {
+      "name": "team count",
+      "ask": "How many teams play in MCA this season?",
+      "must": [
+        "86"
+      ],
+      "mustNot": [
+        "100 teams"
+      ],
+      "why": "86 teams, matching the PlayHQ ladders."
+    },
+    {
+      "name": "falls back to the MCC Laws",
+      "ask": "What counts as obstructing the field?",
+      "must": [
+        "mcc|laws of cricket|international"
+      ],
+      "why": "Not specified by MCA, so the Laws apply — the senior book says so."
+    },
+    {
+      "name": "contact section exists",
+      "ask": "Give me the website link for contacts",
+      "must": [
+        "/#contact"
+      ],
+      "mustNot": [
+        "does not have a (dedicated )?(website )?contact"
+      ],
+      "why": "The site has a contact section. It once denied that."
+    },
+    {
+      "name": "admits when it does not know",
+      "ask": "What is the MCA policy on drone photography at grounds?",
+      "must": [
+        "{{DENIES}}|contact|committee|melbournecricketassociation@gmail.com"
+      ],
+      "mustNot": [
+        "you must apply",
+        "submit a request form",
+        "permit fee"
+      ],
+      "why": "Nothing in either book covers this. It must say so rather than invent a policy."
+    },
+    {
+      "name": "does not defend its own earlier mistake",
+      "conversation": [
+        {
+          "role": "user",
+          "content": "Two of my players are unavailable for the 5 Sept final and one is injured. Can I get eligible players from another team at my club playing MCA 10 rounds in a different grade?"
+        },
+        {
+          "role": "assistant",
+          "content": "🏆 **What You Can Do**\n✅ **Loan players:** You can use loan players from other teams at your club, provided they meet the eligibility rule above.\n\n**Request a Dispensation**\nIf you have extenuating circumstances you can request a dispensation from the association:\nEmail: melbournecricketassociation@gmail.com\nDeadline: At least 48 hours before the match\n"
+        },
+        {
+          "role": "user",
+          "content": "Can you explain the loan player and dispensation options again?"
+        }
+      ],
+      "must": [
+        "{{DENIES}}|senior[^.]{0,60}(does not|doesn't|no|cannot find|can't find)"
+      ],
+      "mustNot": [
+        "(3|three) league games.{0,40}loan",
+        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (use|borrow|bring in) (a )?loan player",
+        "loan players are (allowed|permitted|available)[^.]{0,40}(senior|T35|T20|your)",
+        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation"
+      ],
+      "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
+    },
+    {
+      "name": "all junior grades have finals",
+      "ask": "Are there finals for juniors?",
+      "must": [
+        "(top 4|top four)"
+      ],
+      "mustNot": [
+        "no finals",
+        "league only",
+        "league-only",
+        "exception",
+        "dispensation",
+        "extenuating"
+      ],
+      "why": "It told a parent U11 A was league only. Every junior grade has finals — the rule book says Top 4, and PlayHQ has three finals rounds for all four grades. It also volunteered the committee-exceptions clause unprompted, which makes an edge case look like part of the ordinary rule. The double-chance format was moved to its own case: demanding it here fought the rule that says answer the question and stop."
+    },
+    {
+      "name": "junior finals dates",
+      "ask": "When are the junior finals played?",
+      "must": [
+        "(6|6th)[^.]{0,40}september|september[^.]{0,25}\\b6\\b",
+        "(13|13th)[^.]{0,40}september|september[^.]{0,25}\\b13\\b",
+        "(20|20th)[^.]{0,40}september|september[^.]{0,25}\\b20\\b"
+      ],
+      "why": "Finals Round 1 on 6 Sep, Preliminary Final 13 Sep, Grand Final 20 Sep, every junior grade."
+    },
+    {
+      "name": "junior finals qualification",
+      "ask": "How many games does a junior need to play to qualify for finals?",
+      "must": [
+        "3 (home-and-away|league|matches|games)|minimum of 3|three"
+      ],
+      "why": "Minimum 3 home-and-away matches for that team, and more games for that team than any other in the age group."
+    },
+    {
+      "name": "quotes a section under its own heading",
+      "ask": "What are the U15 leg-side wide rules?",
+      "must": [
+        "(one|1)[- ]warning",
+        "(per|in|of|for|each|every)\\s+(that\\s+|an\\s+|any\\s+|each\\s+|every\\s+|the\\s+)?over",
+        "last ball"
+      ],
+      "mustNot": [
+        "batter retirement"
+      ],
+      "why": "The heading rows inside the book's tables were being flattened into data rows, so the whole Detailed Rules section read as though it sat under 'Batter Retirement'. The assistant repeated that heading over no-ball content."
+    },
+    {
+      "name": "raises the exception when it is actually needed",
+      "ask": "One of my U13 players has only played 2 games because two rounds were washed out. Can he still play in the finals?",
+      "must": [
+        "3 (league )?games|minimum of 3",
+        "exception|dispensation",
+        "(48 hours|thursday)"
+      ],
+      "why": "The counterpart to the finals case. That one fails if exceptions are volunteered unasked; this one fails if they are withheld from someone who needs them — a player short of games through washouts, which is the book's own worked example. Restraint must not turn into silence."
+    },
+    {
+      "name": "T35 fee includes MoM awards",
+      "ask": "What is included in the $425 Saturday T35 registration fee?",
+      "must": [
+        "(MoM|Man of the Match)",
+        "\\$175",
+        "\\$125"
+      ],
+      "mustNot": [
+        "(MoM|Man of the Match)[^.\\n]{0,60}(T20|10.round)[^.\\n]{0,20}only"
+      ],
+      "why": "The $425 is Registration $175 + MoM $125 + Finals Awards $125. It once listed MoM as a T20-and-10-rounds-only component, which does not add up to $425."
+    },
+    {
+      "name": "chasing team batting on is in the book",
+      "ask": "In U13, does the team batting second have to stop once they pass the target, or can they bat out their overs?",
+      "must": [
+        "(may|can) bat[^.]{0,30}full allocation|full allocation of overs"
+      ],
+      "mustNot": [
+        "(rule ?books?|books?|rules?) (is|are) silent",
+        "silent on (this|that|the) (point|question|matter)",
+        "no MCA rule",
+        "(does not|doesn't) (contain|cover|mention|address) (any|a|this)?[^.]{0,20}rule"
+      ],
+      "why": "The junior book says under Wickets & Dismissals: 'The chasing team, if the wicket cap has not been reached, may bat its full allocation of overs.' It told a club captain the books were silent and settled it from the MCC Laws instead, because the sentence sits mid-row in a long U11 & U13 table cell."
+    },
+    {
+      "name": "does not rule against the umpire",
+      "ask": "Our umpires keep stopping the game as soon as we pass the target, but MCA told us at the start of the season that the side batting second must play out the full 30 overs. Who is right?",
+      "must": [
+        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs",
+        "contact|committee|melbournecricketassociation@gmail.com"
+      ],
+      "mustNot": [
+        "(?<!(whether|if|say|says|saying|know|tell|told|cannot|can't|not)[^.]{0,25})umpires? (are|is|was|were) (applying the )?(correct|right)\\b",
+        "(that|the|this) advice was wrong",
+        "no need to argue",
+        "making the right call",
+        "(which|what) grade (are|do) you",
+        "are you (in|playing) (U11|U13|U15|T20|T35)"
+      ],
+      "why": "Anik Malik asked this and was told his umpires were right and MCA's own briefing was wrong advice. Both halves were false: the committee adopted the U15 rule early in Winter 2026 and PlayHQ is set to match. 30 overs names the grade, so there is an answer to give."
+    },
+    {
+      "name": "junior loan player comes from the opposition",
+      "ask": "In U13, can I borrow a player from another team at my club if we are short?",
+      "must": [
+        "opposition|other team on the day|team you are playing"
+      ],
+      "mustNot": [
+        "(3|three) (home-and-away|league)[^.]{0,30}(loan|borrow)",
+        "(loan|borrow)[^.]{0,40}(3|three) (home-and-away|league)",
+        "(you|your (side|team|club)) (can|may|could|are able to) (borrow|loan|use|take)[^.]{0,60}(your club|another team)"
+      ],
+      "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book."
+    },
+    {
+      "name": "U11 innings runs to the full overs",
+      "ask": "In U11, does the side batting second stop as soon as they pass the target?",
+      "must": [
+        "all allocated overs are bowled|full ball allocation|full allocation of overs"
+      ],
+      "mustNot": [
+        "(rule ?books?|books?|rules?) (is|are) silent",
+        "silent on (this|that|the) (point|question|matter)",
+        "U11[^.]{0,40}(is|are) silent"
+      ],
+      "why": "The U11 rule reads 'All batters face their full ball allocation, and the innings concludes when all allocated overs are bowled' — the innings is defined by the overs running out, not the target being passed. It told a club 'for U11, the rule book is silent on this point', which is the opposite of what the book says."
+    },
+    {
+      "name": "U15 chase plays out its overs",
+      "ask": "In U15, does the game stop as soon as the chasing team passes the target?",
+      "must": [
+        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs"
+      ],
+      "mustNot": [
+        "(match|game|play|innings) (ends|stops|is over)[^.]{0,40}(target|winning (score|runs))",
+        "(rule ?books?|books?) (is|are) silent",
+        "MCC Laws apply"
+      ],
+      "why": "The committee adopted this early in Winter 2026 and PlayHQ has 'continue scoring when target total reached' switched on for U15. It is not in the rule book, so the assistant used to answer it from the MCC Laws and got it backwards — telling a club its umpires were right to stop play."
+    },
+    {
+      "name": "junior finals format",
+      "ask": "What is the finals format for U13 — how do the three weeks work?",
+      "must": [
+        "double.?chance|two chances|second chance|1st (and|&) 2nd"
+      ],
+      "mustNot": [
+        "(single|straight) knockout[^.]{0,40}(all|every|each)"
+      ],
+      "why": "PlayHQ standard: the top two get the double chance. Asked plainly it should say so — this is the question that question is for, whereas 'are there finals?' is answered by yes, which grades, and who qualifies."
+    },
+    {
+      "name": "finals games do not add up across grades",
+      "ask": "I've played 3 games in T35 10 Rounds C Grade and 1 game in B Grade this season. Am I eligible for the C Grade finals?",
+      "must": [
+        "(not|isn't|is not|aren't|are not|ineligible|do(es)? not|don't)[^.]{0,40}(eligible|qualify|qualified)|ineligible|short of",
+        "(3|three)[^.]{0,40}(qualifying|count|C Grade)|only[^.]{0,20}(3|three)"
+      ],
+      "mustNot": [
+        "(you|the player) (are|is) eligible",
+        "(games|they) (add|adds|count|counts|combine|combines)[^.]{0,25}across",
+        "(that|this|which) (makes|gives|comes to|totals?) (4|four)"
+      ],
+      "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book."
+    }
+  ]
+}
