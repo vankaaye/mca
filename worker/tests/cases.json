@@ -323,6 +323,20 @@
         "(single|straight) knockout[^.]{0,40}(all|every|each)"
       ],
       "why": "PlayHQ standard: the top two get the double chance. Asked plainly it should say so — this is the question that question is for, whereas 'are there finals?' is answered by yes, which grades, and who qualifies."
+    },
+    {
+      "name": "finals games do not add up across grades",
+      "ask": "I've played 3 games in T35 10 Rounds C Grade and 1 game in B Grade this season. Am I eligible for the C Grade finals?",
+      "must": [
+        "(not|isn't|is not|aren't|are not|ineligible|do(es)? not|don't)[^.]{0,40}(eligible|qualify|qualified)|ineligible|short of",
+        "(3|three)[^.]{0,40}(qualifying|count|C Grade)|only[^.]{0,20}(3|three)"
+      ],
+      "mustNot": [
+        "(you|the player) (are|is) eligible",
+        "(games|they) (add|adds|count|counts|combine|combines)[^.]{0,25}across",
+        "(that|this|which) (makes|gives|comes to|totals?) (4|four)"
+      ],
+      "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book."
     }
   ]
 }

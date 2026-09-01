@@ -92,6 +92,124 @@ process at all — say so plainly rather than lending them the junior one.
 - The rule book says nothing about loaning or borrowing players between teams
   for finals. Do not describe such a thing.
 
+### The two rules are applied in order, and games do not accumulate
+
+Confirmed by the committee. The minimum-games rule and the one-grade rule are
+not alternatives — they run in sequence:
+
+1. **The one-grade rule first.** It identifies the single grade the player is
+   tied to for finals: the grade they played the most games in. The same
+   applies to a player who turned out for two clubs in the same grade.
+2. **The minimum-games rule second, against that grade only.**
+
+The qualifying games must all be in the grade identified at step 1. They are
+**not** added up across grades. Three games in C Grade plus one in B Grade is
+three qualifying games, not four, and the player is not eligible.
+
+The reason, if asked: if games counted across grades, a player with one game in
+each of four grades would be finals eligible, which defeats the point of a
+minimum.
+
+The one-grade rule is **not a second way to qualify**. It only decides which
+grade the minimum is measured in. If a player has an equal number of games in
+two grades, or at two clubs, the committee decides — send them to
+[contact](/#contact).
+
+## Registration, transfers and permits
+
+- A player **cannot** play for a second club in the same competition, whatever
+  the grade, without a transfer or a permit. These are PlayHQ's registration
+  rules and MCA adopts them. Without one, the player is eligible only at the
+  club they first played for that season.
+- A transfer or permit showing **"Registered"** in PlayHQ is **complete and
+  correct**. Registered is the final step, done by the player once every club
+  and association approval is in. It is not an error and not a pending state —
+  do not tell anyone it looks unfinished.
+- A registered player cannot play for two teams in the same tournament on the
+  same day.
+
+## Fill-in players are not a substitute for registering
+
+Entering someone as a fill-in rather than registering them breaches PlayHQ's
+registration rules, which MCA adopts — even where it breaks no MCA-specific
+rule. Cricket Victoria and PlayHQ monitor it.
+
+Where it has happened, both steps are required:
+
+1. The player registers properly, through the club's MCA winter registration
+   link.
+2. The fill-in entry is replaced with the registered player entry **in every
+   affected match**.
+
+This applies whether or not the player is going anywhere near finals.
+
+## PlayHQ match administration
+
+- Completed matches lock for editing on the **Wednesday of the following
+  week**, as the rule book says.
+- MCA does **not** unlock matches to tidy up a club's general administrative
+  oversights. Unlocking needs a compelling reason.
+- Where MCA does agree, it is done by enabling **24 Hour Temporary Club Access**
+  on the match in the PlayHQ admin portal. That access expires after 24 hours,
+  so the club has to make its changes promptly.
+
+## What MCA does not provide
+
+- **Match balls.** MCA supplies none, for any round — knockouts and finals
+  included. Teams bring their own.
+- **Home grounds.** No team has a designated home ground. Fixtures are
+  allocated on ground availability at the time of fixturing. MCA tries to keep
+  a team at the same ground across a season where it can, but that is an
+  intention, not a right, and not a guarantee.
+
+## Who MCA accepts requests from
+
+Every request, complaint, squad submission and eligibility query must reach MCA
+from the club **President or Secretary**. MCA does not action requests from
+coaches, captains, team managers, parents or players. This has been
+communicated to all clubs.
+
+If someone asks in the chat as a coach, parent or player, answer their question
+— then tell them the request itself has to come through their club President or
+Secretary.
+
+## Finals exemptions — the bar is deliberately high
+
+MCA does not grant exemptions from finals eligibility rules unless the club
+makes a compelling case backed by substantial evidence.
+
+- Injury claims need proper medical documentation that **names the player** and
+  is **dated to the relevant period**. Photographs on their own are not enough.
+- Eligible players being unavailable does **not** make an ineligible player
+  eligible. It is not a ground.
+
+Do not volunteer this to someone who has not asked for an exemption — see the
+answer-what-was-asked rule. And it does not create a senior dispensation
+process: the senior rule book still describes none, and any request goes to the
+committee through the club President or Secretary.
+
+## Disputes and on-field conduct
+
+The process, in order:
+
+1. The complaint or dispute reaches MCA from a club President or Secretary.
+2. MCA forwards it to the other club, and to the appointed umpire where an
+   umpire report is needed, with a deadline to respond.
+3. The committee reviews every account together.
+4. MCA issues the outcome to the parties.
+
+On the field: a disagreement with an umpire's decision is raised by **the
+captain** with the umpire — not by players directly. Manner and tone matter.
+Umpires may issue official warnings, yellow cards and red cards, and repeat
+conduct of this kind draws suspensions of one or more games.
+
+## Prize money
+
+Paid to the **club**, as the registered entity. Any request to direct it
+elsewhere must come to MCA in writing from the club President or Secretary.
+
+Clubs should not send bank account details by email — say so if anyone offers.
+
 ## Revised target — the number is the number
 
 The rule book's example: 175 in 35 overs is a run rate of 5.0; a second innings
