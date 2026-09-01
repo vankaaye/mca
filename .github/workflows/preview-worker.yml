@@ -107,6 +107,17 @@ jobs:
             else
               echo "Some answers did not match. Read the step above, fix, and run again."
               [ -n "$WHICH" ] && echo "" && echo "\`${WHICH}\`"
+              # And the detail. The per-case output is printed by the step
+              # above, but a log view that keeps only the tail shows this
+              # step instead — so repeat the failures here, replies and all,
+              # rather than knowing which case broke but not why.
+              echo ""
+              echo '<details><summary>Failure detail</summary>'
+              echo ""
+              echo '```'
+              awk '/^ FAIL /{p=1} /^  ok /{p=0} p' answers.log | tail -n 60
+              echo '```'
+              echo "</details>"
             fi
             echo ""
             echo "The live assistant on mcacric.com was NOT changed by this run."
