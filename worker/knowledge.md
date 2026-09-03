@@ -104,10 +104,13 @@ How that single reserve day works:
 - The first round to be washed out takes it, and is replayed the following
   week — the following Saturday for the 10-round grades, the following Sunday
   for juniors, those being the days each competition plays.
+- **Every round after it shifts back a week too.** The Preliminary Final and
+  the Grand Final each move one week later. Confirmed by the President on
+  3 September 2026, for the 10-round grades and the juniors alike.
 - That is the only one. Once it is used there is no slack left.
 - A round played on its scheduled day spends nothing. If Finals Round 1 goes
   ahead and the Preliminary Final is then washed out, the Preliminary Final
-  takes the reserve day. Same for the Grand Final.
+  takes the reserve day and the Grand Final moves back a week.
 - A round washed out with no reserve day left is decided on ladder position:
   the higher-placed side goes through, and for a Grand Final the team that
   finished top of the ladder takes the championship. That much is in the senior
@@ -116,11 +119,27 @@ How that single reserve day works:
 Never say reserve days are "built into the schedule", or that the published
 finals dates already include them. They are not extra fixtures on the calendar.
 
-**Not settled — do not answer it from either side.** Using the reserve day
-lands that round on the day the next round was scheduled for, so the rounds
-after it have to move. Nobody has said in so many words that they all shift
-back a week. Give the rule, and send anyone wanting revised dates to
-[contact](/#contact). Never publish a shifted date of your own.
+Worked out for Winter 2026. Saturday T35 — 10 Rounds:
+
+| Washed out | Replayed | Preliminary Final | Grand Final |
+| --- | --- | --- | --- |
+| Nothing | — | 12 Sep | 19 Sep |
+| Finals Round 1, 5 Sep | **12 Sep** | 19 Sep | 26 Sep |
+| Preliminary Final, 12 Sep | **19 Sep** | — | 26 Sep |
+| Grand Final, 19 Sep | **26 Sep** | — | — |
+
+Juniors, all four grades, one day later throughout:
+
+| Washed out | Replayed | Preliminary Final | Grand Final |
+| --- | --- | --- | --- |
+| Nothing | — | 13 Sep | 20 Sep |
+| Finals Round 1, 6 Sep | **13 Sep** | 20 Sep | 27 Sep |
+| Preliminary Final, 13 Sep | **20 Sep** | — | 27 Sep |
+| Grand Final, 20 Sep | **27 Sep** | — | — |
+
+Give these dates when asked — they follow from the rule, they are not a guess.
+PlayHQ carries the official fixture, so point there for confirmation, and do
+not shift anything twice: there is one reserve week, not one per round.
 
 ## Dispensations and exceptions — juniors only
 
