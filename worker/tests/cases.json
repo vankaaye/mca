@@ -386,10 +386,9 @@
       ],
       "mustNot": [
         "reserve days? (are|is) (in|built into|included in|part of) the schedule",
-        "(each|every|all) (knockout )?rounds? (has|have|gets?)[^.]{0,20}reserve day",
-        "reserve day (for|against) (each|every) round"
+        "quarter[- ]?final"
       ],
-      "why": "Asked exactly this, the assistant laid out a table with a reserve day beside each of the three rounds -- 5/12, 12/19, 19/26 -- which reads as three reserve days when the 10-round grades and juniors get ONE for the whole series. It also answered for seniors only and never mentioned juniors, whose four grades are in finals at the same time. The notes now give the three outcomes as alternatives rather than a per-round schedule, and say a question naming no grade covers both.",
+      "why": "Asked exactly this, the assistant laid out a table with a reserve day beside each of the three rounds -- 5/12, 12/19, 19/26 -- which reads as three reserve days when the 10-round grades and juniors get ONE for the whole series. It also answered for seniors only and never mentioned juniors, whose four grades are in finals at the same time. Twice: the second time the fix was in the notes and guardrail 9 overrode it by inferring a grade for a question that had none.\nThe weight is on the must patterns -- one reserve day, and juniors named. Deliberately NOT banning 'a reserve day for every round': that is TRUE of Saturday T20 and regular Saturday T35, and a pattern cannot see which competition a sentence is about. What is banned is the schedule line, and Quarter Finals -- MCA has none. The book gives Pre-semis, Semi Finals and Grand Finals, and PlayHQ runs Finals Round 1, Preliminary Final, Grand Final. A right answer that names a fourth round is still inventing a fixture.",
       "smoke": true
     }
   ]

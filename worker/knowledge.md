@@ -105,6 +105,9 @@ another.
 
 **Saturday T20 and regular Saturday T35 — a reserve day for EVERY knockout
 round.** Their finals had room in the calendar and finished on 22 August.
+There are THREE knockout rounds, not four: Pre-semis, Semi Finals and Grand
+Finals, which PlayHQ calls Finals Round 1, Preliminary Final and Grand Final.
+MCA runs no Quarter Final in any grade — never name one.
 
 **Saturday T35 — 10 Rounds, and all four junior grades — ONE reserve day for
 the whole knockout series.** Their finals run to 19 and 20 September and there
