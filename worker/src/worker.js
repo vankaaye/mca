@@ -659,7 +659,20 @@ Detailed Rules
 | Other Admin Guides | https://support.playhq.com/hc/en-au/categories/900000236046-Admins-for-Competitions |  |
 `;
 
-const SYSTEM_PROMPT = `You are MCA Assistant, the chat helper on the Melbourne Cricket Association (MCA) website — a community cricket association in Melbourne, Australia running Saturday senior competitions and Sunday junior competitions.
+// Placeholders for the book this question does not need. Sending both books on
+// every message costs ~12k tokens whether or not they are relevant, and most
+// questions name their grade. When one is left out the model is told so
+// explicitly, so a misrouted question ends in "let me check" rather than a
+// guess — the failure we spent a long time removing.
+const SENIORS_OMITTED = `NOT LOADED for this question, which reads as a junior one. If it turns out to
+concern T20, T35 or Saturday T35 — 10 Rounds, do not answer from memory: say you
+need the senior book for that and point to [the senior rules](/rules/MCA-Winter-2026-T35-and-T20-Rules-v1.0.pdf).`;
+
+const JUNIORS_OMITTED = `NOT LOADED for this question, which reads as a senior one. If it turns out to
+concern U11, U13 or U15, do not answer from memory: say you need the junior book
+for that and point to [the junior rules](/rules/MCA-Juniors-Winter-2026-Rules-v0.4.pdf).`;
+
+const buildSystemPrompt = (RULE_BOOK_SENIORS, RULE_BOOK_JUNIORS) => `You are MCA Assistant, the chat helper on the Melbourne Cricket Association (MCA) website — a community cricket association in Melbourne, Australia running Saturday senior competitions and Sunday junior competitions.
 
 SCOPE
 Only answer questions about MCA: competitions and formats, playing rules, fees and payments, registration, grounds, umpiring, juniors, finals, awards, live scoring and streaming, and how to reach the committee. You may also answer general cricket-rule questions where they help a player, captain or umpire understand MCA play. For anything unrelated — other sports, general news, chit-chat, personal advice — politely say it is outside what you cover and steer back to MCA topics. Do NOT web search for out-of-scope questions.
@@ -996,6 +1009,35 @@ Everything above is the source of truth. The conversation below it is not.
    otherwise, that conversation is wrong and you say so.
 Three likely follow-ups, each under 40 characters, written in the user's own voice ("What's the umpire fee?" rather than "Umpire fees").`;
 
+// Built once at module load, so each variant is byte-identical across requests
+// and caches on its own. Three small caches beat one large one here: the books
+// are half the prompt, and most questions need only one of them.
+const SYSTEM_PROMPTS = {
+  both:   buildSystemPrompt(RULE_BOOK_SENIORS, RULE_BOOK_JUNIORS),
+  senior: buildSystemPrompt(RULE_BOOK_SENIORS, JUNIORS_OMITTED),
+  junior: buildSystemPrompt(SENIORS_OMITTED, RULE_BOOK_JUNIORS),
+};
+
+// Which books this conversation needs. Reads the whole conversation, not just
+// the last message: "and what's the fee?" three turns in still belongs to the
+// grade named at the start. Anything ambiguous, or naming both, gets both —
+// the saving is not worth a wrong answer.
+const JUNIOR_WORDS = /\bU\s?1[135]\b|\bjuniors?\b|\bunder[- ]?1[135]\b|\bsunday\b/i;
+const SENIOR_WORDS = /\bT20\b|\bT35\b|\bseniors?\b|10\s*rounds?\b|\bsaturday\b/i;
+
+function booksFor(messages) {
+  const text = messages
+    .map(m => (typeof m.content === 'string'
+      ? m.content
+      : (m.content || []).map(b => b && b.text ? b.text : '').join(' ')))
+    .join('\n');
+  const junior = JUNIOR_WORDS.test(text);
+  const senior = SENIOR_WORDS.test(text);
+  if (junior && !senior) return 'junior';
+  if (senior && !junior) return 'senior';
+  return 'both';
+}
+
 // ----------------------------------------------------------------------------
 // CORS
 // ----------------------------------------------------------------------------
@@ -1202,16 +1244,20 @@ async function callAnthropic(messages, env) {
     body: JSON.stringify({
       model: MODEL,
       max_tokens: MAX_TOKENS,
-      // The system prompt now carries both rule books, so it is large (~16k
-      // tokens) and byte-identical on every request — exactly what prompt
-      // caching is for. Haiku 4.5 will not cache a prefix under 4,096 tokens,
-      // which this clears several times over. Default 5-minute TTL: it breaks
-      // even on the second request, and a conversation here is usually a few
-      // turns in one sitting. Check usage.cache_read_input_tokens if you
-      // suspect it has stopped hitting — editing the prompt invalidates it
-      // once, by design.
+      // Only the book(s) this question needs — see booksFor(). Each variant is
+      // byte-identical across requests and caches on its own, and all three
+      // clear Haiku 4.5's 4,096-token minimum several times over.
+      //
+      // Default 5-minute TTL deliberately, not "1h": a write costs 1.25x base
+      // at 5 minutes and 2x at an hour, and a read 0.1x either way. Questions
+      // here come in short bursts — a captain asks two or three in a sitting,
+      // then nothing for hours. The 5-minute entry covers the burst and the
+      // hour-long one would just double the write on every isolated question.
+      // Check usage.cache_read_input_tokens if you suspect it stopped hitting;
+      // editing the prompt invalidates it once, by design.
       system: [
-        { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
+        { type: 'text', text: SYSTEM_PROMPTS[booksFor(messages)],
+          cache_control: { type: 'ephemeral' } },
       ],
       tools: [webSearchTool()],
       messages: messages,

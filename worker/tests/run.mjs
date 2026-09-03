@@ -29,6 +29,13 @@ const here = dirname(fileURLToPath(import.meta.url));
 const { cases } = JSON.parse(readFileSync(join(here, 'cases.json'), 'utf8'));
 
 const ENDPOINT = process.argv[2] || process.env.ENDPOINT || 'https://mca-assistant.astrocare.workers.dev';
+
+// --smoke runs only the cases tagged smoke:true — five, not the full set. Every
+// question costs a real API call carrying the whole prompt, so running all of
+// them on each merge is most of what this project spends. The full set still
+// runs on the preview workflow and on demand; the merge gate keeps the handful
+// that would matter most if they broke.
+const SMOKE_ONLY = process.argv.includes('--smoke') || process.env.SMOKE === '1';
 const ORIGIN = 'https://www.mcacric.com';
 const CONCURRENCY = 3;          // gentle on the per-IP rate limit
 
@@ -48,11 +55,18 @@ async function ask(c) {
   return String(body.reply || '');
 }
 
-// The Worker allows 30 chats per IP per hour. A full run is 27, so two runs
+// The Worker allows 30 chats per IP per hour. A full run is 28, so two runs
 // in an hour trips it — and the friendly "taking a short break" reply then
 // fails every remaining case for a reason that has nothing to do with the
 // answers. Recognise it and say so, rather than reporting phantom failures.
 const RATE_LIMITED = /taking a short break|asked quite a few questions/i;
+
+// The Worker's own fallback when it cannot reach the API upstream. A run where
+// every case comes back like this is an outage, not twenty-eight wrong answers,
+// and reporting it as content failures sends you hunting through the prompt for
+// a problem that is not there. Still fails the run — an untested branch must not
+// look mergeable — but says what actually happened.
+const UNREACHABLE = /assistant is unavailable|unavailable right now|HTTP 5\d\d/i;
 
 // The assistant answers in markdown, so a phrase the case is looking for can
 // arrive with formatting inside it: "the top **4 teams**" does not match
@@ -94,11 +108,22 @@ function check(reply, c) {
   return problems;
 }
 
-const results = [];
-const queue = cases.slice();
+const selected = SMOKE_ONLY ? cases.filter(c => c.smoke) : cases;
+if (SMOKE_ONLY && !selected.length) {
+  console.error('--smoke was passed but no case is tagged smoke:true');
+  process.exit(1);
+}
+console.log(SMOKE_ONLY
+  ? 'Smoke run: ' + selected.length + ' of ' + cases.length + ' cases.'
+  : 'Full run: ' + selected.length + ' cases.');
 
-async function worker() {
-  while (queue.length) {
+const results = [];
+const queue = selected.slice();
+
+async function worker(limit) {
+  let done = 0;
+  while (queue.length && (limit === undefined || done < limit)) {
+    done++;
     const c = queue.shift();
     try {
       let reply = await ask(c);
@@ -113,15 +138,27 @@ async function worker() {
         results.push({ c, problems: check(reply, c), reply });
       }
     } catch (err) {
-      results.push({ c, problems: ['request failed: ' + err.message], reply: '' });
+      const label = UNREACHABLE.test(err.message)
+        ? 'UNREACHABLE — could not reach the assistant, not a content failure'
+        : 'request failed: ' + err.message;
+      results.push({ c, problems: [label], reply: '' });
     }
   }
 }
 
-await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+// Run the first case alone so it writes the prompt cache, then let the rest
+// read it. Starting three at once means three simultaneous misses, and a cache
+// write costs 1.25x base input against 0.1x for a read — on a ~17k-token prompt
+// that is two needless writes per run, every run.
+if (queue.length) {
+  const first = queue.shift();
+  queue.unshift(first);
+  await worker.call(null, 1);   // one case, sequentially, to warm the cache
+}
+await Promise.all(Array.from({ length: CONCURRENCY }, () => worker()));
 
 let failed = 0;
-for (const c of cases) {
+for (const c of selected) {
   const r = results.find(x => x.c.name === c.name);
   if (!r.problems.length) {
     console.log('  ok   ' + c.name);
@@ -136,7 +173,15 @@ for (const c of cases) {
   console.log('        reply: ' + r.reply.replace(/\s+/g, ' ').slice(0, 300));
 }
 
-console.log('\n' + (cases.length - failed) + '/' + cases.length + ' passed');
+console.log('\n' + (selected.length - failed) + '/' + selected.length + ' passed');
+
+const unreachable = results.filter(r => r.problems.some(p => p.startsWith('UNREACHABLE')));
+if (unreachable.length) {
+  console.log('\n' + unreachable.length + ' of ' + selected.length + ' could not be tested: the');
+  console.log('Worker could not reach the assistant. That is an outage or a missing API');
+  console.log('key, not a wrong answer — nothing here says the branch is bad. Run again');
+  console.log('once it is back, and do not merge on this result either way.');
+}
 
 if (results.some(r => r.problems.some(p => p.startsWith('RATE LIMITED')))) {
   console.log('\nSome cases could not be tested: the Worker rate-limits an IP to 30 chats');
