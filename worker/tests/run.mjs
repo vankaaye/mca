@@ -29,6 +29,13 @@ const here = dirname(fileURLToPath(import.meta.url));
 const { cases } = JSON.parse(readFileSync(join(here, 'cases.json'), 'utf8'));
 
 const ENDPOINT = process.argv[2] || process.env.ENDPOINT || 'https://mca-assistant.astrocare.workers.dev';
+
+// --smoke runs only the cases tagged smoke:true — five, not the full set. Every
+// question costs a real API call carrying the whole prompt, so running all of
+// them on each merge is most of what this project spends. The full set still
+// runs on the preview workflow and on demand; the merge gate keeps the handful
+// that would matter most if they broke.
+const SMOKE_ONLY = process.argv.includes('--smoke') || process.env.SMOKE === '1';
 const ORIGIN = 'https://www.mcacric.com';
 const CONCURRENCY = 3;          // gentle on the per-IP rate limit
 
@@ -101,11 +108,22 @@ function check(reply, c) {
   return problems;
 }
 
-const results = [];
-const queue = cases.slice();
+const selected = SMOKE_ONLY ? cases.filter(c => c.smoke) : cases;
+if (SMOKE_ONLY && !selected.length) {
+  console.error('--smoke was passed but no case is tagged smoke:true');
+  process.exit(1);
+}
+console.log(SMOKE_ONLY
+  ? 'Smoke run: ' + selected.length + ' of ' + cases.length + ' cases.'
+  : 'Full run: ' + selected.length + ' cases.');
 
-async function worker() {
-  while (queue.length) {
+const results = [];
+const queue = selected.slice();
+
+async function worker(limit) {
+  let done = 0;
+  while (queue.length && (limit === undefined || done < limit)) {
+    done++;
     const c = queue.shift();
     try {
       let reply = await ask(c);
@@ -128,10 +146,19 @@ async function worker() {
   }
 }
 
-await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+// Run the first case alone so it writes the prompt cache, then let the rest
+// read it. Starting three at once means three simultaneous misses, and a cache
+// write costs 1.25x base input against 0.1x for a read — on a ~17k-token prompt
+// that is two needless writes per run, every run.
+if (queue.length) {
+  const first = queue.shift();
+  queue.unshift(first);
+  await worker.call(null, 1);   // one case, sequentially, to warm the cache
+}
+await Promise.all(Array.from({ length: CONCURRENCY }, () => worker()));
 
 let failed = 0;
-for (const c of cases) {
+for (const c of selected) {
   const r = results.find(x => x.c.name === c.name);
   if (!r.problems.length) {
     console.log('  ok   ' + c.name);
@@ -146,11 +173,11 @@ for (const c of cases) {
   console.log('        reply: ' + r.reply.replace(/\s+/g, ' ').slice(0, 300));
 }
 
-console.log('\n' + (cases.length - failed) + '/' + cases.length + ' passed');
+console.log('\n' + (selected.length - failed) + '/' + selected.length + ' passed');
 
 const unreachable = results.filter(r => r.problems.some(p => p.startsWith('UNREACHABLE')));
 if (unreachable.length) {
-  console.log('\n' + unreachable.length + ' of ' + cases.length + ' could not be tested: the');
+  console.log('\n' + unreachable.length + ' of ' + selected.length + ' could not be tested: the');
   console.log('Worker could not reach the assistant. That is an outage or a missing API');
   console.log('key, not a wrong answer — nothing here says the branch is bad. Run again');
   console.log('once it is back, and do not merge on this result either way.');

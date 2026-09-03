@@ -69,11 +69,16 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx --yes wrangler@4 deploy
 
-      - name: Ask the live assistant questions with known answers
+      # The five cases that would matter most if they broke, not all twenty-eight.
+      # Every question is a real API call carrying the whole prompt, and running
+      # the full set on each merge was most of what this project spent. The full
+      # set still runs on the preview workflow before merging, and on demand via
+      # "Try the assistant on a branch".
+      - name: Ask the live assistant the critical questions
         if: steps.creds.outputs.ready == 'true'
         env:
           ENDPOINT: https://mca-assistant.astrocare.workers.dev
         run: |
           # Cloudflare takes a moment to roll the new version out worldwide.
           sleep 15
-          node worker/tests/run.mjs "$ENDPOINT"
+          node worker/tests/run.mjs "$ENDPOINT" --smoke

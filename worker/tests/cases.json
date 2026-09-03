@@ -36,7 +36,8 @@
         "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
         "seniors?[^.]{0,60}(at least )?48 hours before"
       ],
-      "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule."
+      "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule.",
+      "smoke": true
     },
     {
       "name": "junior dispensation deadline",
@@ -130,7 +131,8 @@
       "mustNot": [
         "does not have a (dedicated )?(website )?contact"
       ],
-      "why": "The site has a contact section. It once denied that."
+      "why": "The site has a contact section. It once denied that.",
+      "smoke": true
     },
     {
       "name": "admits when it does not know",
@@ -284,7 +286,8 @@
         "(loan|borrow)[^.]{0,40}(3|three) (home-and-away|league)",
         "(you|your (side|team|club)) (can|may|could|are able to) (borrow|loan|use|take)[^.]{0,60}(your club|another team)"
       ],
-      "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book."
+      "why": "The book says loan players apply 'when one team is short and the opposition has surplus' — lent by the opposition on the day. It has repeatedly rebuilt this as borrowing from another team at your club, gated on the 3-game finals qualification rule, which is not a loan condition anywhere in the book.",
+      "smoke": true
     },
     {
       "name": "U11 innings runs to the full overs",
@@ -310,7 +313,8 @@
         "(rule ?books?|books?) (is|are) silent",
         "MCC Laws apply"
       ],
-      "why": "The committee adopted this early in Winter 2026 and PlayHQ has 'continue scoring when target total reached' switched on for U15. It is not in the rule book, so the assistant used to answer it from the MCC Laws and got it backwards — telling a club its umpires were right to stop play."
+      "why": "The committee adopted this early in Winter 2026 and PlayHQ has 'continue scoring when target total reached' switched on for U15. It is not in the rule book, so the assistant used to answer it from the MCC Laws and got it backwards — telling a club its umpires were right to stop play.",
+      "smoke": true
     },
     {
       "name": "junior finals format",
@@ -345,7 +349,8 @@
         "both|each umpire|per umpire|170|twice"
       ],
       "mustNot": [],
-      "why": "The seniors book says two umpires are provided for Pre-semis, Semi-Finals and Finals, and teams pay for both. Quoting the $85 league rate alone sends a captain to a semi-final with half the money."
+      "why": "The seniors book says two umpires are provided for Pre-semis, Semi-Finals and Finals, and teams pay for both. Quoting the $85 league rate alone sends a captain to a semi-final with half the money.",
+      "smoke": true
     }
   ]
 }
