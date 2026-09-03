@@ -332,15 +332,15 @@
       "name": "finals games do not add up across grades",
       "ask": "I've played 3 games in T35 10 Rounds C Grade and 1 game in B Grade this season. Am I eligible for the C Grade finals?",
       "must": [
-        "(not|isn't|is not|aren't|are not|ineligible|do(es)? not|don't)[^.]{0,40}(eligible|qualify|qualified)|ineligible|short of",
-        "(3|three)[^.]{0,40}(qualifying|count|C Grade)|only[^.]{0,20}(3|three)"
+        "(not|isn't|is not|aren't|are not|ineligible|do(es)? not|don't)[^.]{0,40}(eligible|qualify|qualified)|ineligible|short of|^[^A-Za-z\\n]{0,6}no\\b",
+        "(3|three)[^.]{0,40}(qualifying|count|C Grade|games?)|only[^.]{0,20}(3|three)|(have|played|counts as)[^.]{0,20}\\b(3|three)\\b"
       ],
       "mustNot": [
         "(you|the player) (are|is) eligible",
         "(games|they) (add|adds|count|counts|combine|combines)[^.]{0,25}across",
         "(that|this|which) (makes|gives|comes to|totals?) (4|four)"
       ],
-      "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book."
+      "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book. The must patterns accept a leading No as the denial: the reply that failed this case opened \"No - you need 4 qualifying games in C Grade alone, and you have 3\", which is the clearest possible way to say it and matched none of the longer phrasings. Same lesson the shared DENIES macro already learned."
     },
     {
       "name": "senior knockouts have two umpires",
