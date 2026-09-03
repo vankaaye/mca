@@ -54,6 +54,13 @@ async function ask(c) {
 // answers. Recognise it and say so, rather than reporting phantom failures.
 const RATE_LIMITED = /taking a short break|asked quite a few questions/i;
 
+// The Worker's own fallback when it cannot reach the API upstream. A run where
+// every case comes back like this is an outage, not twenty-eight wrong answers,
+// and reporting it as content failures sends you hunting through the prompt for
+// a problem that is not there. Still fails the run — an untested branch must not
+// look mergeable — but says what actually happened.
+const UNREACHABLE = /assistant is unavailable|unavailable right now|HTTP 5\d\d/i;
+
 // The assistant answers in markdown, so a phrase the case is looking for can
 // arrive with formatting inside it: "the top **4 teams**" does not match
 // /top 4/, though it says exactly that. Strip emphasis before matching rather
@@ -113,7 +120,10 @@ async function worker() {
         results.push({ c, problems: check(reply, c), reply });
       }
     } catch (err) {
-      results.push({ c, problems: ['request failed: ' + err.message], reply: '' });
+      const label = UNREACHABLE.test(err.message)
+        ? 'UNREACHABLE — could not reach the assistant, not a content failure'
+        : 'request failed: ' + err.message;
+      results.push({ c, problems: [label], reply: '' });
     }
   }
 }
@@ -137,6 +147,14 @@ for (const c of cases) {
 }
 
 console.log('\n' + (cases.length - failed) + '/' + cases.length + ' passed');
+
+const unreachable = results.filter(r => r.problems.some(p => p.startsWith('UNREACHABLE')));
+if (unreachable.length) {
+  console.log('\n' + unreachable.length + ' of ' + cases.length + ' could not be tested: the');
+  console.log('Worker could not reach the assistant. That is an outage or a missing API');
+  console.log('key, not a wrong answer — nothing here says the branch is bad. Run again');
+  console.log('once it is back, and do not merge on this result either way.');
+}
 
 if (results.some(r => r.problems.some(p => p.startsWith('RATE LIMITED')))) {
   console.log('\nSome cases could not be tested: the Worker rate-limits an IP to 30 chats');
