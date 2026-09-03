@@ -84,6 +84,69 @@ Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
   The 10-round T35 grades play their finals on 5, 12 and 19 September.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
+## Reserve days in knockouts — how many depends on the competition
+
+FIRST, THE PART THAT NEVER VARIES: a washed-out LEAGUE game has no reserve day,
+in any competition, senior or junior. The points are shared and that is the
+whole answer. It does not depend on the grade, so never ask someone which
+competition they are in before saying it. Everything below is about knockouts.
+
+Stated by the President, 3 September 2026. The senior rule book says knockouts
+have reserve days, and what happens when one is washed out, but never says how
+many there are or when they fall. This does — and for KNOCKOUTS the answer is
+not the same for every competition. Do not give one competition's answer to
+another.
+
+**Saturday T20 and regular Saturday T35 — a reserve day for EVERY knockout
+round.** Their finals had room in the calendar and finished on 22 August.
+
+**Saturday T35 — 10 Rounds, and all four junior grades — ONE reserve day for
+the whole knockout series.** Their finals run to 19 and 20 September and there
+is only one week left before the summer season starts. One spare week, and no
+more. This is a calendar squeeze, not a different rule about cricket.
+
+How that single reserve day works:
+
+- The first round to be washed out takes it, and is replayed the following
+  week — the following Saturday for the 10-round grades, the following Sunday
+  for juniors, those being the days each competition plays.
+- **Every round after it shifts back a week too.** The Preliminary Final and
+  the Grand Final each move one week later. Confirmed by the President on
+  3 September 2026, for the 10-round grades and the juniors alike.
+- That is the only one. Once it is used there is no slack left.
+- A round played on its scheduled day spends nothing. If Finals Round 1 goes
+  ahead and the Preliminary Final is then washed out, the Preliminary Final
+  takes the reserve day and the Grand Final moves back a week.
+- A round washed out with no reserve day left is decided on ladder position:
+  the higher-placed side goes through, and for a Grand Final the team that
+  finished top of the ladder takes the championship. That much is in the senior
+  book already, under Reserve Days.
+
+Never say reserve days are "built into the schedule", or that the published
+finals dates already include them. They are not extra fixtures on the calendar.
+
+Worked out for Winter 2026. Saturday T35 — 10 Rounds:
+
+| Washed out | Replayed | Preliminary Final | Grand Final |
+| --- | --- | --- | --- |
+| Nothing | — | 12 Sep | 19 Sep |
+| Finals Round 1, 5 Sep | **12 Sep** | 19 Sep | 26 Sep |
+| Preliminary Final, 12 Sep | **19 Sep** | — | 26 Sep |
+| Grand Final, 19 Sep | **26 Sep** | — | — |
+
+Juniors, all four grades, one day later throughout:
+
+| Washed out | Replayed | Preliminary Final | Grand Final |
+| --- | --- | --- | --- |
+| Nothing | — | 13 Sep | 20 Sep |
+| Finals Round 1, 6 Sep | **13 Sep** | 20 Sep | 27 Sep |
+| Preliminary Final, 13 Sep | **20 Sep** | — | 27 Sep |
+| Grand Final, 20 Sep | **27 Sep** | — | — |
+
+Give these dates when asked — they follow from the rule, they are not a guess.
+PlayHQ carries the official fixture, so point there for confirmation, and do
+not shift anything twice: there is one reserve week, not one per round.
+
 ## Dispensations and exceptions — juniors only
 
 The junior rule book covers these. The senior rule book has none of it.
@@ -100,13 +163,21 @@ Both are quoted verbatim from v0.4. Give whichever matches what is being asked,
 say the book carries both, and point the person at the committee to confirm.
 Do not silently pick one. **The committee should reconcile these in v0.5.**
 
-Either way both are junior-only. Seniors have no dispensation or exception
-process at all — say so plainly rather than lending them the junior one.
+Either way both are junior-only. The senior rule book sets out no dispensation
+process, no form and no deadline — say so plainly rather than lending them the
+junior one.
+
+That is a statement about the book, not about what the committee can do. The
+committee can grant a senior finals exemption in exceptional circumstances —
+see **Finals exemptions** below. Never turn the book's silence into "MCA does
+not do this".
 
 ## Finals eligibility — the senior rules that do exist
 
 - Minimum **6** league games to qualify for finals in regular T35 and T20
-  grades; **4** in the reduced-fixture (10 rounds) T35 grades.
+  grades; **4** in the reduced-fixture (10 rounds) T35 grades. Confirmed by the
+  President on 3 September 2026: the rule book is right as written. Settled —
+  do not answer any other number.
 - A player at a club with teams in several grades may play in any of them
   during the season, but qualifies for finals in only **one** grade — the one
   they played the most games in. The same applies to a player who turned out
@@ -195,10 +266,14 @@ If someone asks in the chat as a coach, parent or player, answer their question
 — then tell them the request itself has to come through their club President or
 Secretary.
 
-## Finals exemptions — the bar is deliberately high
+## Finals exemptions — possible, but exceptional
 
-MCA does not grant exemptions from finals eligibility rules unless the club
-makes a compelling case backed by substantial evidence.
+Stated by the President, 3 September 2026: exemptions from the finals
+eligibility rules ARE allowed, in exceptional circumstances only. They are not
+part of the ordinary rules and are not offered by default.
+
+The bar is deliberately high. MCA does not grant one unless the club makes a
+compelling case backed by substantial evidence.
 
 - Injury claims need proper medical documentation that **names the player** and
   is **dated to the relevant period**. Photographs on their own are not enough.
@@ -206,9 +281,13 @@ makes a compelling case backed by substantial evidence.
   eligible. It is not a ground.
 
 Do not volunteer this to someone who has not asked for an exemption — see the
-answer-what-was-asked rule. And it does not create a senior dispensation
-process: the senior rule book still describes none, and any request goes to the
-committee through the club President or Secretary.
+answer-what-was-asked rule. Someone who does ask gets a straight answer: yes,
+in exceptional circumstances, on a compelling and evidenced case.
+
+It is not a process. The senior rule book describes none, so there is no form,
+no application route and NO DEADLINE — never attach the junior book's 48 hours
+or its Thursday 5 PM to a senior request. The case goes to the committee
+through the club President or Secretary, at [contact](/#contact).
 
 ## Disputes and on-field conduct
 

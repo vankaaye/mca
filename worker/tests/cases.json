@@ -27,16 +27,17 @@
       "why": "A PlayHQ fill-in covers the first game only; after that they must be registered."
     },
     {
-      "name": "senior dispensation does not exist",
+      "name": "a senior exemption is exceptional, not a process",
       "ask": "How do I request a dispensation for a senior finals game?",
       "must": [
-        "{{DENIES}}"
+        "committee|contact|melbournecricketassociation",
+        "exceptional|extenuating|compelling|substantial evidence|high bar|rare|not (a |an )?(standard|routine|formal|automatic|ordinary)|only (in|where|if)"
       ],
       "mustNot": [
-        "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
-        "seniors?[^.]{0,60}(at least )?48 hours before"
+        "seniors?[^.]{0,60}(at least )?48 hours before",
+        "(submit|send|lodge|apply|request|get it in|make the request)[^.]{0,40}(by|before)[^.]{0,25}(5\\s*(PM|pm)|48 hours)"
       ],
-      "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule.",
+      "why": "The President confirmed on 3 Sep 2026 that senior finals exemptions do exist, in exceptional circumstances, so a flat denial is now wrong. What stays wrong is presenting one as a process: the senior book sets out no form, no route and no deadline, and the assistant once invented one by lifting the junior book's deadlines. Asserts the answer names the committee and conveys the high bar. The banned patterns are the two ways a deadline gets invented: the junior 48 hours pinned to seniors, and an instruction to submit by a time. An earlier version banned 5 PM near Thursday anywhere in the reply, which failed one run in three -- proximity to a fact is not a claim, and a sentence saying the junior deadline does NOT apply reads identically to a mustNot.",
       "smoke": true
     },
     {
@@ -170,7 +171,7 @@
         "(3|three) league games.{0,40}loan",
         "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (use|borrow|bring in) (a )?loan player",
         "loan players are (allowed|permitted|available)[^.]{0,40}(senior|T35|T20|your)",
-        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation"
+        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation[^.]{0,60}(48 hours|thursday)"
       ],
       "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
     },
@@ -331,15 +332,15 @@
       "name": "finals games do not add up across grades",
       "ask": "I've played 3 games in T35 10 Rounds C Grade and 1 game in B Grade this season. Am I eligible for the C Grade finals?",
       "must": [
-        "(not|isn't|is not|aren't|are not|ineligible|do(es)? not|don't)[^.]{0,40}(eligible|qualify|qualified)|ineligible|short of",
-        "(3|three)[^.]{0,40}(qualifying|count|C Grade)|only[^.]{0,20}(3|three)"
+        "(not|isn't|is not|aren't|are not|ineligible|do(es)? not|don't)[^.]{0,40}(eligible|qualify|qualified)|ineligible|short of|^[^A-Za-z\\n]{0,6}no\\b",
+        "(3|three)[^.]{0,40}(qualifying|count|C Grade|games?)|only[^.]{0,20}(3|three)|(have|played|counts as)[^.]{0,20}\\b(3|three)\\b"
       ],
       "mustNot": [
         "(you|the player) (are|is) eligible",
         "(games|they) (add|adds|count|counts|combine|combines)[^.]{0,25}across",
         "(that|this|which) (makes|gives|comes to|totals?) (4|four)"
       ],
-      "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book."
+      "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book. The must patterns accept a leading No as the denial: the reply that failed this case opened \"No - you need 4 qualifying games in C Grade alone, and you have 3\", which is the clearest possible way to say it and matched none of the longer phrasings. Same lesson the shared DENIES macro already learned."
     },
     {
       "name": "senior knockouts have two umpires",
@@ -351,6 +352,30 @@
       "mustNot": [],
       "why": "The seniors book says two umpires are provided for Pre-semis, Semi-Finals and Finals, and teams pay for both. Quoting the $85 league rate alone sends a captain to a semi-final with half the money.",
       "smoke": true
+    },
+    {
+      "name": "a washed-out senior final is replayed the next Saturday, and the rest move",
+      "ask": "Our T35 10 Rounds Finals Round 1 on 5 September was washed out. When is it replayed, and does that change the Grand Final date?",
+      "must": [
+        "(12\\s*(september|sept|sep)|september\\s*12)",
+        "(26\\s*(september|sept|sep)|september\\s*26)"
+      ],
+      "mustNot": [
+        "(two|2|second|another) reserve day",
+        "reserve days? (are|is) (already )?(built|included|factored) in"
+      ],
+      "why": "The 10-round grades get ONE reserve day for the whole knockout series -- one spare week before the summer season -- and using it moves every later round back a week. President, 3 Sep 2026. So Round 1 goes to the 12th and the Grand Final to the 26th. Both dates are asserted rather than the wording: an earlier version of this case demanded the phrase 'following Saturday' and failed a reply that gave the date, which is the better answer. Prose-only rule, in no rule book, and it decides when a club turns up to a final."
+    },
+    {
+      "name": "junior reserve days fall on the Sunday",
+      "ask": "Our U13 Finals Round 1 on 6 September was washed out. When is it replayed?",
+      "must": [
+        "(13\\s*(september|sept|sep)|september\\s*13)"
+      ],
+      "mustNot": [
+        "(12|19|26)\\s*(september|sept\\b|sep\\b)"
+      ],
+      "why": "Juniors play Sundays -- finals on 6, 13 and 20 September -- so their reserve day is the following SUNDAY, not the senior Saturday. The rule was stated in Saturday terms for the 10-round grades and covers juniors too, which is exactly the shape of mistake that gets a junior side sent to a ground on the wrong day. Rejects any of the senior Saturday dates."
     }
   ]
 }
