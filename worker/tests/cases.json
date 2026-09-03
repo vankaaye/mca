@@ -263,7 +263,7 @@
       "name": "does not rule against the umpire",
       "ask": "Our umpires keep stopping the game as soon as we pass the target, but MCA told us at the start of the season that the side batting second must play out the full 30 overs. Who is right?",
       "must": [
-        "full quota|full allocation|even after the (result|target)|play(s|ing)? (it |them |their )?out|all (30|thirty) overs",
+        "full quota|full allocation|full (30|thirty) overs|even after[^.]{0,25}(result|target)|play(s|ing)? (it|them|their|its)? ?out|all (30|thirty) overs",
         "contact|committee|melbournecricketassociation@gmail.com"
       ],
       "mustNot": [
@@ -274,7 +274,7 @@
         "(which|what) grade (are|do) you",
         "are you (in|playing) (U11|U13|U15|T20|T35)"
       ],
-      "why": "Anik Malik asked this and was told his umpires were right and MCA's own briefing was wrong advice. Both halves were false: the committee adopted the U15 rule early in Winter 2026 and PlayHQ is set to match. 30 overs names the grade, so there is an answer to give."
+      "why": "Anik Malik asked this and was told his umpires were right and MCA's own briefing was wrong advice. Both halves were false: the committee adopted the U15 rule early in Winter 2026 and PlayHQ is set to match. 30 overs names the grade, so there is an answer to give. The pattern once demanded 'even after the target' and 'all 30 overs' and failed the reply \"plays its full 30 overs even after passing the target\" -- the same claim in the plainer words. Widened to the claim: a full quota, a full 30 overs, or playing on even after the target."
     },
     {
       "name": "junior loan player comes from the opposition",
