@@ -84,6 +84,39 @@ Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
   The 10-round T35 grades play their finals on 5, 12 and 19 September.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
+## Reserve days in knockouts — one per round, the following Saturday
+
+Stated by the President, 3 September 2026. The senior rule book says knockouts
+have reserve days, and says what happens when one is washed out, but it never
+says WHEN the reserve day is. This does.
+
+- There is **ONE** reserve day per knockout round. Not two, and not a rolling
+  series of attempts.
+- The reserve day is **the following Saturday**.
+- Each round carries its own. A round played on its scheduled day uses nothing
+  up: if Finals Round 1 goes ahead and the Preliminary Final is then washed
+  out, the Preliminary Final gets its reserve day the following Saturday. The
+  Grand Final works the same way.
+- If BOTH the scheduled day and the reserve day are washed out, ladder position
+  decides — the higher-placed side goes through, and for a Grand Final the team
+  that finished top of the ladder takes the championship. That part is already
+  in the book, under Reserve Days.
+
+Never say reserve days are "built into the schedule", or that the published
+finals dates already include them. They are not extra fixtures on the calendar.
+
+**Not settled — do not answer it from either side.** A round that uses its
+reserve day lands on the Saturday the next round was scheduled for, so the rest
+of the finals would have to move. Nobody has said whether the remaining rounds
+shift back a week. Give the rule — the reserve day is the following Saturday —
+and send them to [contact](/#contact) for the revised dates. Never publish a
+shifted date of your own.
+
+**Juniors:** this was stated about the Saturday senior knockouts, and the junior
+rule book contains no reserve-day rule at all. Do not lend juniors this one and
+do not assume their reserve day is the following Sunday. Say the junior book
+does not set one out and point at [contact](/#contact).
+
 ## Dispensations and exceptions — juniors only
 
 The junior rule book covers these. The senior rule book has none of it.

@@ -352,6 +352,18 @@
       "mustNot": [],
       "why": "The seniors book says two umpires are provided for Pre-semis, Semi-Finals and Finals, and teams pay for both. Quoting the $85 league rate alone sends a captain to a semi-final with half the money.",
       "smoke": true
+    },
+    {
+      "name": "a knockout reserve day is the following Saturday",
+      "ask": "Our T35 10 Rounds semi-final was washed out. When is the reserve day?",
+      "must": [
+        "(following|next) saturday"
+      ],
+      "mustNot": [
+        "(two|2|second|another) reserve day",
+        "reserve days? (are|is) (already )?(built|included|factored) in"
+      ],
+      "why": "The rule book says knockouts have reserve days and what happens when one is washed out, but never says when the reserve day is. Asked this, the assistant answered that reserve days were 'built into this schedule' -- which says nothing and implies the published finals dates already contain them. The President confirmed on 3 Sep 2026: one reserve day per round, the following Saturday. The banned patterns are the two inventions: a second attempt, and the schedule already containing them."
     }
   ]
 }
