@@ -354,25 +354,28 @@
       "smoke": true
     },
     {
-      "name": "a knockout reserve day is the following Saturday",
-      "ask": "Our T35 10 Rounds semi-final was washed out. When is the reserve day?",
+      "name": "a washed-out senior final is replayed the next Saturday, and the rest move",
+      "ask": "Our T35 10 Rounds Finals Round 1 on 5 September was washed out. When is it replayed, and does that change the Grand Final date?",
       "must": [
-        "(following|next) saturday"
+        "(12\\s*(september|sept|sep)|september\\s*12)",
+        "(26\\s*(september|sept|sep)|september\\s*26)"
       ],
       "mustNot": [
         "(two|2|second|another) reserve day",
         "reserve days? (are|is) (already )?(built|included|factored) in"
       ],
-      "why": "The rule book says knockouts have reserve days and what happens when one is washed out, but never says when the reserve day is. Asked this, the assistant answered that reserve days were 'built into this schedule' -- which says nothing and implies the published finals dates already contain them. The President confirmed on 3 Sep 2026 that the 10-round grades and the juniors get ONE reserve day for the whole knockout series -- one spare week before the summer season -- and that it falls the following week, while regular T35 and T20 have one for every knockout round. This case asks about a 10-round semi, so the answer is the following Saturday. The banned patterns are the two inventions: a second attempt, and the published dates already containing them. Nothing here asserts the wording of the one-versus-every distinction, which a reply can draw correctly in several ways."
+      "why": "The 10-round grades get ONE reserve day for the whole knockout series -- one spare week before the summer season -- and using it moves every later round back a week. President, 3 Sep 2026. So Round 1 goes to the 12th and the Grand Final to the 26th. Both dates are asserted rather than the wording: an earlier version of this case demanded the phrase 'following Saturday' and failed a reply that gave the date, which is the better answer. Prose-only rule, in no rule book, and it decides when a club turns up to a final."
     },
     {
-      "name": "a used reserve day moves the later rounds back a week",
-      "ask": "If Finals Round 1 in T35 10 Rounds is washed out on 5 September, when is the Grand Final played?",
+      "name": "junior reserve days fall on the Sunday",
+      "ask": "Our U13 Finals Round 1 on 6 September was washed out. When is it replayed?",
       "must": [
-        "(26\\s*(september|sept|sep)|september\\s*26)"
+        "(13\\s*(september|sept|sep)|september\\s*13)"
       ],
-      "mustNot": [],
-      "why": "The 10-round grades and the juniors have one reserve week for the whole knockout series, and using it moves every later round back a week -- confirmed by the President on 3 Sep 2026. So a Round 1 washout on 5 September puts Round 1 on the 12th, the Preliminary Final on the 19th and the Grand Final on the 26th. This is a prose-only rule in no rule book, and it decides when a club turns up to a final. No mustNot on the original date: a correct answer often names 19 September before saying it moves."
+      "mustNot": [
+        "(12|19|26)\\s*(september|sept\\b|sep\\b)"
+      ],
+      "why": "Juniors play Sundays -- finals on 6, 13 and 20 September -- so their reserve day is the following SUNDAY, not the senior Saturday. The rule was stated in Saturday terms for the 10-round grades and covers juniors too, which is exactly the shape of mistake that gets a junior side sent to a ground on the wrong day. Rejects any of the senior Saturday dates."
     }
   ]
 }

@@ -86,10 +86,16 @@ Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
 
 ## Reserve days in knockouts — how many depends on the competition
 
+FIRST, THE PART THAT NEVER VARIES: a washed-out LEAGUE game has no reserve day,
+in any competition, senior or junior. The points are shared and that is the
+whole answer. It does not depend on the grade, so never ask someone which
+competition they are in before saying it. Everything below is about knockouts.
+
 Stated by the President, 3 September 2026. The senior rule book says knockouts
 have reserve days, and what happens when one is washed out, but never says how
-many there are or when they fall. This does — and the answer is NOT the same
-for every competition. Do not give one competition's answer to another.
+many there are or when they fall. This does — and for KNOCKOUTS the answer is
+not the same for every competition. Do not give one competition's answer to
+another.
 
 **Saturday T20 and regular Saturday T35 — a reserve day for EVERY knockout
 round.** Their finals had room in the calendar and finished on 22 August.
