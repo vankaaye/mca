@@ -22,6 +22,9 @@ Keep each note short and specific. Say what is true, not what to say. Include a
 date when it matters. Delete a note once it is out of date or has made it into
 the rule book — a stale note here is worse than no note.
 
+Everything above the line is for you, not the assistant: only what follows
+the `---` is sent to it. Keep the notes below the line.
+
 ---
 
 ## Season status
