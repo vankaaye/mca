@@ -27,16 +27,17 @@
       "why": "A PlayHQ fill-in covers the first game only; after that they must be registered."
     },
     {
-      "name": "senior dispensation does not exist",
+      "name": "a senior exemption is exceptional, not a process",
       "ask": "How do I request a dispensation for a senior finals game?",
       "must": [
-        "{{DENIES}}"
+        "committee|contact|melbournecricketassociation",
+        "exceptional|extenuating|compelling|substantial evidence|high bar|rare|not (a |an )?(standard|routine|formal|automatic|ordinary)|only (in|where|if)"
       ],
       "mustNot": [
-        "(you|your team|captains?|senior (teams?|sides?|players?)) (can|may|must|should|need to|are able to) (request|apply for|submit) a dispensation",
-        "seniors?[^.]{0,60}(at least )?48 hours before"
+        "seniors?[^.]{0,60}(at least )?48 hours before",
+        "5\\s*(PM|pm)[^.]{0,25}thursday"
       ],
-      "why": "The senior rule book has no dispensation process. It once invented one, with a 48-hour deadline lifted from the disputes rule.",
+      "why": "The President confirmed on 3 Sep 2026 that senior finals exemptions do exist, in exceptional circumstances, so a flat denial is now wrong. What stays wrong is presenting one as a process: the senior book sets out no form, no route and no deadline, and the assistant once invented one by lifting the junior book's deadlines. Asserts the answer names the committee and conveys the high bar; rejects either junior deadline attached to a senior.",
       "smoke": true
     },
     {
@@ -170,7 +171,7 @@
         "(3|three) league games.{0,40}loan",
         "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (use|borrow|bring in) (a )?loan player",
         "loan players are (allowed|permitted|available)[^.]{0,40}(senior|T35|T20|your)",
-        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation"
+        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation[^.]{0,60}(48 hours|thursday)"
       ],
       "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
     },
