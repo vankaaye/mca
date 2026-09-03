@@ -68,6 +68,13 @@ const RATE_LIMITED = /taking a short break|asked quite a few questions/i;
 // look mergeable — but says what actually happened.
 const UNREACHABLE = /assistant is unavailable|unavailable right now|HTTP 5\d\d/i;
 
+// A bare connection error, before any reply comes back at all. The deploy
+// workflow runs seconds after `wrangler deploy` while Cloudflare is still
+// rolling the new version out worldwide, so one case reaching a node that is
+// not ready yet is ordinary. It is not the assistant answering wrongly, and a
+// deploy going red over it teaches whoever gets the mail to ignore the mail.
+const NETWORK_ERROR = /fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|socket hang up|terminated|timeout/i;
+
 // The assistant answers in markdown, so a phrase the case is looking for can
 // arrive with formatting inside it: "the top **4 teams**" does not match
 // /top 4/, though it says exactly that. Strip emphasis before matching rather
@@ -166,7 +173,20 @@ async function worker(limit) {
         results.push({ c, problems: check(reply, c), reply });
       }
     } catch (err) {
-      const label = UNREACHABLE.test(err.message)
+      // Give a connection error one more go before calling it anything. This
+      // is the whole fix for a red deploy on a working assistant: the retry
+      // lands a few seconds later, by which time the rollout has caught up.
+      if (NETWORK_ERROR.test(err.message)) {
+        try {
+          await new Promise(r => setTimeout(r, 5000));
+          const reply = await ask(c);
+          results.push({ c, problems: check(reply, c), reply });
+          continue;
+        } catch (again) {
+          err = again;
+        }
+      }
+      const label = UNREACHABLE.test(err.message) || NETWORK_ERROR.test(err.message)
         ? 'UNREACHABLE — could not reach the assistant, not a content failure'
         : 'request failed: ' + err.message;
       results.push({ c, problems: [label], reply: '' });
