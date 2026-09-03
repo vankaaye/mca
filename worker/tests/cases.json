@@ -35,9 +35,9 @@
       ],
       "mustNot": [
         "seniors?[^.]{0,60}(at least )?48 hours before",
-        "5\\s*(PM|pm)[^.]{0,25}thursday"
+        "(submit|send|lodge|apply|request|get it in|make the request)[^.]{0,40}(by|before)[^.]{0,25}(5\\s*(PM|pm)|48 hours)"
       ],
-      "why": "The President confirmed on 3 Sep 2026 that senior finals exemptions do exist, in exceptional circumstances, so a flat denial is now wrong. What stays wrong is presenting one as a process: the senior book sets out no form, no route and no deadline, and the assistant once invented one by lifting the junior book's deadlines. Asserts the answer names the committee and conveys the high bar; rejects either junior deadline attached to a senior.",
+      "why": "The President confirmed on 3 Sep 2026 that senior finals exemptions do exist, in exceptional circumstances, so a flat denial is now wrong. What stays wrong is presenting one as a process: the senior book sets out no form, no route and no deadline, and the assistant once invented one by lifting the junior book's deadlines. Asserts the answer names the committee and conveys the high bar. The banned patterns are the two ways a deadline gets invented: the junior 48 hours pinned to seniors, and an instruction to submit by a time. An earlier version banned 5 PM near Thursday anywhere in the reply, which failed one run in three -- proximity to a fact is not a claim, and a sentence saying the junior deadline does NOT apply reads identically to a mustNot.",
       "smoke": true
     },
     {

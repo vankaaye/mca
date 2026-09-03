@@ -190,6 +190,13 @@ for (const c of selected) {
   const r = results.find(x => x.c.name === c.name);
   if (!r.problems.length) {
     console.log('  ok   ' + c.name);
+    // On a filtered run you are looking at one answer on purpose. A pass with
+    // no reply printed still leaves you guessing what it said — and these
+    // answers vary between runs, so "it passed" is not the same as "it is
+    // right". Print it in full when the run is small enough to read.
+    if (ONLY && selected.length <= 3) {
+      console.log('       reply: ' + r.reply.replace(/\s+/g, ' '));
+    }
     continue;
   }
   failed++;
