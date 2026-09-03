@@ -168,8 +168,7 @@
         "(3|three) league games.{0,40}loan",
         "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (use|borrow|bring in) (a )?loan player",
         "loan players are (allowed|permitted|available)[^.]{0,40}(senior|T35|T20|your)",
-        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation",
-        "(you|your (side|team|club))[^.]{0,80}48 hours"
+        "(you|your (side|team|club)) (can|may|could|should|must|need to|are able to) (request|apply for|submit|seek) a dispensation"
       ],
       "why": "A saved conversation used to carry an old wrong answer back into the prompt, and the assistant stayed consistent with itself rather than with the rule book — inventing a loan eligibility rule to justify what it had said earlier. Single-turn tests missed this entirely, which is how the fix looked complete when it was not."
     },
