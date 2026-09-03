@@ -98,7 +98,7 @@ jobs:
           # Carry the failing case names into this step's own output. They are
           # printed by the step above, but this step's log occupies the tail,
           # so a truncated view shows the count and not what broke.
-          WHICH="$(grep -m1 '^Failed: ' answers.log || true)"
+          WHICH="$(sed -n '/^Failed:/,$p' answers.log || true)"
           {
             echo "### Preview result: ${RESULT:-see the step above}"
             echo ""
@@ -106,7 +106,9 @@ jobs:
               echo "Clean — this branch is safe to merge."
             else
               echo "Some answers did not match. Read the step above, fix, and run again."
-              [ -n "$WHICH" ] && echo "" && echo "\`${WHICH}\`"
+              # The runner ends with a compact block: each failing case, its
+              # first unmet pattern, and enough of the reply to judge it.
+              [ -n "$WHICH" ] && { echo ""; echo '```'; echo "$WHICH"; echo '```'; }
             fi
             echo ""
             echo "The live assistant on mcacric.com was NOT changed by this run."

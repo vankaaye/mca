@@ -48,7 +48,7 @@ async function ask(c) {
   return String(body.reply || '');
 }
 
-// The Worker allows 30 chats per IP per hour. A full run is 26, so two runs
+// The Worker allows 30 chats per IP per hour. A full run is 27, so two runs
 // in an hour trips it — and the friendly "taking a short break" reply then
 // fails every remaining case for a reason that has nothing to do with the
 // answers. Recognise it and say so, rather than reporting phantom failures.
@@ -150,9 +150,14 @@ if (failed) {
   // Genuinely last, so a log view that only keeps the tail still names the
   // cases. Printing it above this advice was not far enough down: twice the
   // window cut off one line short of it.
-  console.log('\nFailed: ' + results
-    .filter(r => r.problems.length)
-    .map(r => r.c.name + ' (' + r.problems.map(p => p.split(':')[0]).join(', ') + ')')
-    .join('; '));
+  // Compact, and genuinely last: name, the first problem, and enough of the
+  // reply to judge it. The full detail is above, but a log view that keeps
+  // only the tail shows this — and knowing which case broke without seeing
+  // what it said is half an answer.
+  console.log('\nFailed:');
+  for (const r of results.filter(r => r.problems.length)) {
+    console.log('  ' + r.c.name + ' — ' + r.problems[0]);
+    console.log('    reply: ' + r.reply.replace(/\s+/g, ' ').slice(0, 220));
+  }
   process.exit(1);
 }
