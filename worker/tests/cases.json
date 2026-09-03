@@ -336,6 +336,16 @@
         "(that|this|which) (makes|gives|comes to|totals?) (4|four)"
       ],
       "why": "The committee's reading: the one-grade rule picks the grade first, then the minimum is measured in that grade alone. Games are not accumulated across grades — 3 in C plus 1 in B is 3, not 4. It is the rule most likely to be argued over at a finals deadline, and it is nowhere in the rule book."
+    },
+    {
+      "name": "senior knockouts have two umpires",
+      "ask": "What is the umpire fee for a T35 semi-final?",
+      "must": [
+        "(two|2)[^.]{0,25}umpires",
+        "both|each umpire|per umpire|170|twice"
+      ],
+      "mustNot": [],
+      "why": "The seniors book says two umpires are provided for Pre-semis, Semi-Finals and Finals, and teams pay for both. Quoting the $85 league rate alone sends a captain to a semi-final with half the money."
     }
   ]
 }

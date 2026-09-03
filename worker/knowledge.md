@@ -31,7 +31,26 @@ the rule book — a stale note here is worse than no note.
 
 ## Fees
 
-- (nothing beyond the rule books yet)
+### Umpires in knockouts — two for seniors, one for juniors
+
+The number of umpires differs, and it changes what a senior side pays.
+
+| | Umpires in knockouts | What a team pays |
+| --- | --- | --- |
+| Seniors (Pre-semis, Semi-Finals, Finals) | **Two** | The league rate **for each umpire** — T35 $85 and T20 $65 per umpire, so twice the league bill |
+| Juniors (finals) | **One** | The league rate, unchanged — U11 and U13 $65, U15 $70 |
+
+The senior half is in the rule book already, under Umpires: "Two umpires will
+be provided for Pre-semis (if the fixture has one), Semi-Finals and Finals.
+Teams have to pay for both the umpires." Quote it.
+
+The junior half is a committee confirmation and is not in the junior book —
+which is why an answer that only reads the fee table concludes the rate is
+unchanged. It is unchanged, but say so because one umpire is appointed, not
+because the book is silent on finals.
+
+Never give a senior knockout fee without saying there are two umpires. A
+captain told "$85 per team" for a semi-final will turn up with half the money.
 
 ## Grades and fixtures — Winter 2026
 
