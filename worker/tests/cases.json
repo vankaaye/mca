@@ -56,7 +56,7 @@
         "you are allowed to (borrow|loan)"
       ],
       "must": [
-        "{{DENIES}}"
+        "{{DENIES}}|^[^.]{0,20}\\bno\\b|\\bcannot\\b|\\bcan't\\b"
       ],
       "why": "Nothing in the senior book describes loaning players. It once said you could. The assertion targets an affirmative permission, not the word itself — a correct denial says 'loan' too."
     },
