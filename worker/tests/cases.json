@@ -376,6 +376,21 @@
         "(12|19|26)\\s*(september|sept\\b|sep\\b)"
       ],
       "why": "Juniors play Sundays -- finals on 6, 13 and 20 September -- so their reserve day is the following SUNDAY, not the senior Saturday. The rule was stated in Saturday terms for the 10-round grades and covers juniors too, which is exactly the shape of mistake that gets a junior side sent to a ground on the wrong day. Rejects any of the senior Saturday dates."
+    },
+    {
+      "name": "one reserve day total, and juniors are not left out",
+      "ask": "Do we have reserve days for knockouts? If we do, what are the dates?",
+      "must": [
+        "(one|a single|only one|1) reserve (day|week)|only one",
+        "junior|u1[135]"
+      ],
+      "mustNot": [
+        "reserve days? (are|is) (in|built into|included in|part of) the schedule",
+        "(each|every|all) (knockout )?rounds? (has|have|gets?)[^.]{0,20}reserve day",
+        "reserve day (for|against) (each|every) round"
+      ],
+      "why": "Asked exactly this, the assistant laid out a table with a reserve day beside each of the three rounds -- 5/12, 12/19, 19/26 -- which reads as three reserve days when the 10-round grades and juniors get ONE for the whole series. It also answered for seniors only and never mentioned juniors, whose four grades are in finals at the same time. The notes now give the three outcomes as alternatives rather than a per-round schedule, and say a question naming no grade covers both.",
+      "smoke": true
     }
   ]
 }
