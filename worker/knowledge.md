@@ -84,7 +84,13 @@ Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
   The 10-round T35 grades play their finals on 5, 12 and 19 September.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
-## Reserve days in knockouts — how many depends on the competition
+## Reserve days in knockouts — seniors AND juniors
+
+BOTH have them. Junior knockouts get reserve days on exactly the same terms as
+Saturday T35 — 10 Rounds: a maximum of ONE for the whole knockout series. Never
+answer a reserve-day question for the senior competitions alone, and never open
+with "senior knockouts have reserve days" — four junior grades are in finals at
+the same time.
 
 FIRST, THE PART THAT NEVER VARIES: a washed-out LEAGUE game has no reserve day,
 in any competition, senior or junior. The points are shared and that is the
