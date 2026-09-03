@@ -17,6 +17,11 @@ name: Try the assistant on a branch
 
 on:
   workflow_dispatch:
+    inputs:
+      only:
+        description: 'Run only the cases whose name contains this text (blank = all of them). Every case is a real API call, so use this when re-checking one fix.'
+        required: false
+        default: ''
 
 concurrency:
   group: preview-worker
@@ -85,6 +90,7 @@ jobs:
         continue-on-error: true
         env:
           ENDPOINT: ${{ steps.upload.outputs.url }}
+          ONLY: ${{ inputs.only }}
         run: |
           # Give Cloudflare a moment to make the new version reachable.
           sleep 15

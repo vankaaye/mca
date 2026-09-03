@@ -103,19 +103,47 @@ function check(reply, c) {
     if (!new RegExp(expand(pattern), 'i').test(text)) problems.push('missing: ' + pattern);
   }
   for (const pattern of c.mustNot || []) {
-    if (new RegExp(expand(pattern), 'i').test(text)) problems.push('INVENTED: ' + pattern);
+    const hit = new RegExp(expand(pattern), 'i').exec(text);
+    // Quote what actually matched, and what surrounds it. A banned pattern
+    // names the claim that is forbidden, not the sentence that tripped it, and
+    // the reply excerpt printed at the end is truncated — so a correct answer
+    // that trips a pattern late in a long reply gets judged on evidence that
+    // is not on screen. That has now cost two runs.
+    if (hit) problems.push('INVENTED: ' + pattern + '\n      matched: ...' + around(text, hit) + '...');
   }
   return problems;
 }
 
-const selected = SMOKE_ONLY ? cases.filter(c => c.smoke) : cases;
+function around(text, hit) {
+  const from = Math.max(0, hit.index - 80);
+  const to = Math.min(text.length, hit.index + hit[0].length + 80);
+  return text.slice(from, to).replace(/\s+/g, ' ');
+}
+
+// --only "<text>" runs just the cases whose name contains that text. Every
+// case is a real API call carrying the whole prompt, so re-checking one fix
+// should not cost twenty-eight of them.
+const onlyAt = process.argv.indexOf('--only');
+const ONLY = (onlyAt !== -1 ? process.argv[onlyAt + 1] : process.env.ONLY) || '';
+
+let selected = SMOKE_ONLY ? cases.filter(c => c.smoke) : cases;
 if (SMOKE_ONLY && !selected.length) {
   console.error('--smoke was passed but no case is tagged smoke:true');
   process.exit(1);
 }
-console.log(SMOKE_ONLY
-  ? 'Smoke run: ' + selected.length + ' of ' + cases.length + ' cases.'
-  : 'Full run: ' + selected.length + ' cases.');
+if (ONLY) {
+  selected = selected.filter(c => c.name.toLowerCase().includes(ONLY.toLowerCase()));
+  if (!selected.length) {
+    console.error('--only ' + JSON.stringify(ONLY) + ' matched no case name. Names:');
+    for (const c of cases) console.error('  ' + c.name);
+    process.exit(1);
+  }
+}
+console.log(ONLY
+  ? 'Filtered run: ' + selected.length + ' of ' + cases.length + ' cases matching ' + JSON.stringify(ONLY) + '.'
+  : SMOKE_ONLY
+    ? 'Smoke run: ' + selected.length + ' of ' + cases.length + ' cases.'
+    : 'Full run: ' + selected.length + ' cases.');
 
 const results = [];
 const queue = selected.slice();
