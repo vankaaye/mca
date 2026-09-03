@@ -84,38 +84,43 @@ Read off PlayHQ on 23 August 2026. Twelve grades: eight senior, four junior.
   The 10-round T35 grades play their finals on 5, 12 and 19 September.
 - Fixtures, ladders and results live on PlayHQ, never on this website.
 
-## Reserve days in knockouts — one per round, the following Saturday
+## Reserve days in knockouts — how many depends on the competition
 
 Stated by the President, 3 September 2026. The senior rule book says knockouts
-have reserve days, and says what happens when one is washed out, but it never
-says WHEN the reserve day is. This does.
+have reserve days, and what happens when one is washed out, but never says how
+many there are or when they fall. This does — and the answer is NOT the same
+for every competition. Do not give one competition's answer to another.
 
-- There is **ONE** reserve day per knockout round. Not two, and not a rolling
-  series of attempts.
-- The reserve day is **the following Saturday**.
-- Each round carries its own. A round played on its scheduled day uses nothing
-  up: if Finals Round 1 goes ahead and the Preliminary Final is then washed
-  out, the Preliminary Final gets its reserve day the following Saturday. The
-  Grand Final works the same way.
-- If BOTH the scheduled day and the reserve day are washed out, ladder position
-  decides — the higher-placed side goes through, and for a Grand Final the team
-  that finished top of the ladder takes the championship. That part is already
-  in the book, under Reserve Days.
+**Saturday T20 and regular Saturday T35 — a reserve day for EVERY knockout
+round.** Their finals had room in the calendar and finished on 22 August.
+
+**Saturday T35 — 10 Rounds, and all four junior grades — ONE reserve day for
+the whole knockout series.** Their finals run to 19 and 20 September and there
+is only one week left before the summer season starts. One spare week, and no
+more. This is a calendar squeeze, not a different rule about cricket.
+
+How that single reserve day works:
+
+- The first round to be washed out takes it, and is replayed the following
+  week — the following Saturday for the 10-round grades, the following Sunday
+  for juniors, those being the days each competition plays.
+- That is the only one. Once it is used there is no slack left.
+- A round played on its scheduled day spends nothing. If Finals Round 1 goes
+  ahead and the Preliminary Final is then washed out, the Preliminary Final
+  takes the reserve day. Same for the Grand Final.
+- A round washed out with no reserve day left is decided on ladder position:
+  the higher-placed side goes through, and for a Grand Final the team that
+  finished top of the ladder takes the championship. That much is in the senior
+  book already, under Reserve Days.
 
 Never say reserve days are "built into the schedule", or that the published
 finals dates already include them. They are not extra fixtures on the calendar.
 
-**Not settled — do not answer it from either side.** A round that uses its
-reserve day lands on the Saturday the next round was scheduled for, so the rest
-of the finals would have to move. Nobody has said whether the remaining rounds
-shift back a week. Give the rule — the reserve day is the following Saturday —
-and send them to [contact](/#contact) for the revised dates. Never publish a
-shifted date of your own.
-
-**Juniors:** this was stated about the Saturday senior knockouts, and the junior
-rule book contains no reserve-day rule at all. Do not lend juniors this one and
-do not assume their reserve day is the following Sunday. Say the junior book
-does not set one out and point at [contact](/#contact).
+**Not settled — do not answer it from either side.** Using the reserve day
+lands that round on the day the next round was scheduled for, so the rounds
+after it have to move. Nobody has said in so many words that they all shift
+back a week. Give the rule, and send anyone wanting revised dates to
+[contact](/#contact). Never publish a shifted date of your own.
 
 ## Dispensations and exceptions — juniors only
 
