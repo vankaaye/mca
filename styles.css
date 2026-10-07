@@ -1499,6 +1499,26 @@ img { max-width: 100%; display: block; }
   color: var(--surface-deep-dim);
 }
 
+/* Developer credit. Takes the size and muted colour from .footer-bottom so it
+   sits level with the copyright, and the link stays muted until hover — it is
+   a credit, not a call to action. Its own centred line, because the copyright
+   already fills the width on a phone and a second item beside it would wrap
+   mid-sentence. Margins are reset globally, hence the explicit top margin. */
+.footer-credit {
+  margin-top: 0.4rem;
+}
+
+.footer-credit a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-credit a:hover,
+.footer-credit a:focus-visible {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
 /* ============================================================
    Fixtures & Ladders
    ============================================================ */

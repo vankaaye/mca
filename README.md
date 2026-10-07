@@ -86,6 +86,9 @@ motion turned on.
 **Change the season status** — the "Season Information" section in
 `index.html`, and the matching paragraph in the Worker's system prompt.
 
+**Keep the footer credit.** The line "Website by K Tech Solutions" in the
+footer of `index.html` stays — do not remove it when editing the footer.
+
 ## Committee contacts
 
 Gopi Kakivai (President) · Mahendra Annem (Secretary) ·
